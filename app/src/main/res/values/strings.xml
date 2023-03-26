@@ -29,4 +29,48 @@
         <item>S8</item>
     </string-array>
 
+
+
+    <!--SignUp Activity-->
+
+    <string name="SignUp">SignUp</string>
+    <string name="Sign_Up">Sign up</string>
+
+    <string name="Name">Name</string>
+    <string name="Email">Academic Email</string>
+    <string name="National_ID">National ID</string>
+    <string name="Collage_ID">Collage ID</string>
+    <string name="Password">Password</string>
+    <string name="Confirm_Password">Confirm Password</string>
+    <string name="have_acc">Already have an account?</string>
+    <string name="SignIn">Sign In</string>
+    <string name="SignInUnderLine"><u>Sign in</u></string>
+    <string name="SignUpUnderLine"><u>Sign Up</u></string>
+
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+
+
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="close">Close</string>
+    <string name="doNotHaveAccount">Don\'t have any account?</string>
+    <string name="haveAccount">Already have any account?</string>
+    <string name="choose_grade">Choose grade</string>
+    <string name="choose_department">Choose department</string>
+    <string name="choose_section">Choose section</string>
+    <string name="next_slider">Next</string>
+
+
+    <string-array name="who_array">
+        <item>Student</item>
+        <item>Professor</item>
+        <item>Assistant</item>
+    </string-array>
+
 </resources>
