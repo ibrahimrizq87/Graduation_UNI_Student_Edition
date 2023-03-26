@@ -3,10 +3,8 @@ package com.uni.unistudent.data
 
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.uni.unistudent.Classes.*
+import com.uni.unistudent.classes.*
 import com.uni.unistudent.data.di.FireStoreTable
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FirebaseRepoImp@Inject constructor(

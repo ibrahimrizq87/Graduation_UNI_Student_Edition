@@ -6,4 +6,172 @@
     android:layout_height="match_parent"
     tools:context=".ui.SignUp">
 
+
+    <ImageView
+        android:id="@+id/sign_user_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/user_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06" />
+
+    <EditText
+        android:id="@+id/signCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="college ID"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signName"
+        app:layout_constraintVertical_bias="0.048"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/signName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="full name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.249"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/sign_up_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signPassword"
+        app:layout_constraintVertical_bias="0.85" />
+
+    <EditText
+        android:id="@+id/signEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Academic Email "
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signCode"
+        app:layout_constraintVertical_bias="0.034" />
+
+    <EditText
+        android:id="@+id/signPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="National ID as password"
+        android:inputType="numberPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signEmailAddress"
+        app:layout_constraintVertical_bias="0.074" />
+
+
+    <Spinner
+        android:id="@+id/grade_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+android:background="#CD8989"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signPassword"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <TextView
+        android:id="@+id/grade_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="choose grade"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/grade_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/grade_spinner"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="@+id/grade_spinner"
+        app:layout_constraintTop_toTopOf="@+id/grade_spinner"
+        app:layout_constraintVertical_bias="0.476" />
+
+    <Spinner
+        android:id="@+id/dep_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:background="#CD8989"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signPassword"
+        app:layout_constraintVertical_bias="0.29" />
+
+    <TextView
+        android:id="@+id/dep_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="choose departement"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/dep_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/dep_spinner"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="@+id/dep_spinner"
+        app:layout_constraintTop_toTopOf="@+id/dep_spinner"
+        app:layout_constraintVertical_bias="0.476" />
+
+    <Spinner
+        android:id="@+id/section_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:background="#CD8989"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signPassword"
+        app:layout_constraintVertical_bias="0.572" />
+
+    <TextView
+        android:id="@+id/section_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="choose section"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/section_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/section_spinner"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="@+id/section_spinner"
+        app:layout_constraintTop_toTopOf="@+id/section_spinner"
+        app:layout_constraintVertical_bias="0.476" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_signIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
