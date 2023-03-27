@@ -65,6 +65,9 @@
     <string name="choose_department">Choose department</string>
     <string name="choose_section">Choose section</string>
     <string name="next_slider">Next</string>
+    <string name="back">Back</string>
+    <string name="student">Student</string>
+    <string name="uni">UNI</string>
 
 
     <string-array name="who_array">
