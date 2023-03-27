@@ -1,6 +1,4 @@
-package com.uni.unistudent.Classes
-
-import java.util.*
+package com.uni.unistudent.classes
 
 
 data class EmbeddedModel (

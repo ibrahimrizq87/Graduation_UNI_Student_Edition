@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
-import com.uni.unistudent.Classes.user.UserStudent
+import com.uni.unistudent.classes.Permission
+import com.uni.unistudent.classes.user.UserStudent
+import com.uni.unistudent.data.di.PermissionsRequired
 import com.uni.unistudent.data.di.SharedPreferencesTable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -50,22 +52,35 @@ class AuthRepositoryImpl@Inject constructor(
             .addOnCompleteListener{
                 if (it.isSuccessful){
                     GlobalScope.launch {
-                        userStudent.userId=it.result.user?.uid?:""
+                        val userId=it.result.user?.uid?:""
+                        userStudent.userId=userId
                         updateUserInfo(userStudent){ state->
                             when(state){
+                                Resource.Loading -> result.invoke(Resource.Loading)
                                 is Resource.Success-> {
-                                    storeSession(it.result.user?.uid ?: "",userStudent) { user->
+                                    storeSession(userId,userStudent) { user->
                                         if (user == null) {
                                             result.invoke(Resource.Failure("user created successfully but session did not stored"))
                                         } else {
-                                            result.invoke(Resource.Success("user created successfully"))
+
+                                            GlobalScope.launch {
+                                                addPermission(Permission(PermissionsRequired.sing_in_permission,userId,"")){
+                                            when(it){
+                                                Resource.Loading -> result.invoke(Resource.Loading)
+                                                is Resource.Failure -> {result.invoke(Resource.Success("user created successfully but you need to check you permission with admin"))}
+                                                is Resource.Success -> {result.invoke(Resource.Success("user created successfully"))}
+                                            }
+                                                }
+                                            }
                                         }
                                     }
 
                                 }is Resource.Failure->{result.invoke(Resource.Failure(state.exception))}
-else->{}
+
+
                             }
                         }
+
                     }
                 }else{
                     result.invoke(
@@ -141,6 +156,26 @@ else->{}
     }
     override fun setSession(user:UserStudent) {
         appPreferences.edit().putString(SharedPreferencesTable.user_session,gson.toJson(user)).apply()
+    }
+
+
+    override suspend fun addPermission(permission: Permission, result: (Resource<String>) -> Unit) {
+        val document=database.collection(PermissionsRequired.sing_in_permission).document()
+        permission.permissionId=document.id
+        document.set(permission)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("asking for permission")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+
     }
 
 

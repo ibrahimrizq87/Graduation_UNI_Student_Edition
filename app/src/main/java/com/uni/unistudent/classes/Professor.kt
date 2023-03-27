@@ -1,4 +1,4 @@
-package com.uni.unistudent.Classes
+package com.uni.unistudent.classes
 
 
 

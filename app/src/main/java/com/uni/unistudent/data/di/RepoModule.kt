@@ -25,9 +25,8 @@ RepoModule {
     @Singleton
     fun provideFirebaseRepo(
          database:FirebaseFirestore,
-         //roomRepository:Repository
     ): FirebaseRepo {
-        return FirebaseRepoImp(database)//,roomRepository)
+        return FirebaseRepoImp(database)
     }
 
     @Provides

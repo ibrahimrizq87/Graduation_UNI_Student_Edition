@@ -1,7 +1,7 @@
 package com.uni.unistudent.data
 
 import com.google.firebase.database.DatabaseReference
-import com.uni.unistudent.Classes.EmbeddedModel
+import com.uni.unistudent.classes.EmbeddedModel
 import javax.inject.Inject
 
 class FirebaseRealtimeRepoImp @Inject constructor(

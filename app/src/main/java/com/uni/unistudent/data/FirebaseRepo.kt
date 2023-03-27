@@ -1,6 +1,6 @@
 package com.uni.unistudent.data
 
-import com.uni.unistudent.Classes.*
+import com.uni.unistudent.classes.*
 
 
 interface FirebaseRepo {

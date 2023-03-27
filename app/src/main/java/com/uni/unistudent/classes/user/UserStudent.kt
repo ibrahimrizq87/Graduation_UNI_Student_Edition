@@ -1,6 +1,5 @@
-package com.uni.unistudent.Classes.user
+package com.uni.unistudent.classes.user
 
-import com.uni.unistudent.data.di.UserTypes
 
 
 data class UserStudent (

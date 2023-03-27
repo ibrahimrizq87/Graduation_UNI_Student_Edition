@@ -10,13 +10,7 @@ object FireStoreTable {
     val assistant="assistan"
     val attendance="attendance"
 }
-object UserTypes{
-    val user="Users"
-    val adminUser="admin_user"
-    val studentUser="student_user"
-    val assistantUser="assistant_user"
-    val professorUser="professor_user"
-}
+
 object SharedPreferencesTable{
     val local_shared_preferences="local_shared_preferences"
     val user_session="user_session"
@@ -24,7 +18,7 @@ object SharedPreferencesTable{
 
 }
 object PermissionsRequired{
-    val sing_in_permission="sing_in_permission"
+    val sing_in_permission="sign_in_permission"
 
 }
 object grades{

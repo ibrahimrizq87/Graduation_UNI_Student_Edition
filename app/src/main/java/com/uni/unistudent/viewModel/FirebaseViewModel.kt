@@ -3,7 +3,7 @@ package com.uni.unistudent.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.uni.unistudent.Classes.*
+import com.uni.unistudent.classes.*
 import com.uni.unistudent.data.FirebaseRepo
 import com.uni.unistudent.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
