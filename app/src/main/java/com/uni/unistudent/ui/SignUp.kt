@@ -4,6 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
+import androidx.fragment.app.Fragment
+
+import com.uni.unistudent.databinding.ActivitySignUpBinding
+
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -15,7 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.R
 import com.uni.unistudent.data.Resource
-import com.uni.unistudent.databinding.ActivitySignUpBinding
+
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FireStorageViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,45 +29,87 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class SignUp : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
-    private val viewModel : AuthViewModel by viewModels()
-    private val fireStorageViewModel : FireStorageViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
+    private val fireStorageViewModel: FireStorageViewModel by viewModels()
     private lateinit var auth: FirebaseAuth
     private lateinit var grade: String
     private lateinit var section: String
-    val TAG="SignUp"
+    val TAG = "SignUp"
     private lateinit var progressPar: ProgressBar
     private lateinit var dep: String
     private lateinit var userImageUri: Uri
     private lateinit var imageView: ImageView
-    companion object{
-        const val  IMAGE_REQUEST_CODE =100
+
+    companion object {
+        const val IMAGE_REQUEST_CODE = 100
     }
+
+
+
+    public fun nextFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+
+            setCustomAnimations(
+                R.anim.enter_right_to_left,
+                R.anim.exist_right_to_left,
+                R.anim.enter_left_to_right,
+                R.anim.exist_left_to_right
+            )
+
+            replace(
+                R.id.fragment_container,
+                fragment
+            ).commit()
+        }
+    }    public fun previousFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+
+            setCustomAnimations(
+                R.anim.enter_left_to_right,
+                R.anim.exist_left_to_right,
+                R.anim.enter_right_to_left,
+                R.anim.exist_right_to_left
+            )
+
+            replace(
+                R.id.fragment_container,
+                fragment
+            ).commit()
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        grade=""
-        dep=""
-        section=""
-        userImageUri= Uri.EMPTY
-            //----------------
-        auth = Firebase.auth       //----------------
 
+        nextFragment(FragmentSignUpMainData())
+        binding.close.setOnClickListener {
+            finish()
+        }
+
+        grade = ""
+        dep = ""
+        section = ""
+        userImageUri = Uri.EMPTY
+        //----------------
+        auth = Firebase.auth
+        //----------------
+/*
         progressPar = binding.progressBarSignIn
 
         imageView = binding.signUserImage
 
         binding.signUserImage.setOnClickListener{
             pickImageFromGallery()
-        }
-
-
-
+        }*/
 
 
         // spinners code
         // grade spinner
-
+/*
         val gradeList = resources.getStringArray(R.array.grades)
         val adapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(this,R.array.grades,R.layout.spinner_item)
         val gradeSpinner = findViewById<Spinner>(R.id.grade_spinner)
@@ -76,15 +123,13 @@ class SignUp : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
-        }
-
-
+        }*/
 
 
 // departement spinner
 
 
-
+/*
         val depList = resources.getStringArray(R.array.departement)
         val depAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(this,R.array.departement,R.layout.spinner_item)
         val depSpinner = findViewById<Spinner>(R.id.dep_spinner)
@@ -98,14 +143,15 @@ class SignUp : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
-        }
+        }*/
 
 // section spinner
-
+/*
         val sectionList = resources.getStringArray(R.array.Section)
-        val sectionAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(this,R.array.Section,R.layout.spinner_item)
+        val sectionAdapter: ArrayAdapter<CharSequence> =
+            ArrayAdapter.createFromResource(this, R.array.Section, R.layout.spinner_item)
         val sectionSpinner = findViewById<Spinner>(R.id.section_spinner)
-        sectionSpinner.adapter=sectionAdapter
+        sectionSpinner.adapter = sectionAdapter
 
         sectionSpinner.onItemSelectedListener= object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0 : AdapterView<*>?, p1: View?, p2:Int, p3: Long) {
@@ -116,13 +162,10 @@ class SignUp : AppCompatActivity() {
 
             }
         }
+*/
 
 
-
-
-
-
-
+/*
         binding.signUpBt.setOnClickListener {
             val email=binding.signEmailAddress.text.toString()
             val password = binding.signPassword.text.toString()
@@ -155,46 +198,45 @@ class SignUp : AppCompatActivity() {
         }
 
 
-
+*/
 
 
     }
 
 
+// observing the registration function to check if it run properly
+/* private fun observeSignUp(){
+     lifecycleScope.launchWhenCreated {
+         viewModel.register.collectLatest { state ->
+             when (state) {
+                 is Resource.Loading -> {
+                     progressPar.visibility=View.VISIBLE
 
-    // observing the registration function to check if it run properly
-    private fun observeSignUp(){
-        lifecycleScope.launchWhenCreated {
-            viewModel.register.collectLatest { state ->
-                when (state) {
-                    is Resource.Loading -> {
-                        progressPar.visibility=View.VISIBLE
+                 }
+                 is Resource.Success -> {
+                     progressPar.visibility=View.INVISIBLE
+                     Toast.makeText(this@SignUp,state.result, Toast.LENGTH_LONG).show()
+                     val userId = auth.currentUser?.uid
+                     if (userId !=null){
+                         fireStorageViewModel.addUri(userId,userImageUri)
+                         observeUploadedImage()
+                     }
 
-                    }
-                    is Resource.Success -> {
-                        progressPar.visibility=View.INVISIBLE
-                        Toast.makeText(this@SignUp,state.result, Toast.LENGTH_LONG).show()
-                        val userId = auth.currentUser?.uid
-                        if (userId !=null){
-                            fireStorageViewModel.addUri(userId,userImageUri)
-                            observeUploadedImage()
-                        }
+                     startActivity(Intent(this@SignUp, HomeScreen::class.java))
+                 }
+                 is Resource.Failure -> {
+                     progressPar.visibility=View.INVISIBLE
+                     Toast.makeText(this@SignUp,state.exception.toString(),
+                         Toast.LENGTH_LONG).show()
+                 }
+                 else->{}
+             }
+         }
 
-                        startActivity(Intent(this@SignUp, HomeScreen::class.java))
-                    }
-                    is Resource.Failure -> {
-                        progressPar.visibility=View.INVISIBLE
-                        Toast.makeText(this@SignUp,state.exception.toString(),
-                            Toast.LENGTH_LONG).show()
-                    }
-                    else->{}
-                }
-            }
-
-        }
-    }
-
-
+     }
+ }
+*/
+/*
     // observing the upload function to check if it run properly
     private fun observeUploadedImage() {
         lifecycleScope.launchWhenCreated {
@@ -238,13 +280,13 @@ class SignUp : AppCompatActivity() {
         }
     }
     //-----------------------------------------------
-
+*/
 
 
 
     // if the user is registered go to the home page
     // if there is no user registered delete user session
-
+/*
     override fun onStart() {
         super.onStart()
         viewModel.getSessionStudent {user->
@@ -256,5 +298,7 @@ class SignUp : AppCompatActivity() {
                     Log.e(TAG, "shared preferences deleted ")
                 }
             }
-        }}
+        }}*/
+
+ */
 }

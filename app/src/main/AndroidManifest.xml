@@ -13,15 +13,12 @@
         android:theme="@style/Theme.UNIStudent"
         tools:targetApi="31">
         <activity
-            android:noHistory="true"
             android:name=".ui.HomeScreen"
             android:exported="false" />
         <activity
-            android:noHistory="true"
             android:name=".ui.SignUp"
             android:exported="false" />
         <activity
-            android:noHistory="true"
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
