@@ -2,9 +2,12 @@ package com.uni.unistudent.data
 
 
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uni.unistudent.classes.*
+import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.di.FireStoreTable
+import com.uni.unistudent.data.di.PermissionsRequired
 import javax.inject.Inject
 
 class FirebaseRepoImp@Inject constructor(
@@ -45,6 +48,7 @@ class FirebaseRepoImp@Inject constructor(
                 )
             }
     }
+
     override suspend fun getCourse( grade:String,result: (Resource<List<Courses>>) -> Unit) {
         val docRef = database.collection(FireStoreTable.courses)
             .whereEqualTo("grade", grade)
@@ -146,6 +150,21 @@ class FirebaseRepoImp@Inject constructor(
 
     }
 
+    override suspend fun getPermission(
+        userId: String,
+        result: (Resource<Permission?>) -> Unit
+    ) {
+        val docRef =  database.collection(PermissionsRequired.sing_in_permission)
+            .document(userId)
+
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+            result.invoke(Resource.Success(snapshot?.toObject(Permission::class.java)))
+        }   }
+
     override suspend fun getSection(
         courses: List<Courses>,
         dep: String,
@@ -154,6 +173,7 @@ class FirebaseRepoImp@Inject constructor(
     ) {
         val listOfPosts = arrayListOf<Section>()
         for (course in courses) {
+            Log.e("repo",course.courseCode)
             val docRef =
                 database.collection(FireStoreTable.courses)
                     .document(course.courseCode)
@@ -167,6 +187,7 @@ class FirebaseRepoImp@Inject constructor(
                 }
                 for (rec in snapshot!!) {
                     val post = rec.toObject(Section::class.java)
+                    Log.e("i am here section",post.assistantName)
                     listOfPosts.add(post)
                 }
 
@@ -176,11 +197,16 @@ class FirebaseRepoImp@Inject constructor(
 
     }
 
-    override suspend fun getLectures(courses: List<Courses>,dep:String, result: (Resource<List<Lecture>>) -> Unit) {
+    override  fun getLectures(courses: List<Courses>,dep:String, result: (Resource<List<Lecture>>) -> Unit) {
         val listOfPosts = arrayListOf<Lecture>()
         for (course in courses) {
-            val docRef = database.collection(FireStoreTable.courses).document(course.courseCode)
-                .collection(FireStoreTable.lectures)
+            Log.e("i am here",course.courseCode)
+            val docRef = database.
+            collection(FireStoreTable.courses).
+            document(course.courseCode)
+            .collection(FireStoreTable.lectures)
+                .document(dep).
+                collection(dep)
             docRef.addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     result.invoke(Resource.Failure(e.toString()))
@@ -188,29 +214,15 @@ class FirebaseRepoImp@Inject constructor(
                 }
                 for (rec in snapshot!!) {
                     val post = rec.toObject(Lecture::class.java)
+                    Log.e("i am here",post.professorName)
                     listOfPosts.add(post)
                 }
 
             }
-            for (course in courses) {
-                val docRef = database.collection(FireStoreTable.courses).document(course.courseCode)
-                    .collection(FireStoreTable.lectures).document(dep)
-                    .collection(FireStoreTable.lectures)
-                docRef.addSnapshotListener { snapshot, e ->
-                    if (e != null) {
-                        result.invoke(Resource.Failure(e.toString()))
-                        return@addSnapshotListener
-                    }
-                    for (rec in snapshot!!) {
-                        val post = rec.toObject(Lecture::class.java)
-                        listOfPosts.add(post)
-                    }
 
-                }
-            }
-            result.invoke(Resource.Success(listOfPosts))
+
         }
-
+        result.invoke(Resource.Success(listOfPosts))
 
 
     }

@@ -3,6 +3,7 @@ package com.uni.unistudent.data
 import android.content.SharedPreferences
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.uni.unistudent.classes.Permission
@@ -41,6 +42,7 @@ class AuthRepositoryImpl@Inject constructor(
 
     }
 
+    override val user = firebaseAuth.currentUser
 
     override suspend fun register(
         email: String,
@@ -160,7 +162,7 @@ class AuthRepositoryImpl@Inject constructor(
 
 
     override suspend fun addPermission(permission: Permission, result: (Resource<String>) -> Unit) {
-        val document=database.collection(PermissionsRequired.sing_in_permission).document()
+        val document=database.collection(PermissionsRequired.sing_in_permission).document(permission.userId)
         permission.permissionId=document.id
         document.set(permission)
             .addOnSuccessListener {
