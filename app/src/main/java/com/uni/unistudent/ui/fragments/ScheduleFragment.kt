@@ -62,7 +62,11 @@ class ScheduleFragment : Fragment() {
         val recyclerView=view.findViewById<RecyclerView>(R.id.schedule_recycler)
         val up = view.findViewById<Button>(R.id.update)
          progress= view.findViewById<ProgressBar>(R.id.progress_par)
-up.setOnClickListener {
+
+
+   // TODO: walid the problem is in the observe function as it dose not do any callback when the data change so I had to change it manualy  ;)
+
+        up.setOnClickListener {
     observeLectures()
     observeSections()
 }
