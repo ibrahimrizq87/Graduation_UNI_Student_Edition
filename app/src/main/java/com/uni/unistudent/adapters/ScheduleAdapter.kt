@@ -1,6 +1,7 @@
 package com.uni.unistudent.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,18 +27,21 @@ class ScheduleAdapter(
         const val VIEW_TYPE_TWO = 2
     }
 
-
+    override fun getItemViewType(position: Int): Int {
+        return if (dataList[position].type == VIEW_TYPE_ONE) VIEW_TYPE_ONE else VIEW_TYPE_TWO
+    }
 
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == VIEW_TYPE_ONE) {
-        val view : View = LayoutInflater.from(context).inflate(R.layout.section_item,parent,false)
-        return ViewHolder1(view)
+        return if (viewType == VIEW_TYPE_ONE) {
+            val view : View = LayoutInflater.from(context).inflate(R.layout.section_item,parent,false)
+            ViewHolder1(view)
+        }else{
+            val view : View = LayoutInflater.from(context).inflate(R.layout.lecture_item,parent,false)
+            ViewHolder2(view)
         }
-        val view : View = LayoutInflater.from(context).inflate(R.layout.lecture_item,parent,false)
-        return ViewHolder2(view)
     }
 
 
@@ -52,15 +56,27 @@ if (currentItem.type == VIEW_TYPE_TWO){
     holder.day_l.text = currentItem.day
     holder.from_l.text = currentItem.time
     holder.to_l.text = currentItem.endTime
+    if (currentItem.isRunning){
+        holder.isRunning.text="is running"
+    }else{
+        holder.isRunning.text="not running"
+    }
+
 
 }else{
-    (holder as ViewHolder1)
+    (holder as  ViewHolder1)
     holder.courseName.text = currentItem.courseName
     holder.location.text = currentItem.hallID
     holder.assistant.text = currentItem.professorName
     holder.day.text = currentItem.day
     holder.from.text = currentItem.time
     holder.to.text = currentItem.endTime
+    if (currentItem.isRunning){
+        holder.isRunning.text="is running"
+    }else{
+        holder.isRunning.text="not running"
+    }
+
 }
 
     }
@@ -75,7 +91,7 @@ if (currentItem.type == VIEW_TYPE_TWO){
         notifyDataSetChanged()
     }
     inner class ViewHolder1(item: View) : RecyclerView.ViewHolder(item){
-
+        val isRunning = item.findViewById<TextView>(R.id.sec_is_running)
         val courseName = item.findViewById<TextView>(R.id.course_name_s)
         val location = item.findViewById<TextView>(R.id.section_location)
         val assistant = item.findViewById<TextView>(R.id.section_assistant)
@@ -99,6 +115,7 @@ if (currentItem.type == VIEW_TYPE_TWO){
     }
     private inner class ViewHolder2(item: View) :
         RecyclerView.ViewHolder(item) {
+        val isRunning = item.findViewById<TextView>(R.id.le_is_running)
 
         val courseName_l = item.findViewById<TextView>(R.id.course_name_l)
         val location_l = item.findViewById<TextView>(R.id.lecture_location)

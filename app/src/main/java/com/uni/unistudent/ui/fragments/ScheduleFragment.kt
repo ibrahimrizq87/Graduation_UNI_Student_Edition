@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.unistudent.R
@@ -22,7 +23,9 @@ import com.uni.unistudent.data.Resource
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -60,16 +63,16 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView=view.findViewById<RecyclerView>(R.id.schedule_recycler)
-        val up = view.findViewById<Button>(R.id.update)
+       // val up = view.findViewById<Button>(R.id.update)
          progress= view.findViewById<ProgressBar>(R.id.progress_par)
 
 
-   // TODO: walid the problem is in the observe function as it dose not do any callback when the data change so I had to change it manualy  ;)
-
-        up.setOnClickListener {
-    observeLectures()
-    observeSections()
-}
+        // solved by the delay function
+        //  another way to solve it is https://stackoverflow.com/questions/75442594/emitting-ui-state-while-collecting-does-not-update-ui
+       /* up.setOnClickListener {
+            observeLectures()
+            observeSections()
+}*/
         coursesList= arrayListOf()
         scheduleDataType= arrayListOf()
 
@@ -80,6 +83,15 @@ class ScheduleFragment : Fragment() {
             }
             ,
             onAttendClicked = { pos, item ->
+if (scheduleDataType[pos].isRunning){
+    val bundle=Bundle()
+    bundle.putString("id",item.eventId)
+    val attendanceFragment=AttendanceFragment()
+    attendanceFragment.arguments=bundle
+    Navigation.findNavController(view).navigate(R.id.action_scheduleFragment_to_attendanceFragment)
+}else{
+    Toast.makeText(context,"wait for the lecturer to be arrived",Toast.LENGTH_LONG).show()
+}
     })
 
 
@@ -93,6 +105,8 @@ class ScheduleFragment : Fragment() {
 //---------------------- getting the required data ---------------------------//
         viewModel.getCourses(currentUser.grade)
         observeCourses()
+
+
 
     }
 
@@ -111,13 +125,15 @@ class ScheduleFragment : Fragment() {
                         state.result.forEach {
                             Log.e("SSSSSS",it.courseCode)
                             scheduleDataType.add(ScheduleDataType(
+                                it.sectionId,
                                 it.courseName,
                                 it.lapID,
                                 it.assistantName,
                                 it.day,
                                 it.time,
                                 it.endTime,
-                                ScheduleAdapter.VIEW_TYPE_ONE
+                                ScheduleAdapter.VIEW_TYPE_ONE,
+                                it.isRunning
                             ))
                         }
                         adapter.update(scheduleDataType)
@@ -131,6 +147,9 @@ class ScheduleFragment : Fragment() {
                 }}}
 
     }
+
+
+
 
     private fun observeLectures() {
         lifecycleScope.launchWhenCreated {
@@ -149,13 +168,16 @@ class ScheduleFragment : Fragment() {
                         state.result.forEach {
                             Log.e("MMMMM",it.courseCode)
                             scheduleDataType.add(ScheduleDataType(
+                                it.lectureId,
                                 it.courseName,
                                 it.hallID,
                                 it.professorName,
                                 it.day,
                                 it.time,
                                 it.endTime,
-                                ScheduleAdapter.VIEW_TYPE_TWO
+                                ScheduleAdapter.VIEW_TYPE_TWO,
+                                it.isRunning
+
                             ))
                         }
                         adapter.update(scheduleDataType)
@@ -185,6 +207,7 @@ class ScheduleFragment : Fragment() {
             }
             viewModel.getSection(coursesList,currentUser.department,currentUser.section)
             viewModel.getLecture(coursesList,currentUser.department)
+            delay(1000)
             observeLectures()
             observeSections()
 

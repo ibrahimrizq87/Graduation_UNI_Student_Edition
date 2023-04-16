@@ -42,7 +42,8 @@ class AuthRepositoryImpl@Inject constructor(
 
     }
 
-    override val user = firebaseAuth.currentUser
+    override val user:FirebaseUser?
+    get() =firebaseAuth.currentUser
 
     override suspend fun register(
         email: String,

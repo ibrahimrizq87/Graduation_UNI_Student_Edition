@@ -11,6 +11,7 @@ data class Section (
     val section : String="",
     val day:String="",
     val time:String="",
-    val endTime:String=""
+    val endTime:String="",
+    val isRunning:Boolean=false
 
 )

@@ -1,6 +1,5 @@
 package com.uni.unistudent.viewModel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -23,11 +22,10 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository):
     private val _userStudent = MutableStateFlow<Resource<UserStudent?>?>(null)
     val userStudent=_userStudent.asStateFlow()
 
-     val currentUser :FirebaseUser?
+    val currentUser:FirebaseUser?
+        get()=repository.user
 
-init {
-    currentUser=repository.user
-}
+
     fun Register(email:String, password:String, user: UserStudent) = viewModelScope.launch {
       _register.value=Resource.Loading
       repository.register(email,password,user){

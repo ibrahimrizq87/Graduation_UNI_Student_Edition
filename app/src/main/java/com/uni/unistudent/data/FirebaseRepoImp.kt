@@ -8,6 +8,8 @@ import com.uni.unistudent.classes.*
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.di.FireStoreTable
 import com.uni.unistudent.data.di.PermissionsRequired
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 class FirebaseRepoImp@Inject constructor(
@@ -226,4 +228,42 @@ class FirebaseRepoImp@Inject constructor(
 
 
     }
+
+
+
+
+
+
+     override fun getLectures2(courses: List<Courses>,dep:String, result: (List<Lecture>?) -> Unit) {
+        val listOfPosts = arrayListOf<Lecture>()
+        for (course in courses) {
+            Log.e("i am here",course.courseCode)
+            val docRef = database.
+            collection(FireStoreTable.courses).
+            document(course.courseCode)
+                .collection(FireStoreTable.lectures)
+                .document(dep).
+                collection(dep)
+            docRef.addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    result.invoke(null)
+                    return@addSnapshotListener
+                }
+                for (rec in snapshot!!) {
+                    val post = rec.toObject(Lecture::class.java)
+                    Log.e("i am here",post.professorName)
+                    listOfPosts.add(post)
+                }
+
+            }
+
+
+        }
+        result.invoke(listOfPosts)
+
+
+    }
+
+
+
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/scheduleFragment">
+
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.uni.unistudent.ui.fragments.ScheduleFragment"
+        android:label="fragment_schedule"
+        tools:layout="@layout/fragment_schedule" >
+        <action
+            android:id="@+id/action_scheduleFragment_to_attendanceFragment"
+            app:destination="@id/attendanceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/attendanceFragment"
+        android:name="com.uni.unistudent.ui.fragments.AttendanceFragment"
+        android:label="fragment_attendance"
+        tools:layout="@layout/fragment_attendance" >
+        <action
+            android:id="@+id/action_attendanceFragment_to_scheduleFragment"
+            app:destination="@id/scheduleFragment" />
+    </fragment>
+</navigation>

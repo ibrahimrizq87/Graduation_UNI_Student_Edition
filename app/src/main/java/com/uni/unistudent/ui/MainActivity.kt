@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.signUp.setOnClickListener {
-            startActivity(Intent(this,SignUp::class.java))
+            startActivity(Intent(this,HomeScreen::class.java))
         }
         binding.logOut.setOnClickListener {
             viewModel.logOut {

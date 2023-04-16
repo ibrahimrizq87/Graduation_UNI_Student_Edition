@@ -4,6 +4,7 @@ package com.uni.unistudent.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseUser
 import com.uni.unistudent.classes.*
 import com.uni.unistudent.data.FirebaseRepo
 import com.uni.unistudent.data.Resource
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class FirebaseViewModel @Inject constructor(
     private val  repository: FirebaseRepo
 ): ViewModel() {
-
+//  https://stackoverflow.com/questions/72760708/kotlin-stateflow-not-emitting-updates-to-its-collectors
     private val _getCourses= MutableStateFlow<Resource<List<Courses>>?>(null)
     val getCourses=_getCourses.asStateFlow()
     private val _getPermission= MutableStateFlow<Resource<Permission?>?>(null)
@@ -35,12 +36,12 @@ class FirebaseViewModel @Inject constructor(
     val getLecture=_getLecture.asStateFlow()
 
 
-    fun getPermission(userId:String){
-        viewModelScope.launch(Dispatchers.IO){
+    fun getPermission(userId:String)= viewModelScope.launch{
+
         _getPermission.value=Resource.Loading
         repository.getPermission (userId){
             _getPermission.value=it
-        }
+
         }}
     fun getCourses(grade:String)= viewModelScope.launch{
         _getCourses.value=Resource.Loading
@@ -48,7 +49,7 @@ class FirebaseViewModel @Inject constructor(
             _getCourses.value=it
         }}
     fun getLecture(courses:List<Courses>,dep:String){
-        _getLecture.value=Resource.Loading
+
         repository.getLectures(courses,dep) {
             Log.e("view model", _getLecture.toString())
             _getLecture.value=it
