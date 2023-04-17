@@ -113,7 +113,6 @@ if (scheduleDataType[pos].isRunning){
     private fun observeSections() {
         lifecycleScope.launchWhenCreated {
             viewModel.getSection.collectLatest { state ->
-                Log.e("SSSSSS","here1")
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility=View.VISIBLE
@@ -123,7 +122,6 @@ if (scheduleDataType[pos].isRunning){
                         progress.visibility=View.INVISIBLE
 
                         state.result.forEach {
-                            Log.e("SSSSSS",it.courseCode)
                             scheduleDataType.add(ScheduleDataType(
                                 it.sectionId,
                                 it.courseName,
@@ -143,7 +141,7 @@ if (scheduleDataType[pos].isRunning){
                         progress.visibility=View.INVISIBLE
                         Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
                     }
-                    else->{Log.e("VVVV","else")}
+                    else->{}
                 }}}
 
     }
@@ -154,7 +152,6 @@ if (scheduleDataType[pos].isRunning){
     private fun observeLectures() {
         lifecycleScope.launchWhenCreated {
             viewModel.getLecture.collectLatest { state ->
-                Log.e("lllllllllllllllll","here1")
 
                 when (state) {
                     is Resource.Loading -> {
@@ -163,10 +160,7 @@ if (scheduleDataType[pos].isRunning){
                     }
                     is Resource.Success -> {
                         progress.visibility=View.INVISIBLE
-                        Log.e("lllllll","here2")
-                        Log.e("lllllll", state.result.count().toString())
                         state.result.forEach {
-                            Log.e("MMMMM",it.courseCode)
                             scheduleDataType.add(ScheduleDataType(
                                 it.lectureId,
                                 it.courseName,
@@ -186,7 +180,7 @@ if (scheduleDataType[pos].isRunning){
                         progress.visibility=View.INVISIBLE
                         Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
                     }
-                    else->{Log.e("VVVV","else")}
+                    else->{}
                 }}}
     }
 
@@ -199,15 +193,18 @@ if (scheduleDataType[pos].isRunning){
 
         }
         is Resource.Success -> {
-            progress.visibility=View.INVISIBLE
 
             state.result.forEach {
-                Log.e("VVVV",it.courseCode)
              coursesList.add(it)
             }
             viewModel.getSection(coursesList,currentUser.department,currentUser.section)
             viewModel.getLecture(coursesList,currentUser.department)
-            delay(1000)
+            progress.visibility=View.VISIBLE
+            // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
+                                                                           delay(1000)
+            // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
+            progress.visibility=View.INVISIBLE
+
             observeLectures()
             observeSections()
 
@@ -216,7 +213,7 @@ if (scheduleDataType[pos].isRunning){
             progress.visibility=View.INVISIBLE
             Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
         }
-        else->{Log.e("VVVV","else")}
+        else->{}
 }
         }
     }}}

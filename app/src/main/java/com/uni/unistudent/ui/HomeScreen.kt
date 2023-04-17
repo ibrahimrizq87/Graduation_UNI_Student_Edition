@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
@@ -73,9 +74,9 @@ private fun observeImage(){
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    binding.userImage.setImageURI(uri.result)
-
-                    //Log.e("test", uri.result.toString())
+                    Glide.with(this@HomeScreen)
+                        .load(uri.result)
+                        .into(binding.userImage)
                 }
                 is Resource.Failure -> {
                     Toast.makeText(this@HomeScreen,uri.exception.toString(),Toast.LENGTH_LONG).show()
