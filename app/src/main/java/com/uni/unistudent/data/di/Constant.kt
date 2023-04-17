@@ -44,7 +44,8 @@ object departement{
 object PostType{
     val personal_posts= "personal_posts"
     val section_posts= "section_posts"
-    val grade= "grade"
+    val course= "course"
+    val general= "general"
 }
 
 object Section{

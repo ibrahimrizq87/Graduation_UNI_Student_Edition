@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -22,6 +23,10 @@ import com.uni.unistudent.classes.Posts
 import com.uni.unistudent.classes.ScheduleDataType
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
+import com.uni.unistudent.data.di.PostType
+import com.uni.unistudent.ui.FragmentSignUpSubData
+import com.uni.unistudent.ui.HomeScreen
+import com.uni.unistudent.ui.SignUp
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -91,15 +96,21 @@ class HomeFragment : Fragment() {
             }
             ,
             onComment = { pos, item ->
-              /*  if (postsList[pos].isRunning){
-                    val bundle=Bundle()
-                    bundle.putString("id",item.eventId)
-                    val attendanceFragment=AttendanceFragment()
-                    attendanceFragment.arguments=bundle
-                    Navigation.findNavController(view).navigate(R.id.action_scheduleFragment_to_attendanceFragment)
+                val bundle=Bundle()
+                bundle.putString("postId",item.postID)
+                bundle.putString("aud",item.audience)
+                if (item.audience==PostType.course){
+                    bundle.putString("course",item.courseID)
                 }else{
-                    Toast.makeText(context,"wait for the lecturer to be arrived",Toast.LENGTH_LONG).show()
-                }*/
+                    bundle.putString("course","")
+                }
+                val commentFragment=CommentFragment()
+                commentFragment.arguments=bundle
+                (activity as HomeScreen).replaceFragment(commentFragment)
+                //Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_commentFragment)
+
+
+
             })
 
 
@@ -167,7 +178,7 @@ private fun observeCourses() {
                     is Resource.Success -> {
                         Log.e("cefevwgwrgB","un")
                         state.result.forEach {
-                            if(it.hasImage){
+                            if(it.imageUrl!=null){
                                 it.type=PostsAdapter.WITH_IMAGE
                             }else{
                                 it.type=PostsAdapter.WITHOUT_IMAGE
@@ -201,7 +212,7 @@ private fun observeCourses() {
                 is Resource.Success -> {
 
                     state.result.forEach {
-                        if(it.hasImage){
+                        if(it.imageUrl!=null){
                             it.type=PostsAdapter.WITH_IMAGE
                         }else{
                             it.type=PostsAdapter.WITHOUT_IMAGE
@@ -231,7 +242,7 @@ private fun observeCourses() {
                     is Resource.Success -> {
 
                         state.result.forEach {
-                            if(it.hasImage){
+                            if(it.imageUrl!=null){
                                 it.type=PostsAdapter.WITH_IMAGE
                             }else{
                                 it.type=PostsAdapter.WITHOUT_IMAGE
@@ -261,7 +272,7 @@ private fun observeCourses() {
                     is Resource.Success -> {
 
                         state.result.forEach {
-                            if(it.hasImage){
+                            if(it.imageUrl!=null){
                                 it.type=PostsAdapter.WITH_IMAGE
                             }else{
                                 it.type=PostsAdapter.WITHOUT_IMAGE

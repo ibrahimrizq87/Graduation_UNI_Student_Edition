@@ -235,7 +235,7 @@ class FirebaseRepoImp@Inject constructor(
         postID: String,
         section: String,
         dep: String,
-        courseID: String,
+
         result: (Resource<String>) -> Unit
     ) {
 
@@ -333,7 +333,7 @@ class FirebaseRepoImp@Inject constructor(
         postID: String,
         section: String,
         dep: String,
-        courseID: String,
+
         result: (Resource<List<Comment>>) -> Unit
     ) {
         val document=database.collection(PostType.section_posts).document(dep).collection(section)

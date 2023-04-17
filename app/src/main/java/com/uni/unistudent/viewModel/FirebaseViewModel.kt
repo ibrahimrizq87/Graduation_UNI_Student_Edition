@@ -115,7 +115,35 @@ class FirebaseViewModel @Inject constructor(
 
     //---------------------------------------------------------------------------------------
 
+    /*fun getCommentsPersonal(postID:String,userId:String)= viewModelScope.launch{
 
+        _getCommentGeneral.value=Resource.Loading
+        repository.getCommentPersonalPosts (postID ,userId){
+            _getCommentGeneral.value=it
+
+        }}
+    fun getCommentsGeneral(postID:String)= viewModelScope.launch{
+
+        _getCommentGeneral.value=Resource.Loading
+        repository.getCommentGeneralPosts (postID ){
+            _getCommentGeneral.value=it
+
+        }}
+
+    fun getCommentsSection(postID:String,section:String,dep:String)= viewModelScope.launch{
+
+        _getCommentGeneral.value=Resource.Loading
+        repository.getCommentSectionPosts (postID,section,dep ){
+            _getCommentGeneral.value=it
+
+        }}
+    fun getCommentsCourse(postID:String,courseID: String)= viewModelScope.launch{
+
+        _getCommentGeneral.value=Resource.Loading
+        repository.getCommentCoursePosts (postID,courseID ){
+            _getCommentGeneral.value=it
+
+        }}*/
     fun getCommentsPersonal(postID:String,userId:String)= viewModelScope.launch{
 
         _getCommentPersonal.value=Resource.Loading
@@ -131,10 +159,10 @@ class FirebaseViewModel @Inject constructor(
 
         }}
 
-    fun getCommentsSection(postID:String,section:String,dep:String,courseID: String)= viewModelScope.launch{
+    fun getCommentsSection(postID:String,section:String,dep:String)= viewModelScope.launch{
 
         _getCommentSection.value=Resource.Loading
-        repository.getCommentSectionPosts (postID,section,dep,courseID ){
+        repository.getCommentSectionPosts (postID,section,dep ){
             _getCommentSection.value=it
 
         }}
@@ -161,10 +189,10 @@ class FirebaseViewModel @Inject constructor(
 
         }}
 
-    fun addCommentsSection(comment: Comment,postID:String,section:String,dep:String,courseID: String)= viewModelScope.launch{
+    fun addCommentsSection(comment: Comment,postID:String,section:String,dep:String)= viewModelScope.launch{
 
         _addCommentSection.value=Resource.Loading
-        repository.addCommentSectionPosts (comment,postID,section,dep,courseID ){
+        repository.addCommentSectionPosts (comment,postID,section,dep ){
             _addCommentSection.value=it
 
         }}

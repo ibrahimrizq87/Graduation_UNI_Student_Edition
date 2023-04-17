@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.user.UserStudent
@@ -54,7 +55,12 @@ class HomeScreen : AppCompatActivity() {
         }
 
     }
-    private fun replaceFragment(fragment: Fragment){
+
+
+
+
+
+     fun replaceFragment(fragment: Fragment){
         val fragmentManager=supportFragmentManager
         val fragmentTransaction =fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container,fragment)

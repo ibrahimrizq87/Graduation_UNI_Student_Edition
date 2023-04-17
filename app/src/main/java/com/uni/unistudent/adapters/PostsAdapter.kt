@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.Posts
 import com.uni.unistudent.classes.ScheduleDataType
@@ -65,7 +66,11 @@ class PostsAdapter(
         }else{
             (holder as  ViewHolder1)
 
-            //holder.image.setImageURI(currentItem.imageUri)
+
+            Glide.with(context)
+                .load(currentItem.imageUrl)
+                .into(holder.image)
+
             holder.auth.text = currentItem.authorName
             holder.audience.text = currentItem.audience
             holder.text.text = currentItem.description
