@@ -168,10 +168,79 @@ class FirebaseRepoImp@Inject constructor(
             result.invoke(Resource.Success(listOfPosts))
         }
     }
+    override suspend fun getPosts(
+        courses: List<Courses>,
+        section: String,
+        dep: String,
+        userID: String,
+        result: (Resource<List<Posts>>) -> Unit
+    ) {
+        val listOfPosts= arrayListOf<Posts>()
+        for(course in courses){
+            val document=database.collection(FireStoreTable.courses).document(course.courseCode).collection(FireStoreTable.post)
+
+            document.addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    result.invoke(Resource.Failure(e.toString()))
+                    return@addSnapshotListener
+                }
+                for (rec in snapshot!!){
+                    val post = rec.toObject(Posts::class.java)
+                    Log.e("MMNNBB",post.postID)
+                    listOfPosts.add(post)
+                }
+
+            }    }
+
+        val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
+
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            for (rec in snapshot!!){
+                val post = rec.toObject(Posts::class.java)
+                Log.e("lesiner",post.audience)
+                listOfPosts.add(post)
+            }
+        }
+
+            val document2=database.collection(PostType.section_posts).document(dep).collection(section)
+
+            document2.addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    result.invoke(Resource.Failure(e.toString()))
+                    return@addSnapshotListener
+                }
+
+                for (rec in snapshot!!){
+                    val post = rec.toObject(Posts::class.java)
+                    listOfPosts.add(post)
+                }
+
+
+    }
+        val docRef = database.collection(FireStoreTable.post)
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            for (rec in snapshot!!){
+                val post = rec.toObject(Posts::class.java)
+                listOfPosts.add(post)
+            }
+        }
+
+        result.invoke(Resource.Success(listOfPosts))
+
+    }
 
     override suspend fun getCoursePosts(courses: List<Courses>, result: (Resource<List<Posts>>) -> Unit) {
         val listOfPosts= arrayListOf<Posts>()
-
         for(course in courses){
         val document=database.collection(FireStoreTable.courses).document(course.courseCode).collection(FireStoreTable.post)
 
@@ -202,6 +271,7 @@ class FirebaseRepoImp@Inject constructor(
             val listOfPosts= arrayListOf<Posts>()
             for (rec in snapshot!!){
                 val post = rec.toObject(Posts::class.java)
+                Log.e("lesiner",post.audience)
                 listOfPosts.add(post)
             }
             result.invoke(Resource.Success(listOfPosts))

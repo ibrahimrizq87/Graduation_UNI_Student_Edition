@@ -11,7 +11,13 @@ interface FirebaseRepo {
     suspend fun getCoursePosts(courses: List<Courses>, result: (Resource<List<Posts>>) -> Unit)
     suspend fun getPersonalPosts(userID:String, result: (Resource<List<Posts>>) -> Unit)
 
-
+    suspend fun getPosts(
+        courses: List<Courses>,
+        section: String,
+        dep: String,
+        userID: String,
+        result: (Resource<List<Posts>>) -> Unit
+    )
     suspend fun addCommentGeneralPosts(comment: Comment, postID:String,result: (Resource<String>) -> Unit)
     suspend fun addCommentSectionPosts(comment: Comment,postID:String, section:String,dep:String, result: (Resource<String>) -> Unit)
     suspend fun addCommentCoursePosts(comment: Comment,postID:String,courseID:String, result: (Resource<String>) -> Unit)

@@ -10,8 +10,10 @@ import com.uni.unistudent.data.FirebaseRepo
 import com.uni.unistudent.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,8 +45,29 @@ class FirebaseViewModel @Inject constructor(
     val getPostsGeneral=_getPostsGeneral.asStateFlow()
     private val _getPostsSection= MutableStateFlow<Resource<List<Posts>>?>(null)
     val getPostsSection=_getPostsSection.asStateFlow()
+
+
+
     private val _getPostsCourse= MutableStateFlow<Resource<List<Posts>>?>(null)
     val getPostsCourse=_getPostsCourse.asStateFlow()
+
+
+
+
+    private val _getPosts= MutableStateFlow<Resource<List<Posts>>?>(null)
+    val getPosts=_getPosts.asStateFlow()
+    fun getPosts(
+        courses: List<Courses>,
+        section: String,
+        dep: String,
+        userID: String
+    ) = viewModelScope.launch{
+        _getPosts.value=Resource.Loading
+        repository.getPosts (courses,section,dep,userID){
+            _getPosts.value=it
+
+        }}
+
 
 /*
     private val _addPostsPersonal= MutableStateFlow<Resource<String>?>(null)
@@ -59,25 +82,35 @@ class FirebaseViewModel @Inject constructor(
 
     //-----------------------------------------------------------------------------------------------------
 
-    private val _getCommentPersonal= MutableStateFlow<Resource<List<Comment>>?>(null)
+   /* private val _getCommentPersonal= MutableStateFlow<Resource<List<Comment>>?>(null)
     val getCommentPersonal=_getCommentPersonal.asStateFlow()
-    private val _getCommentGeneral= MutableStateFlow<Resource<List<Comment>>?>(null)
-    val getCommentGeneral=_getCommentGeneral.asStateFlow()
+
     private val _getCommentSection= MutableStateFlow<Resource<List<Comment>>?>(null)
     val getCommentSection=_getCommentSection.asStateFlow()
     private val _getCommentCourse= MutableStateFlow<Resource<List<Comment>>?>(null)
     val getCommentCourse=_getCommentCourse.asStateFlow()
+*/
 
 
-    private val _addCommentPersonal= MutableStateFlow<Resource<String>?>(null)
-    val addCommentPersonal=_addCommentPersonal.asStateFlow()
+    private val _getCommentGeneral= MutableStateFlow<Resource<List<Comment>>?>(null)
+    val getCommentGeneral=_getCommentGeneral.asStateFlow()
+
+
+
     private val _addCommentGeneral= MutableStateFlow<Resource<String>?>(null)
     val addCommentGeneral=_addCommentGeneral.asStateFlow()
+
+
+
+
+    /*private val _addCommentPersonal= MutableStateFlow<Resource<String>?>(null)
+    val addCommentPersonal=_addCommentPersonal.asStateFlow()
+
     private val _addCommentSection= MutableStateFlow<Resource<String>?>(null)
     val addCommentSection=_addCommentSection.asStateFlow()
     private val _addCommentCourse= MutableStateFlow<Resource<String>?>(null)
     val addCommentCourse=_addCommentCourse.asStateFlow()
-
+*/
     //-----------------------------------------------------------------------------------------------------
 
 
@@ -115,7 +148,7 @@ class FirebaseViewModel @Inject constructor(
 
     //---------------------------------------------------------------------------------------
 
-    /*fun getCommentsPersonal(postID:String,userId:String)= viewModelScope.launch{
+    fun getCommentsPersonal(postID:String,userId:String)= viewModelScope.launch{
 
         _getCommentGeneral.value=Resource.Loading
         repository.getCommentPersonalPosts (postID ,userId){
@@ -143,7 +176,8 @@ class FirebaseViewModel @Inject constructor(
         repository.getCommentCoursePosts (postID,courseID ){
             _getCommentGeneral.value=it
 
-        }}*/
+        }}
+    /*
     fun getCommentsPersonal(postID:String,userId:String)= viewModelScope.launch{
 
         _getCommentPersonal.value=Resource.Loading
@@ -151,6 +185,7 @@ class FirebaseViewModel @Inject constructor(
             _getCommentPersonal.value=it
 
         }}
+
     fun getCommentsGeneral(postID:String)= viewModelScope.launch{
 
         _getCommentGeneral.value=Resource.Loading
@@ -172,13 +207,13 @@ class FirebaseViewModel @Inject constructor(
         repository.getCommentCoursePosts (postID,courseID ){
             _getCommentCourse.value=it
 
-        }}
+        }}*/
 
     fun addCommentsPersonal(comment: Comment,postID:String,userId:String)= viewModelScope.launch{
 
-        _addCommentPersonal.value=Resource.Loading
+        _addCommentGeneral.value=Resource.Loading
         repository.addCommentPersonalPosts (comment,postID ,userId){
-            _addCommentPersonal.value=it
+            _addCommentGeneral.value=it
 
         }}
     fun addCommentsGeneral(comment: Comment,postID:String)= viewModelScope.launch{
@@ -191,16 +226,16 @@ class FirebaseViewModel @Inject constructor(
 
     fun addCommentsSection(comment: Comment,postID:String,section:String,dep:String)= viewModelScope.launch{
 
-        _addCommentSection.value=Resource.Loading
+        _addCommentGeneral.value=Resource.Loading
         repository.addCommentSectionPosts (comment,postID,section,dep ){
-            _addCommentSection.value=it
+            _addCommentGeneral.value=it
 
         }}
     fun addCommentsCourse(comment: Comment,postID:String,courseID: String)= viewModelScope.launch{
 
-        _addCommentCourse.value=Resource.Loading
+        _addCommentGeneral.value=Resource.Loading
         repository.addCommentCoursePosts (comment,postID,courseID ){
-            _addCommentCourse.value=it
+            _addCommentGeneral.value=it
 
         }}
 

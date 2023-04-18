@@ -78,10 +78,6 @@ lateinit var postID:String
         if (args != null) {
 
             postID = args.getString("postId","")
-            Log.e("cccc",postID)
-            Log.e("cccc",currentUser.name)
-
-
             aud = args.getString("aud","")
             courseID = args.getString("course","")
         }
@@ -89,19 +85,19 @@ lateinit var postID:String
         when(aud){
             PostType.course->{
                 viewModel.getCommentsCourse(postID,courseID)
-           observeCommentCourse()
+           //observeCommentCourse()
             }
             PostType.personal_posts->{
                 viewModel.getCommentsPersonal(postID,currentUser.userId)
-                observeCommentPersonal()
+              //  observeCommentPersonal()
             }
             PostType.section_posts->{
                 viewModel.getCommentsSection(postID,currentUser.section,currentUser.department)
-                observeCommentSection()
+             //   observeCommentSection()
             }
             PostType.general->{
                 viewModel.getCommentsGeneral(postID)
-                observeCommentGeneral()
+             //   observeCommentGeneral()
             }
 
         }
@@ -137,88 +133,33 @@ lateinit var postID:String
                 }
 
             }
+            observeAddingComment()
         }
 
     }
-
-    private fun observeCommentCourse() {
+    private fun observeAddingComment() {
         lifecycleScope.launchWhenCreated {
-            viewModel.getCommentCourse.collectLatest {state->
+            viewModel.addCommentGeneral.collectLatest { state ->
                 when (state) {
                     is Resource.Loading -> {
-                        progress.visibility=View.VISIBLE
+                        progress.visibility = View.VISIBLE
 
                     }
                     is Resource.Success -> {
-
-                        state.result.forEach {
-                            commentList.add(it)
-                        }
-
+                        progress.visibility = View.INVISIBLE
+                        Toast.makeText(context, state.result, Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Failure -> {
-                        progress.visibility=View.INVISIBLE
-                        Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                        progress.visibility = View.INVISIBLE
+                        Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
                     }
-                    else->{}
+                    else -> {}
                 }
             }
+
         }
-
     }
-    private fun observeCommentSection() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.getCommentSection.collectLatest {state->
-                when (state) {
-                    is Resource.Loading -> {
-                        progress.visibility=View.VISIBLE
-
-                    }
-                    is Resource.Success -> {
-
-                        state.result.forEach {
-                            commentList.add(it)
-                        }
-
-                    }
-                    is Resource.Failure -> {
-                        progress.visibility=View.INVISIBLE
-                        Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
-                    }
-                    else->{}
-                }
-            }
-        }
-
-    }
-
-
-     private fun observeCommentPersonal() {
-         lifecycleScope.launchWhenCreated {
-             viewModel.getCommentPersonal.collectLatest { state ->
-                 when (state) {
-                     is Resource.Loading -> {
-                         progress.visibility = View.VISIBLE
-
-                     }
-                     is Resource.Success -> {
-
-                         state.result.forEach {
-                             commentList.add(it)
-                         }
-
-                     }
-                     is Resource.Failure -> {
-                         progress.visibility = View.INVISIBLE
-                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
-                             .show()
-                     }
-                     else -> {}
-                 }
-             }
-         }
-
-     }
     private fun observeCommentGeneral() {
         lifecycleScope.launchWhenCreated {
             viewModel.getCommentGeneral.collectLatest {state->
@@ -229,10 +170,11 @@ lateinit var postID:String
                     }
                     is Resource.Success -> {
                         progress.visibility=View.INVISIBLE
-
+                        commentList.clear()
                         state.result.forEach {
                             commentList.add(it)
                         }
+                        adapter.update(commentList)
 
                     }
                     is Resource.Failure -> {
@@ -245,7 +187,84 @@ lateinit var postID:String
         }
 
     }
+    /*  private fun observeCommentCourse() {
+           lifecycleScope.launchWhenCreated {
+               viewModel.getCommentCourse.collectLatest {state->
+                   when (state) {
+                       is Resource.Loading -> {
+                           progress.visibility=View.VISIBLE
 
+                       }
+                       is Resource.Success -> {
+
+                           state.result.forEach {
+                               commentList.add(it)
+                           }
+
+                       }
+                       is Resource.Failure -> {
+                           progress.visibility=View.INVISIBLE
+                           Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                       }
+                       else->{}
+                   }
+               }
+           }
+
+       }
+       private fun observeCommentSection() {
+           lifecycleScope.launchWhenCreated {
+               viewModel.getCommentSection.collectLatest {state->
+                   when (state) {
+                       is Resource.Loading -> {
+                           progress.visibility=View.VISIBLE
+
+                       }
+                       is Resource.Success -> {
+
+                           state.result.forEach {
+                               commentList.add(it)
+                           }
+
+                       }
+                       is Resource.Failure -> {
+                           progress.visibility=View.INVISIBLE
+                           Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                       }
+                       else->{}
+                   }
+               }
+           }
+
+       }
+
+
+        private fun observeCommentPersonal() {
+            lifecycleScope.launchWhenCreated {
+                viewModel.getCommentPersonal.collectLatest { state ->
+                    when (state) {
+                        is Resource.Loading -> {
+                            progress.visibility = View.VISIBLE
+
+                        }
+                        is Resource.Success -> {
+
+                            state.result.forEach {
+                                commentList.add(it)
+                            }
+
+                        }
+                        is Resource.Failure -> {
+                            progress.visibility = View.INVISIBLE
+                            Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
+                                .show()
+                        }
+                        else -> {}
+                    }
+                }
+            }
+
+        }*/
     }
 
 
