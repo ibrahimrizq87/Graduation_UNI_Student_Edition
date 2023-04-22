@@ -24,6 +24,80 @@ class FirebaseViewModel @Inject constructor(
 
 ): ViewModel() {
 //  https://stackoverflow.com/questions/72760708/kotlin-stateflow-not-emitting-updates-to-its-collectors
+
+   // private val _updateOrDeleteComment= MutableStateFlow<Resource<String>?>(null)
+    //val updateOrDeleteComment=_updateOrDeleteComment.asStateFlow()
+
+    fun updateCommentsPersonal(comment: Comment,postID:String,userId:String)= viewModelScope.launch{
+
+        _addCommentGeneral.value=Resource.Loading
+        repository.updateCommentPersonalPosts (comment,postID ,userId){
+            _addCommentGeneral.value=it
+
+        }}
+    fun updateCommentsGeneral(comment: Comment,postID:String)= viewModelScope.launch{
+
+        _addCommentGeneral.value=Resource.Loading
+        repository.updateCommentGeneralPosts (comment,postID ){
+            _addCommentGeneral.value=it
+
+        }}
+
+    fun updateCommentsSection(comment: Comment,postID:String,section:String,dep:String)= viewModelScope.launch{
+
+        _addCommentGeneral.value=Resource.Loading
+        repository.updateCommentSectionPosts (comment,postID,section,dep ){
+            _addCommentGeneral.value=it
+
+        }}
+    fun updateCommentsCourse(comment: Comment,postID:String,courseID: String)= viewModelScope.launch{
+
+        _addCommentGeneral.value=Resource.Loading
+        repository.updateCommentCoursePosts (comment,postID,courseID ){
+            _addCommentGeneral.value=it
+
+        }}
+    fun deleteCommentsPersonal(comment: Comment,postID:String,userId:String)= viewModelScope.launch{
+
+        _addCommentGeneral.value=Resource.Loading
+        repository.deleteCommentPersonalPosts (comment,postID ,userId){
+            _addCommentGeneral.value=it
+
+        }}
+    fun deleteCommentsGeneral(comment: Comment,postID:String)= viewModelScope.launch{
+
+        _addCommentGeneral.value=Resource.Loading
+        repository.deleteCommentGeneralPosts (comment,postID ){
+            _addCommentGeneral.value=it
+
+        }}
+
+    fun deleteCommentsSection(comment: Comment,postID:String,section:String,dep:String)= viewModelScope.launch{
+
+        _addCommentGeneral.value=Resource.Loading
+        repository.deleteCommentSectionPosts (comment,postID,section,dep ){
+            _addCommentGeneral.value=it
+
+        }}
+    fun deleteCommentsCourse(comment: Comment,postID:String,courseID: String)= viewModelScope.launch{
+
+        _addCommentGeneral.value=Resource.Loading
+        repository.deleteCommentCoursePosts (comment,postID,courseID ){
+            _addCommentGeneral.value=it
+
+        }}
+
+
+
+
+
+
+
+
+
+
+
+
     private val _getCourses= MutableStateFlow<Resource<List<Courses>>?>(null)
     val getCourses=_getCourses.asStateFlow()
     private val _getPermission= MutableStateFlow<Resource<Permission?>?>(null)
@@ -41,18 +115,6 @@ class FirebaseViewModel @Inject constructor(
 
     //-----------------------------------------------------------------------------------------------------
 
-    private val _getPostsPersonal= MutableStateFlow<Resource<List<Posts>>?>(null)
-    val getPostsPersonal=_getPostsPersonal.asStateFlow()
-    private val _getPostsGeneral= MutableStateFlow<Resource<List<Posts>>?>(null)
-    val getPostsGeneral=_getPostsGeneral.asStateFlow()
-    private val _getPostsSection= MutableStateFlow<Resource<List<Posts>>?>(null)
-    val getPostsSection=_getPostsSection.asStateFlow()
-
-
-
-    private val _getPostsCourse= MutableStateFlow<Resource<List<Posts>>?>(null)
-    val getPostsCourse=_getPostsCourse.asStateFlow()
-
 
 
 
@@ -67,8 +129,19 @@ class FirebaseViewModel @Inject constructor(
         _getPosts.value=Resource.Loading
         repository.getPosts (courses,section,dep,userID){
             _getPosts.value=it
+            when(it){
+                is Resource.Failure -> Log.e("viewmodel","Faluier")
+                is Resource.Loading -> Log.e("viewmodel","Loding")
+                is Resource.Success -> {
+                    Log.e("viewmodel","sucess")
+                it.result.forEach {
+                    Log.e("viewmodel",it.audience)
+                }
+                }
+                }
+            }
 
-        }}
+        }
 
 
 /*
@@ -118,6 +191,17 @@ class FirebaseViewModel @Inject constructor(
 
 
 
+/*
+    private val _getPostsPersonal= MutableStateFlow<Resource<List<Posts>>?>(null)
+    val getPostsPersonal=_getPostsPersonal.asStateFlow()
+    private val _getPostsGeneral= MutableStateFlow<Resource<List<Posts>>?>(null)
+    val getPostsGeneral=_getPostsGeneral.asStateFlow()
+    private val _getPostsSection= MutableStateFlow<Resource<List<Posts>>?>(null)
+    val getPostsSection=_getPostsSection.asStateFlow()
+    private val _getPostsCourse= MutableStateFlow<Resource<List<Posts>>?>(null)
+    val getPostsCourse=_getPostsCourse.asStateFlow()
+
+
     fun getPostsPersonal(userId:String)= viewModelScope.launch{
 
         _getPostsPersonal.value=Resource.Loading
@@ -147,7 +231,7 @@ class FirebaseViewModel @Inject constructor(
 
         }}
 
-
+*/
     //---------------------------------------------------------------------------------------
 
     fun getCommentsPersonal(postID:String,userId:String)= viewModelScope.launch{

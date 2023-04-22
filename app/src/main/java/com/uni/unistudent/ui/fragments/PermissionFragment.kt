@@ -1,12 +1,13 @@
 package com.uni.unistudent.ui.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
@@ -21,9 +22,10 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class PermissionFragment : Fragment() {
 
-    private val viewModel: FirebaseViewModel by viewModels()
-    private lateinit var permissionText: TextView
-    private lateinit var user: FirebaseUser
+    private val viewModel : FirebaseViewModel by viewModels()
+
+    private lateinit var permissionText:TextView
+private lateinit var user:FirebaseUser
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,15 +36,15 @@ class PermissionFragment : Fragment() {
         observePermission()
         return inflater.inflate(R.layout.fragment_permission, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        permissionText = view.findViewById<TextView>(R.id.permission_text)
+         permissionText=view.findViewById(R.id.permission_text)
+
+
 
 
     }
-
-    private fun observePermission() {
+    private fun observePermission(){
 
 
         lifecycleScope.launchWhenCreated {
@@ -52,7 +54,7 @@ class PermissionFragment : Fragment() {
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                        permissionText.text = state.result?.permissionMessage
+                       permissionText.text=state.result?.permissionMessage
                     }
                     is Resource.Failure -> {
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
@@ -63,7 +65,7 @@ class PermissionFragment : Fragment() {
                 }
             }
         }
-    }
+        }
 
 
 }

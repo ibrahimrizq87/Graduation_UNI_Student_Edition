@@ -51,5 +51,29 @@
                 android:text="..."
                 android:textSize="15sp" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/delete_comment"
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="invisible"
+                android:layout_height="wrap_content"
+                android:text="delete "
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/update_comment"
+                android:layout_margin="10dp"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="update"
+                android:textSize="15sp" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

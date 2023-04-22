@@ -5,45 +5,138 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.uni.unistudent.R
+import com.uni.unistudent.classes.Assistant
+import com.uni.unistudent.classes.Courses
+import com.uni.unistudent.classes.Professor
+import com.uni.unistudent.classes.user.UserStudent
+import com.uni.unistudent.data.Resource
+import com.uni.unistudent.viewModel.AuthViewModel
+import com.uni.unistudent.viewModel.FirebaseViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var coursesList:MutableList<Courses>
+    lateinit var lecturerList:MutableList<Professor>
+    lateinit var assistantList:MutableList<Assistant>
 
+    lateinit var currentUser: UserStudent
+    private val viewModel: FirebaseViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        authViewModel.getSessionStudent {user->
+            if (user !=null){
+                currentUser=user
+                Toast.makeText(context,currentUser.name, Toast.LENGTH_LONG).show()
+            }
+            else{
+                Toast.makeText(context,"error on loading user data please refresh the current screen ", Toast.LENGTH_LONG).show()
+            }}
+        val view= inflater.inflate(R.layout.fragment_profile, container, false)
+//TODO viewPager2 to view 3 lists lecturer , assistant and courses
+        viewModel.getCourses(currentUser.grade)
+        observeCourses()
+        return view
+
     }
+    private fun observeCourses() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.getCourses.collectLatest { state ->
+                when (state) {
+                    is Resource.Loading -> {
+                      //  progress.visibility=View.VISIBLE
 
-    companion object {
+                    }
+                    is Resource.Success -> {
 
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                        state.result.forEach {
+                            coursesList.add(it)
+                        }
+                        viewModel.getProfessor(coursesList)
+                        viewModel.getAssistant(coursesList)
+                      //  progress.visibility=View.VISIBLE
+                        // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
+                        delay(200)
+                        // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
+                     //   progress.visibility=View.INVISIBLE
+
+                        observeLecturers()
+                        observeAssistant()
+
+                    }
+                    is Resource.Failure -> {
+                       // progress.visibility=View.INVISIBLE
+                        Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                    }
+                    else->{}
                 }
             }
+        }}
+
+
+
+    private fun observeAssistant() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.getAssistant.collectLatest { state ->
+                when (state) {
+                    is Resource.Loading -> {
+                        //progress.visibility=View.VISIBLE
+
+                    }
+                    is Resource.Success -> {
+                        //progress.visibility=View.INVISIBLE
+
+                        state.result.forEach {
+                assistantList.add(it)
+
+                        }
+
+                    }
+                    is Resource.Failure -> {
+                       // progress.visibility=View.INVISIBLE
+                        Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                    }
+                    else->{}
+                }}}
+
     }
+
+
+
+
+    private fun observeLecturers() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.getProfessor.collectLatest { state ->
+
+                when (state) {
+                    is Resource.Loading -> {
+                       // progress.visibility=View.VISIBLE
+
+                    }
+                    is Resource.Success -> {
+                       // progress.visibility=View.INVISIBLE
+                        state.result.forEach {
+                         lecturerList.add(it)
+                        }
+                    }
+                    is Resource.Failure -> {
+                      //  progress.visibility=View.INVISIBLE
+                        Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                    }
+                    else->{}
+                }}}
+    }
+
 }
+
+

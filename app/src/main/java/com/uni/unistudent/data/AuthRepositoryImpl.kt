@@ -21,12 +21,12 @@ class AuthRepositoryImpl@Inject constructor(
     private val gson:Gson
 ) : AuthRepository {
 
-    override suspend fun updateUserInfo(userStudent: UserStudent, result: (Resource<String>) ->Unit ) {
-            val document=database.collection(userStudent.grade)
-                .document(userStudent.department)
-                .collection(userStudent.section)
-                .document(userStudent.userId)
-            document.set(userStudent)
+    override suspend fun updateUserInfo(userTeaching: UserStudent, result: (Resource<String>) ->Unit ) {
+            val document=database.collection(userTeaching.grade)
+                .document(userTeaching.department)
+                .collection(userTeaching.section)
+                .document(userTeaching.userId)
+            document.set(userTeaching)
                 .addOnSuccessListener {
                     result.invoke(
                         Resource.Success("user date updated successfully")
@@ -48,7 +48,7 @@ class AuthRepositoryImpl@Inject constructor(
     override suspend fun register(
         email: String,
         password: String,
-        userStudent: UserStudent,
+        userTeaching: UserStudent,
         result: (Resource<String>) -> Unit
     ) {
         firebaseAuth.createUserWithEmailAndPassword(email,password)
@@ -56,12 +56,12 @@ class AuthRepositoryImpl@Inject constructor(
                 if (it.isSuccessful){
                     GlobalScope.launch {
                         val userId=it.result.user?.uid?:""
-                        userStudent.userId=userId
-                        updateUserInfo(userStudent){ state->
+                        userTeaching.userId=userId
+                        updateUserInfo(userTeaching){ state->
                             when(state){
                                 Resource.Loading -> result.invoke(Resource.Loading)
                                 is Resource.Success-> {
-                                    storeSession(userId,userStudent) { user->
+                                    storeSession(userId,userTeaching) { user->
                                         if (user == null) {
                                             result.invoke(Resource.Failure("user created successfully but session did not stored"))
                                         } else {
@@ -111,7 +111,7 @@ class AuthRepositoryImpl@Inject constructor(
     }
 
 
-    override fun storeSession(id :String,user :UserStudent,result :(UserStudent?)-> Unit){
+    override fun storeSession(id :String, user :UserStudent, result :(UserStudent?)-> Unit){
        val document =database.collection(user.grade)
            .document(user.department)
            .collection(user.section)
@@ -120,11 +120,11 @@ class AuthRepositoryImpl@Inject constructor(
             .get()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    val userStudent = it.result.toObject(UserStudent::class.java)
-                    if (userStudent != null) {
-                        setSession(userStudent)
+                    val userTeaching = it.result.toObject(UserStudent::class.java)
+                    if (userTeaching != null) {
+                        setSession(userTeaching)
                     }
-                    result.invoke(userStudent)
+                    result.invoke(userTeaching)
                 }else{
                     result.invoke(null)
                 }
@@ -139,8 +139,8 @@ class AuthRepositoryImpl@Inject constructor(
         if (user==null){
             result.invoke(null)
         }else{
-            val userStudent = gson.fromJson(user, UserStudent::class.java)
-            result.invoke(userStudent)
+            val userTeaching = gson.fromJson(user, UserStudent::class.java)
+            result.invoke(userTeaching)
         }
     }
     override  suspend fun getUserStudent(id :String,section:String,dep:String,grade:String, result:(Resource<UserStudent?>) -> Unit) {

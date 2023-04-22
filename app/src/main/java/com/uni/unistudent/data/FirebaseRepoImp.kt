@@ -5,18 +5,208 @@ package com.uni.unistudent.data
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uni.unistudent.classes.*
-import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.di.FireStoreTable
 import com.uni.unistudent.data.di.PermissionsRequired
 import com.uni.unistudent.data.di.PostType
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 class FirebaseRepoImp@Inject constructor(
    private val database:FirebaseFirestore
 
 ):FirebaseRepo{
+
+    override suspend fun updateCommentGeneralPosts(
+        comment: Comment,
+        postID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(FireStoreTable.post).document(postID).collection(FireStoreTable.comment).document(comment.commentID)
+        document.set(comment)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment updated successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+
+    override suspend fun updateCommentSectionPosts(
+        comment: Comment,
+        postID: String,
+        section: String,
+        dep: String,
+
+        result: (Resource<String>) -> Unit
+    ) {
+
+        val document=database.collection(PostType.section_posts).document(dep).collection(section)
+            .document(postID).collection(FireStoreTable.comment).document(comment.commentID)
+
+        document.set(comment)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment updated successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+
+    }
+
+    override suspend fun updateCommentCoursePosts(
+        comment: Comment,
+        postID: String,
+        courseID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(FireStoreTable.courses).document(courseID).collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment).document(comment.commentID)
+        document.set(comment)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment updated successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+
+    override suspend fun updateCommentPersonalPosts(
+        comment: Comment,
+        postID: String,
+        userID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment).document(comment.commentID)
+
+        document.set(comment)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment updated successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+    override suspend fun deleteCommentGeneralPosts(
+        comment: Comment,
+        postID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(FireStoreTable.post).document(postID).collection(FireStoreTable.comment).document(comment.commentID)
+        document.delete()
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment deleted successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+
+    override suspend fun deleteCommentSectionPosts(
+        comment: Comment,
+        postID: String,
+        section: String,
+        dep: String,
+
+        result: (Resource<String>) -> Unit
+    ) {
+
+        val document=database.collection(PostType.section_posts).document(dep).collection(section)
+            .document(postID).collection(FireStoreTable.comment).document(comment.commentID)
+
+        document.delete()
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment deleted successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+
+    }
+
+    override suspend fun deleteCommentCoursePosts(
+        comment: Comment,
+        postID: String,
+        courseID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(FireStoreTable.courses).document(courseID).collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment).document(comment.commentID)
+        document.delete()
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment deleted successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+
+    override suspend fun deleteCommentPersonalPosts(
+        comment: Comment,
+        postID: String,
+        userID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment).document(comment.commentID)
+
+        document.delete()
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment deleted successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+
+
 
 
 
@@ -186,7 +376,6 @@ class FirebaseRepoImp@Inject constructor(
                 }
                 for (rec in snapshot!!){
                     val post = rec.toObject(Posts::class.java)
-                    Log.e("MMNNBB",post.postID)
                     listOfPosts.add(post)
                 }
 
@@ -202,7 +391,6 @@ class FirebaseRepoImp@Inject constructor(
 
             for (rec in snapshot!!){
                 val post = rec.toObject(Posts::class.java)
-                Log.e("lesiner",post.audience)
                 listOfPosts.add(post)
             }
         }
@@ -222,6 +410,7 @@ class FirebaseRepoImp@Inject constructor(
 
 
     }
+
         val docRef = database.collection(FireStoreTable.post)
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {

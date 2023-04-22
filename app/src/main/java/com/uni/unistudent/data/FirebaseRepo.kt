@@ -5,6 +5,56 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface FirebaseRepo {
+    suspend fun deleteCommentGeneralPosts(
+        comment: Comment,
+        postID: String,
+        result: (Resource<String>) -> Unit
+    )
+    suspend fun deleteCommentSectionPosts(
+        comment: Comment,
+        postID: String,
+        section: String,
+        dep: String,
+
+        result: (Resource<String>) -> Unit
+    )
+    suspend fun deleteCommentPersonalPosts(
+        comment: Comment,
+        postID: String,
+        userID: String,
+        result: (Resource<String>) -> Unit
+    )
+    suspend fun deleteCommentCoursePosts(
+        comment: Comment,
+        postID: String,
+        courseID: String,
+        result: (Resource<String>) -> Unit
+    )
+     suspend fun updateCommentGeneralPosts(
+        comment: Comment,
+        postID: String,
+        result: (Resource<String>) -> Unit
+    )
+     suspend fun updateCommentSectionPosts(
+        comment: Comment,
+        postID: String,
+        section: String,
+        dep: String,
+
+        result: (Resource<String>) -> Unit
+    )
+     suspend fun updateCommentCoursePosts(
+        comment: Comment,
+        postID: String,
+        courseID: String,
+        result: (Resource<String>) -> Unit
+    )
+     suspend fun updateCommentPersonalPosts(
+        comment: Comment,
+        postID: String,
+        userID: String,
+        result: (Resource<String>) -> Unit
+    )
     suspend fun getAssistant(courses: List<Courses>, result: (Resource<List<Assistant>>) -> Unit)
     suspend fun getGeneralPosts( result: (Resource<List<Posts>>) -> Unit)
     suspend fun getSectionPosts( section:String,dep:String, result: (Resource<List<Posts>>) -> Unit)

@@ -1,6 +1,6 @@
 plugins {
-    id("com.google.dagger.hilt.android")
-    id 'com.google.gms.google-services'
+        id("com.google.dagger.hilt.android")
+        id 'com.google.gms.google-services'
 
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -88,5 +88,5 @@ dependencies {
     // swiper refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
