@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.uni.unistudent.ui.fragments.ScheduleFragment"
+        android:name="com.uni.unistudent.ui.fragments.ScheduleAttendeesFragment"
         android:label="fragment_schedule"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule_attendees">
         <action
             android:id="@+id/action_scheduleFragment_to_attendanceFragment"
             app:destination="@id/attendanceFragment" />
@@ -18,9 +18,30 @@
         android:id="@+id/attendanceFragment"
         android:name="com.uni.unistudent.ui.fragments.AttendanceFragment"
         android:label="fragment_attendance"
-        tools:layout="@layout/fragment_attendance" >
+        tools:layout="@layout/fragment_attendance">
         <action
             android:id="@+id/action_attendanceFragment_to_scheduleFragment"
             app:destination="@id/scheduleFragment" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/fragmentSignUpMainData"
+        android:name="com.uni.unistudent.ui.FragmentSignUpMainData"
+        android:label="FragmentSignUpMainData"
+        tools:layout="@layout/fragment_signup_maindata">
+        <action
+            android:id="@+id/action_fragmentSignUpMainData_to_fragmentSignUpSubData"
+            app:destination="@id/fragmentSignUpSubData" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSignUpSubData"
+        android:name="com.uni.unistudent.ui.FragmentSignUpSubData"
+        android:label="FragmentSignUpSubData"
+        tools:layout="@layout/fragment_signup_subdata">
+        <action
+            android:id="@+id/action_fragmentSignUpSubData_to_fragmentSignUpMainData"
+            app:destination="@id/fragmentSignUpMainData" />
     </fragment>
 </navigation>

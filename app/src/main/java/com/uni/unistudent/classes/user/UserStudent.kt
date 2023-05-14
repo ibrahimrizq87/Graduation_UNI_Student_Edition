@@ -10,7 +10,7 @@ data class UserStudent (
     val grade :String = "",
     var section:String="",
     var department:String="",
-    var hasPermission:Boolean=false
+    var hasPermission:Boolean = false
 
 
 

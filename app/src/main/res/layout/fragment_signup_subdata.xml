@@ -10,14 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
-        <ProgressBar
-            android:id="@+id/progressBarSignIn"
-            android:layout_gravity="center"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"
-         />
+
         <RelativeLayout
             android:id="@+id/pic_layout"
             android:layout_width="wrap_content"
@@ -44,7 +37,7 @@
             </androidx.cardview.widget.CardView>
 
             <ImageButton
-                android:id="@+id/imageClick"
+                android:id="@+id/chooseImageBtn"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
 
@@ -86,14 +79,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp" />
 
-            <TextView
-                android:id="@+id/grade_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="32dp"
-                android:text="@string/choose_grade"
-                android:textColor="@color/black_50" />
+
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -119,14 +105,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp" />
 
-            <TextView
-                android:id="@+id/department_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="32dp"
-                android:text="@string/choose_department"
-                android:textColor="@color/black_50" />
+
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -152,14 +131,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp" />
 
-            <TextView
-                android:id="@+id/section_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="32dp"
-                android:text="@string/choose_section"
-                android:textColor="@color/black_50" />
+
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -186,7 +158,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="@string/Sign_Up"
+                android:text="@string/register"
                 android:textAllCaps="false"
                 android:textColor="@color/white_100"
                 android:textSize="@dimen/text_size_14"
@@ -217,29 +189,6 @@
                 android:textStyle="bold"
 
                 />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_below="@id/sign_up_btn">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/haveAccount"
-                    android:textSize="@dimen/text_size_12" />
-
-                <TextView
-                    android:id="@+id/sign_in"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/SignInUnderLine"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_14"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
 
         </RelativeLayout>

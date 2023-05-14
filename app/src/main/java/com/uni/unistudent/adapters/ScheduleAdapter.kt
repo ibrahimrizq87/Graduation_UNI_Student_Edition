@@ -1,12 +1,13 @@
 package com.uni.unistudent.adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.unistudent.R
@@ -14,12 +15,11 @@ import com.uni.unistudent.classes.ScheduleDataType
 
 class ScheduleAdapter(
     val context: Context,
-    var dataList:MutableList<ScheduleDataType>,
-    val onItemClicked:(Int,ScheduleDataType) ->Unit,
-    val onAttendClicked:(Int,ScheduleDataType) ->Unit
+    var dataList: MutableList<ScheduleDataType>,
+    val onItemClicked: (Int, ScheduleDataType) -> Unit,
+    val onAttendClicked: (Int, ScheduleDataType) -> Unit
 
-)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     companion object {
@@ -32,14 +32,14 @@ class ScheduleAdapter(
     }
 
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ONE) {
-            val view : View = LayoutInflater.from(context).inflate(R.layout.section_item,parent,false)
+            val view: View =
+                LayoutInflater.from(context).inflate(R.layout.section_item, parent, false)
             ViewHolder1(view)
-        }else{
-            val view : View = LayoutInflater.from(context).inflate(R.layout.lecture_item,parent,false)
+        } else {
+            val view: View =
+                LayoutInflater.from(context).inflate(R.layout.lecture_item, parent, false)
             ViewHolder2(view)
         }
     }
@@ -48,49 +48,55 @@ class ScheduleAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = dataList[position]
 
-if (currentItem.type == VIEW_TYPE_TWO){
-    (holder as ViewHolder2)
-    holder.courseName_l.text = currentItem.courseName
-    holder.location_l.text = currentItem.hallID
-    holder.lecturer.text = currentItem.professorName
-    holder.day_l.text = currentItem.day
-    holder.from_l.text = currentItem.time
-    holder.to_l.text = currentItem.endTime
-    if (currentItem.isRunning){
-        holder.isRunning.text="is running"
-    }else{
-        holder.isRunning.text="not running"
+        if (currentItem.type == VIEW_TYPE_TWO) {
+            (holder as ViewHolder2)
+            holder.course_name_lec.text = currentItem.courseName
+            holder.location_lec.text = currentItem.hallID
+            holder.lecturer.text = currentItem.professorName
+
+
+            holder.amPm_lec.text = getTypeTime(currentItem.time)
+            holder.from_lec.text = getTime12h(currentItem.time)
+            holder.to_lec.text = getTime12h(currentItem.endTime)
+
+            if (currentItem.isRunning) {
+                holder.isRunning.text = context.getString(R.string.running)
+                holder.isRunning_img.setImageResource(R.drawable.ic_running)
+            } else {
+                holder.isRunning.text = context.getString(R.string.not_running)
+                holder.isRunning_img.setImageResource(R.drawable.ic_not_running)
+            }
+
+
+        } else {
+            (holder as ViewHolder1)
+            holder.courseName.text = currentItem.courseName
+            holder.location.text = currentItem.hallID
+            holder.assistant.text = currentItem.professorName
+            holder.day.text = currentItem.day
+            holder.from.text = currentItem.time
+            holder.to.text = currentItem.endTime
+            if (currentItem.isRunning) {
+                holder.isRunning.text = "is running"
+
+            } else {
+                holder.isRunning.text = "not running"
+            }
+
+        }
+
     }
-
-
-}else{
-    (holder as  ViewHolder1)
-    holder.courseName.text = currentItem.courseName
-    holder.location.text = currentItem.hallID
-    holder.assistant.text = currentItem.professorName
-    holder.day.text = currentItem.day
-    holder.from.text = currentItem.time
-    holder.to.text = currentItem.endTime
-    if (currentItem.isRunning){
-        holder.isRunning.text="is running"
-    }else{
-        holder.isRunning.text="not running"
-    }
-
-}
-
-    }
-
-
 
     override fun getItemCount(): Int {
         return dataList.size
     }
-    fun update(list: MutableList<ScheduleDataType>){
-        this.dataList=list
+
+    fun update(list: MutableList<ScheduleDataType>) {
+        this.dataList = list
         notifyDataSetChanged()
     }
-    inner class ViewHolder1(item: View) : RecyclerView.ViewHolder(item){
+
+    inner class ViewHolder1(item: View) : RecyclerView.ViewHolder(item) {
         val isRunning = item.findViewById<TextView>(R.id.sec_is_running)
         val courseName = item.findViewById<TextView>(R.id.course_name_s)
         val location = item.findViewById<TextView>(R.id.section_location)
@@ -101,40 +107,81 @@ if (currentItem.type == VIEW_TYPE_TWO){
         val attend = item.findViewById<Button>(R.id.attend_bt_section)
 
         val recyItem = item.findViewById<ConstraintLayout>(R.id.section_view)
+
         init {
             recyItem.setOnClickListener {
-                onItemClicked.invoke(adapterPosition,dataList[adapterPosition])
+                onItemClicked.invoke(adapterPosition, dataList[adapterPosition])
             }
             attend.setOnClickListener {
-                onAttendClicked.invoke(adapterPosition,dataList[adapterPosition])
+                onAttendClicked.invoke(adapterPosition, dataList[adapterPosition])
             }
 
         }
 
 
     }
+
     private inner class ViewHolder2(item: View) :
         RecyclerView.ViewHolder(item) {
-        val isRunning = item.findViewById<TextView>(R.id.le_is_running)
+        val isRunning = item.findViewById<TextView>(R.id.lecture_is_running)
+        val isRunning_img = item.findViewById<ImageView>(R.id.lecture_is_running_img)
 
-        val courseName_l = item.findViewById<TextView>(R.id.course_name_l)
-        val location_l = item.findViewById<TextView>(R.id.lecture_location)
-        val lecturer = item.findViewById<TextView>(R.id.lecture_lecturer)
-        val day_l = item.findViewById<TextView>(R.id.lecture_day)
-        val from_l = item.findViewById<TextView>(R.id.lecture_start_time)
-        val to_l = item.findViewById<TextView>(R.id.lecture_end_time)
-        val attend_l = item.findViewById<Button>(R.id.attend_bt_lecture)
-
+        val course_name_lec = item.findViewById<TextView>(R.id.subject_name_tv)
+        val location_lec = item.findViewById<TextView>(R.id.place_id_tv)
+        val lecturer = item.findViewById<TextView>(R.id.prof_name_tv)
+        val from_lec = item.findViewById<TextView>(R.id.from_time_tv)
+        val to_lec = item.findViewById<TextView>(R.id.to_time_tv)
+        val amPm_lec = item.findViewById<TextView>(R.id.time_AmPm_tv)
+        val attend_lec = item.findViewById<CardView>(R.id.attend_card_lecture)
         val recyItem = item.findViewById<ConstraintLayout>(R.id.lecture_view)
+
         init {
             recyItem.setOnClickListener {
-                onItemClicked.invoke(adapterPosition,dataList[adapterPosition])
+                onItemClicked.invoke(adapterPosition, dataList[adapterPosition])
             }
-            attend_l.setOnClickListener {
-                onAttendClicked.invoke(adapterPosition,dataList[adapterPosition])
+            attend_lec.setOnClickListener {
+                onAttendClicked.invoke(adapterPosition, dataList[adapterPosition])
             }
 
         }
+    }
+
+    private fun getTypeTime(time: String): String {
+
+        val mTime = time.split(":")[0].toInt()
+
+        val isAmPm: String = if (mTime >= 12 && mTime != 24) {
+            "PM"
+        } else {
+            "AM"
+        }
+        return isAmPm
+    }
+
+    private fun getTime12h(time: String): String {
+        val mTime = time.split(":")
+        val mHour = mTime[0].toInt()
+        val mMinute = mTime[1].toInt()
+
+        val modHour: Int = if (mHour > 12) {
+            mHour - 12
+        } else {
+            mHour
+        }
+        val hour = if (modHour < 10) {
+            "0$modHour"
+        } else {
+            modHour
+        }
+
+
+        val minute = if (mMinute < 10) {
+            "0$mMinute"
+        } else {
+            mMinute
+        }
+
+        return "$hour:$minute"
     }
 
 }

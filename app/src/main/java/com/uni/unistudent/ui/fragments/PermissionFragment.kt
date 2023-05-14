@@ -1,13 +1,12 @@
 package com.uni.unistudent.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
@@ -16,15 +15,15 @@ import com.uni.unistudent.R
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
-
+@AndroidEntryPoint
 class PermissionFragment : Fragment() {
 
-    private val viewModel : FirebaseViewModel by viewModels()
-    private val authViewModel : AuthViewModel by viewModels()
-    private lateinit var permissionText:TextView
-private lateinit var user:FirebaseUser
+    private val viewModel: FirebaseViewModel by viewModels()
+    private lateinit var permissionText: TextView
+    private lateinit var user: FirebaseUser
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,15 +34,15 @@ private lateinit var user:FirebaseUser
         observePermission()
         return inflater.inflate(R.layout.fragment_permission, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-         permissionText=view.findViewById<TextView>(R.id.permission_text)
-
-
+        permissionText = view.findViewById<TextView>(R.id.permission_text)
 
 
     }
-    private fun observePermission(){
+
+    private fun observePermission() {
 
 
         lifecycleScope.launchWhenCreated {
@@ -53,7 +52,7 @@ private lateinit var user:FirebaseUser
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                       permissionText.text=state.result?.permissionMessage
+                        permissionText.text = state.result?.permissionMessage
                     }
                     is Resource.Failure -> {
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
@@ -64,7 +63,7 @@ private lateinit var user:FirebaseUser
                 }
             }
         }
-        }
+    }
 
 
 }

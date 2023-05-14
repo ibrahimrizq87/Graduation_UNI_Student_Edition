@@ -4,12 +4,10 @@ package com.uni.unistudent.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseUser
 import com.uni.unistudent.classes.*
 import com.uni.unistudent.data.FirebaseRepo
 import com.uni.unistudent.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -18,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FirebaseViewModel @Inject constructor(
     private val  repository: FirebaseRepo
+
 ): ViewModel() {
 //  https://stackoverflow.com/questions/72760708/kotlin-stateflow-not-emitting-updates-to-its-collectors
     private val _getCourses= MutableStateFlow<Resource<List<Courses>>?>(null)

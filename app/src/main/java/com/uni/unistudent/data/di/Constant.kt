@@ -54,3 +54,7 @@ object RealTime{
     val hall="hall"
     val lab="lab"
 }
+object SignUpKey{
+    val MAIN_DATA="main_data"
+    val SUB_DATA="sub_data"
+}

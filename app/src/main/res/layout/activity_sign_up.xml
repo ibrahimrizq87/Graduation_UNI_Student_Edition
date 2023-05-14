@@ -6,16 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.SignUp">
 
-
-    <ImageButton
-        android:id="@+id/close"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
+    <ProgressBar
+        android:id="@+id/progressBarRegister"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:background="@color/white_50"
-        android:contentDescription="@string/close"
-        android:src="@drawable/close"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/collect_data"
-        app:layout_constraintTop_toBottomOf="@+id/close">
+        app:layout_constraintTop_toBottomOf="@+id/progressBarRegister">
 
         <TextView
             android:id="@+id/app_name"

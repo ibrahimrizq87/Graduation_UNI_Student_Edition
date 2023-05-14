@@ -1,13 +1,11 @@
 
 <TextView
     android:id="@+id/text"
-    android:padding="40dp"
+    android:padding="10dp"
     android:text="text"
-
-    android:textSize="20sp"
+    android:textSize="14sp"
     android:textColor="@color/black_100"
     android:textStyle="bold"
-
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"

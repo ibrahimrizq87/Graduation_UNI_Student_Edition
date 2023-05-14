@@ -28,9 +28,8 @@
         <item>S7</item>
         <item>S8</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
+    <!--  -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 
     <!--SignUp Activity-->
@@ -70,6 +69,7 @@
     <string name="back">Back</string>
     <string name="student">Student</string>
     <string name="uni">UNI</string>
+    <string name="profile">Profile</string>
 
 
     <string-array name="who_array">
@@ -78,4 +78,24 @@
         <item>Assistant</item>
     </string-array>
 
+    <!--schedule and attendees fragment-->
+    <string name="scan">Scan</string>
+    <string name="scan_subTitle">The QR code to take attendance</string>
+    <string name="hall_and_lab">Hall</string>
+    <string name="wait">wait ..</string>
+    <string name="attendance_succeeded">Attendance succeeded</string>
+    <string name="ok">OK</string>
+    <string name="attendance_failed">There was a problem, try again</string>
+    <string name="comments">Comments</string>
+    <string name="id_test">\@fci125</string>
+    <string name="point">.</string>
+    <string name="department">Department</string>
+    <string name="Faculty">Faculty</string>
+    <string name="password_encoding">*******</string>
+    <string name="phone">Phone</string>
+    <string name="city">City</string>
+    <string name="register">Register</string>
+    <string name="Attend">Attend</string>
+    <string name="not_running">Not running</string>
+    <string name="running">Running</string>
 </resources>

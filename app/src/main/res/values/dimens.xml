@@ -13,4 +13,12 @@
     <dimen name="text_size_22">22sp</dimen>
     <dimen name="text_size_24">24sp</dimen>
     <dimen name="text_size_36">36sp</dimen>
+    <dimen name="corner_20">20dp</dimen>
+    <dimen name="elevation">1dp</dimen>
+    <dimen name="icon_30">30dp</dimen>
+    <dimen name="cardView_default_height">80dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="cardView_default_radius">12dp</dimen>
+    <dimen name="icon_16">16dp</dimen>
+    <dimen name="cardView_radius_10">10dp</dimen>
 </resources>
