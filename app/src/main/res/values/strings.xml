@@ -99,4 +99,12 @@
     <string name="not_running">Not running</string>
     <string name="running">Running</string>
     <string name="lab">Lab</string>
+    <string name="to">To</string>
+    <string name="comment">Comment</string>
+    <string name="zero_comments">0</string>
+    <string name="grade">Grade</string>
+    <string name="dot">></string>
+    <string name="home">Home</string>
+    <string name="notification">Notification</string>
+    <string name="Schedule">Schedule</string>
 </resources>

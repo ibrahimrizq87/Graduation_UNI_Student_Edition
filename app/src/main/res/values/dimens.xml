@@ -3,7 +3,7 @@
     <dimen name="radius">50dp</dimen>
     <!-- TEXT SIZE -->
     <dimen name="text_size_8">8sp</dimen>
-    <dimen name="text_size_10">10dp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
@@ -21,4 +21,13 @@
     <dimen name="cardView_default_radius">12dp</dimen>
     <dimen name="icon_16">16dp</dimen>
     <dimen name="cardView_radius_10">10dp</dimen>
+
+
+    <!-- Margin -->
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_2dp">2dp</dimen>
+
+
 </resources>

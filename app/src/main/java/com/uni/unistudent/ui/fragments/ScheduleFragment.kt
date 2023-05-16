@@ -10,7 +10,6 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +21,7 @@ import com.uni.unistudent.classes.Courses
 import com.uni.unistudent.classes.ScheduleDataType
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
-import com.uni.unistudent.databinding.FragmentScheduleAttendeesBinding
+import com.uni.unistudent.databinding.FragmentScheduleBinding
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,9 +30,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @AndroidEntryPoint
-class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
+class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
 
-    private lateinit var binding: FragmentScheduleAttendeesBinding
+    private lateinit var binding: FragmentScheduleBinding
     private val viewModel: FirebaseViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     lateinit var progress: ProgressBar
@@ -54,11 +53,10 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentScheduleAttendeesBinding.inflate(layoutInflater)
+        binding = FragmentScheduleBinding.inflate(layoutInflater)
         authViewModel.getSessionStudent { user ->
             if (user != null) {
                 currentUser = user
-
             } else {
                 Toast.makeText(
                     context,
@@ -98,7 +96,7 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
                 if (scheduleDataType[pos].isRunning) {
                     val bundle = Bundle()
                     bundle.putString("id", item.eventId)
-                    val attendanceFragment = ScheduleAttendeesFragment()
+                    val attendanceFragment = ScheduleFragment()
                     attendanceFragment.arguments = bundle
                     Navigation.findNavController(view)
                         .navigate(R.id.action_scheduleFragment_to_attendanceFragment)
@@ -122,6 +120,7 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
 
         viewModel.getCourses(currentUser.grade)
         observeCourses()
+        //---------------------- getting the required data ---------------------------//
 
         daySelected.observe(viewLifecycleOwner) { it2 ->
 
