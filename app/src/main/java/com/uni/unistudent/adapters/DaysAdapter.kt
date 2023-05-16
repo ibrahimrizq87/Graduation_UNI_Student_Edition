@@ -22,7 +22,8 @@ class DaysAdapter(private val customClickListener: CustomClickListener,private v
         "Monday",
         "Tuesday",
         "Wednesday",
-        "Thursday"
+        "Thursday",
+        "Friday"
     )
     private var oldDaySelected: CardView? = null
     private var oldDaySelectedTV: TextView? = null

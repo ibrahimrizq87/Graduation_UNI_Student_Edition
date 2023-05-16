@@ -98,4 +98,5 @@
     <string name="Attend">Attend</string>
     <string name="not_running">Not running</string>
     <string name="running">Running</string>
+    <string name="lab">Lab</string>
 </resources>

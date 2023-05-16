@@ -38,7 +38,7 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
     private val authViewModel: AuthViewModel by viewModels()
     lateinit var progress: ProgressBar
     lateinit var currentUser: UserStudent
-    private var daySelected = MutableLiveData("Saturday")
+    private lateinit var daySelected: MutableLiveData<String>
     lateinit var coursesList: MutableList<Courses>
 
     lateinit var adapter: ScheduleAdapter
@@ -58,7 +58,7 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
         authViewModel.getSessionStudent { user ->
             if (user != null) {
                 currentUser = user
-                //Toast.makeText(context, currentUser.name, Toast.LENGTH_LONG).show()
+
             } else {
                 Toast.makeText(
                     context,
@@ -73,45 +73,27 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.schedule_recycler)
-        // val up = view.findViewById<Button>(R.id.update)
-        progress = view.findViewById(R.id.progress_bar)
 
-
-        // solved by the delay function
-        //  another way to solve it is https://stackoverflow.com/questions/75442594/emitting-ui-state-while-collecting-does-not-update-ui
-        /* up.setOnClickListener {
-             observeLectures()
-             observeSections()
- }*/
         coursesList = arrayListOf()
         scheduleDataType = arrayListOf()
+        daySelected =MutableLiveData()
 
 
+        val recyclerView = view.findViewById<RecyclerView>(R.id.schedule_recycler)
+        progress = view.findViewById(R.id.progress_bar)
+
+        //-------------- setting the recycler data---------------------------//
         binding.recyclerDays.layoutManager =
             LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerDays.adapter = DaysAdapter(this, requireContext())
 
-        /*
-        viewModel.scheduleMap.observe(viewLifecycleOwner, Observer {
-            daySelected.observe(viewLifecycleOwner) { it2 ->
-                //TODO HERE FILTER THE COURSES
-              //  adapter.setScheduleList(it, it2)
-                if (it[it2]?.size == null) {
-                    binding.imageEmptySchedule.visibility = View.VISIBLE
-                } else {
-                    binding.imageEmptySchedule.visibility = View.GONE
-                }
-            }
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        //-------------- setting the recycler data---------------------------//
 
-        })*/
 
         adapter = ScheduleAdapter(requireContext(), scheduleDataType,
             onItemClicked = { pos, item ->
-
                 Toast.makeText(requireContext(), item.professorName, Toast.LENGTH_SHORT).show()
-
-
             }, onAttendClicked = { pos, item ->
                 if (scheduleDataType[pos].isRunning) {
                     val bundle = Bundle()
@@ -132,39 +114,45 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
                 }
             })
 
-
-//-------------- setting the recycler data---------------------------//
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        //-------------- setting the recycler data---------------------------//
         recyclerView.adapter = adapter
-//-------------- setting the recycler data---------------------------//
+        //-------------- setting the recycler data---------------------------//
 
+        //---------------------- getting the required data ---------------------------//
 
-//---------------------- getting the required data ---------------------------//
         viewModel.getCourses(currentUser.grade)
         observeCourses()
 
+        daySelected.observe(viewLifecycleOwner) { it2 ->
+
+            val scheduleDataType = scheduleDataType.filter {  it.day == it2  } as MutableList<ScheduleDataType>
+
+            if(scheduleDataType.size ==0){
+                binding.imageEmptySchedule.visibility = View.VISIBLE
+            }else{
+                binding.imageEmptySchedule.visibility = View.GONE
+            }
+            adapter.update(scheduleDataType)
+            adapter.notifyDataSetChanged()
+        }
 
     }
 
     private fun observeSections() {
         lifecycleScope.launchWhenCreated {
             viewModel.getSection.collectLatest { state ->
-                Log.e("SSSSSS", "here1")
+
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
-
                     }
 
                     is Resource.Success -> {
                         isSecLoaded = true
-                        if (isLecLoaded &&isCorLoaded ){
+                        if (isLecLoaded && isCorLoaded) {
                             progress.visibility = View.GONE
                         }
-
-
                         state.result.forEach {
-                            Log.e("SSSSSS", it.courseCode)
                             scheduleDataType.add(
                                 ScheduleDataType(
                                     it.sectionId,
@@ -178,8 +166,11 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
                                     it.isRunning
                                 )
                             )
+                            Log.e("test", it.sectionId)
+
+
                         }
-                        adapter.update(scheduleDataType)
+                        daySelected.postValue("Saturday")
 
                     }
 
@@ -197,7 +188,6 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
         }
 
     }
-
     private fun observeLectures() {
         lifecycleScope.launchWhenCreated {
             viewModel.getLecture.collectLatest { state ->
@@ -211,13 +201,12 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
 
                     is Resource.Success -> {
                         isLecLoaded = true
-                        if (isSecLoaded  &&isCorLoaded ){
+                        if (isSecLoaded && isCorLoaded) {
                             progress.visibility = View.GONE
                         }
-                        Log.e("lllllll", "here2")
-                        Log.e("lllllll", state.result.count().toString())
+
                         state.result.forEach {
-                            Log.e("MMMMM", it.courseCode)
+
                             scheduleDataType.add(
                                 ScheduleDataType(
                                     it.lectureId,
@@ -233,7 +222,9 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
                                 )
                             )
                         }
-                        adapter.update(scheduleDataType)
+
+                        daySelected.postValue("Saturday")
+
                     }
 
                     is Resource.Failure -> {
@@ -249,24 +240,25 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
             }
         }
     }
-
     private fun observeCourses() {
         lifecycleScope.launchWhenCreated {
             viewModel.getCourses.collectLatest { state ->
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
+                        binding.imageEmptySchedule.visibility =View.GONE
 
                     }
 
                     is Resource.Success -> {
-                        isCorLoaded =true
-                        if (isSecLoaded &&isLecLoaded ){
+                        isCorLoaded = true
+                        if (isSecLoaded && isLecLoaded) {
+
                             progress.visibility = View.GONE
+
                         }
 
                         state.result.forEach {
-
                             Log.e("VVVV", it.courseCode)
                             coursesList.add(it)
                         }
@@ -299,4 +291,5 @@ class ScheduleAttendeesFragment : Fragment(), DaysAdapter.CustomClickListener {
     override fun onCustomClick(day: String) {
         daySelected.postValue(day)
     }
+
 }
