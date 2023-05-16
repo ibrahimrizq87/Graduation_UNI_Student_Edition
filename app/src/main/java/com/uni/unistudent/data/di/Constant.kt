@@ -2,7 +2,7 @@ package com.uni.unistudent.data.di
 
 object FireStoreTable {
     val post="posts"
-    val studentsSection="studentsSection"
+    val comment="comment"
     val courses="courses"
     val lectures="lectures"
     val sections ="sections"
@@ -40,6 +40,14 @@ object departement{
     val GROUP5= "GROUP5"
 
 }
+
+object PostType{
+    val personal_posts= "personal_posts"
+    val section_posts= "section_posts"
+    val course= "course"
+    val general= "general"
+}
+
 object Section{
     val S1= "S1"
     val S2= "S2"

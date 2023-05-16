@@ -9,6 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import com.bumptech.glide.Glide
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
@@ -39,7 +41,7 @@ class HomeScreen : AppCompatActivity() {
                 R.id.notification -> replaceFragment(NotificationsFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.schedule_and_attendees -> {
-                    replaceFragment(ScheduleAttendeesFragment())
+                    replaceFragment(ScheduleFragment())
                     updateUser(currentUser)
                 }
                 else -> {
@@ -51,10 +53,21 @@ class HomeScreen : AppCompatActivity() {
 
     }
 
+
     private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container, fragment)
+
+
+
+
+
+     fun replaceFragment(fragment: Fragment){
+        val fragmentManager=supportFragmentManager
+        val fragmentTransaction =fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container,fragment)
+
         fragmentTransaction.commit()
 
     }
@@ -64,6 +77,7 @@ class HomeScreen : AppCompatActivity() {
     }
 
     private fun observeImage() {
+
 
         lifecycleScope.launchWhenCreated {
             storageViewModel.getUri.collectLatest { uri ->
@@ -86,6 +100,20 @@ class HomeScreen : AppCompatActivity() {
                     }
                     else -> {
                     }
+
+            when (uri) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    Glide.with(this@HomeScreen)
+                        .load(uri.result)
+                        .into(binding.userImage)
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(this@HomeScreen,uri.exception.toString(),Toast.LENGTH_LONG).show()
+                }
+                else ->{
+
                 }
             }
 

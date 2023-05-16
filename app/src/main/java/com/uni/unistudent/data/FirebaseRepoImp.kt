@@ -8,6 +8,7 @@ import com.uni.unistudent.classes.*
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.di.FireStoreTable
 import com.uni.unistudent.data.di.PermissionsRequired
+import com.uni.unistudent.data.di.PostType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -16,6 +17,9 @@ class FirebaseRepoImp@Inject constructor(
    private val database:FirebaseFirestore
 
 ):FirebaseRepo{
+
+
+
     override suspend fun updateSectionAttendance(attendance: Attendance, sectionId: String, result: (Resource<String>) -> Unit) {
         val document=database.collection(FireStoreTable.attendance).document(FireStoreTable.sections)
             .collection(sectionId)
@@ -125,7 +129,345 @@ class FirebaseRepoImp@Inject constructor(
         result.invoke(Resource.Success(listOfPosts))
     }
 
+    override suspend fun getGeneralPosts(result: (Resource<List<Posts>>) -> Unit) {
+        val docRef = database.collection(FireStoreTable.post)
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
 
+            val listOfPosts= arrayListOf<Posts>()
+            for (rec in snapshot!!){
+                val post = rec.toObject(Posts::class.java)
+                listOfPosts.add(post)
+            }
+            result.invoke(Resource.Success(listOfPosts))
+        }
+    }
+
+    override suspend fun getSectionPosts(
+        section: String,
+        dep: String,
+
+        result: (Resource<List<Posts>>) -> Unit
+    ) {
+        val document=database.collection(PostType.section_posts).document(dep).collection(section)
+
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            val listOfPosts= arrayListOf<Posts>()
+            for (rec in snapshot!!){
+                val post = rec.toObject(Posts::class.java)
+                listOfPosts.add(post)
+            }
+            result.invoke(Resource.Success(listOfPosts))
+        }
+    }
+    override suspend fun getPosts(
+        courses: List<Courses>,
+        section: String,
+        dep: String,
+        userID: String,
+        result: (Resource<List<Posts>>) -> Unit
+    ) {
+        val listOfPosts= arrayListOf<Posts>()
+        for(course in courses){
+            val document=database.collection(FireStoreTable.courses).document(course.courseCode).collection(FireStoreTable.post)
+
+            document.addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    result.invoke(Resource.Failure(e.toString()))
+                    return@addSnapshotListener
+                }
+                for (rec in snapshot!!){
+                    val post = rec.toObject(Posts::class.java)
+                    Log.e("MMNNBB",post.postID)
+                    listOfPosts.add(post)
+                }
+
+            }    }
+
+        val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
+
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            for (rec in snapshot!!){
+                val post = rec.toObject(Posts::class.java)
+                Log.e("lesiner",post.audience)
+                listOfPosts.add(post)
+            }
+        }
+
+            val document2=database.collection(PostType.section_posts).document(dep).collection(section)
+
+            document2.addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    result.invoke(Resource.Failure(e.toString()))
+                    return@addSnapshotListener
+                }
+
+                for (rec in snapshot!!){
+                    val post = rec.toObject(Posts::class.java)
+                    listOfPosts.add(post)
+                }
+
+
+    }
+        val docRef = database.collection(FireStoreTable.post)
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            for (rec in snapshot!!){
+                val post = rec.toObject(Posts::class.java)
+                listOfPosts.add(post)
+            }
+        }
+
+        result.invoke(Resource.Success(listOfPosts))
+
+    }
+
+    override suspend fun getCoursePosts(courses: List<Courses>, result: (Resource<List<Posts>>) -> Unit) {
+        val listOfPosts= arrayListOf<Posts>()
+        for(course in courses){
+        val document=database.collection(FireStoreTable.courses).document(course.courseCode).collection(FireStoreTable.post)
+
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+            for (rec in snapshot!!){
+                val post = rec.toObject(Posts::class.java)
+                Log.e("MMNNBB",post.postID)
+                listOfPosts.add(post)
+            }
+
+        }    }
+        result.invoke(Resource.Success(listOfPosts))
+    }
+
+    override suspend fun getPersonalPosts(userID: String, result: (Resource<List<Posts>>) -> Unit) {
+        val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
+
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            val listOfPosts= arrayListOf<Posts>()
+            for (rec in snapshot!!){
+                val post = rec.toObject(Posts::class.java)
+                Log.e("lesiner",post.audience)
+                listOfPosts.add(post)
+            }
+            result.invoke(Resource.Success(listOfPosts))
+        }
+    }
+
+    override suspend fun addCommentGeneralPosts(
+        comment: Comment,
+        postID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(FireStoreTable.post).document(postID).collection(FireStoreTable.comment)
+        comment.commentID=document.id
+        document.add(comment)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment added successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+
+    override suspend fun addCommentSectionPosts(
+        comment: Comment,
+        postID: String,
+        section: String,
+        dep: String,
+
+        result: (Resource<String>) -> Unit
+    ) {
+
+        val document=database.collection(PostType.section_posts).document(dep).collection(section)
+            .document(postID).collection(FireStoreTable.comment)
+        comment.commentID=document.id
+        document.add(comment)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment added successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+
+    }
+
+    override suspend fun addCommentCoursePosts(
+        comment: Comment,
+        postID: String,
+        courseID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(FireStoreTable.courses).document(courseID).collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment)
+        comment.commentID=document.id
+        document.add(comment)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment added successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+
+    override suspend fun addCommentPersonalPosts(
+        comment: Comment,
+        postID: String,
+        userID: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment)
+        comment.commentID=document.id
+        document.add(comment)
+            .addOnSuccessListener {
+                result.invoke(
+                    Resource.Success("comment added successfully")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    Resource.Failure(
+                        it.localizedMessage
+                    )
+                )
+            }
+    }
+
+    override suspend fun getCommentGeneralPosts(
+        postID: String,
+        result: (Resource<List<Comment>>) -> Unit
+    ) {
+        val document=database.collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment)
+
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            val listOfPosts= arrayListOf<Comment>()
+            for (rec in snapshot!!){
+                val post = rec.toObject(Comment::class.java)
+                listOfPosts.add(post)
+            }
+            result.invoke(Resource.Success(listOfPosts))
+        }
+
+    }
+
+    override suspend fun getCommentSectionPosts(
+        postID: String,
+        section: String,
+        dep: String,
+
+        result: (Resource<List<Comment>>) -> Unit
+    ) {
+        val document=database.collection(PostType.section_posts).document(dep).collection(section)
+            .document(postID).collection(FireStoreTable.comment)
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            val listOfPosts= arrayListOf<Comment>()
+            for (rec in snapshot!!){
+                val post = rec.toObject(Comment::class.java)
+                listOfPosts.add(post)
+            }
+            result.invoke(Resource.Success(listOfPosts))
+        }
+    }
+
+    override suspend fun getCommentCoursePosts(
+        postID: String,
+        courseID: String,
+        result: (Resource<List<Comment>>) -> Unit
+    ) {
+        val document=database.collection(FireStoreTable.courses).document(courseID).collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment)
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            val listOfPosts= arrayListOf<Comment>()
+            for (rec in snapshot!!){
+                val post = rec.toObject(Comment::class.java)
+                listOfPosts.add(post)
+            }
+            result.invoke(Resource.Success(listOfPosts))
+        }
+
+
+    }
+
+    override suspend fun getCommentPersonalPosts(
+        postID: String,
+        userID: String,
+        result: (Resource<List<Comment>>) -> Unit
+    ) {
+        val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
+            .document(postID).collection(FireStoreTable.comment)
+        document.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                result.invoke(Resource.Failure(e.toString()))
+                return@addSnapshotListener
+            }
+
+            val listOfPosts= arrayListOf<Comment>()
+            for (rec in snapshot!!){
+                val post = rec.toObject(Comment::class.java)
+                listOfPosts.add(post)
+            }
+            result.invoke(Resource.Success(listOfPosts))
+        }
+    }
 
 
     override suspend fun getProfessor(
