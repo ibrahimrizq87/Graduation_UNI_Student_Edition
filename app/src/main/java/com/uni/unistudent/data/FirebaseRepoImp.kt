@@ -14,7 +14,7 @@ class FirebaseRepoImp@Inject constructor(
    private val database:FirebaseFirestore
 
 ):FirebaseRepo{
-
+//TODO convert the get schedule and posts to a normal get functions not to use the data snapshot and real-time update functions
     override suspend fun updateCommentGeneralPosts(
         comment: Comment,
         postID: String,

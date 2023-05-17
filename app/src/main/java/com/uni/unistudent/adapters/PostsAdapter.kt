@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.Posts
 import com.uni.unistudent.classes.ScheduleDataType
@@ -67,6 +68,8 @@ class PostsAdapter(
             (holder as  ViewHolder1)
             Glide.with(context)
                 .load(currentItem.imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .placeholder(R.drawable.post_image)
                 .into(holder.image)
 
             holder.auth.text = currentItem.authorName

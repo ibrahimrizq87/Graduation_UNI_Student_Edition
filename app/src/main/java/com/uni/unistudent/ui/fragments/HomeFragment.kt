@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
         authViewModel.getSessionStudent {user->
             if (user !=null){
                 currentUser=user
-                Toast.makeText(context,currentUser.name, Toast.LENGTH_LONG).show()
+               // Toast.makeText(context,currentUser.name, Toast.LENGTH_LONG).show()
             }
             else{
                 Toast.makeText(context,"error on loading user data please refresh the current screen ", Toast.LENGTH_LONG).show()
@@ -168,7 +168,7 @@ private fun observeCourses() {
                             )
                             progress.visibility=View.VISIBLE
                             // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
-                      delay(200)
+                      delay(500)
                             // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
                             progress.visibility=View.INVISIBLE
                             observe()

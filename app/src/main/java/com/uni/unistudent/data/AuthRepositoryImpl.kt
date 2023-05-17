@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.uni.unistudent.classes.Permission
 import com.uni.unistudent.classes.user.UserStudent
+import com.uni.unistudent.data.di.FireStoreTable
 import com.uni.unistudent.data.di.PermissionsRequired
 import com.uni.unistudent.data.di.SharedPreferencesTable
 import kotlinx.coroutines.GlobalScope
@@ -23,8 +24,8 @@ class AuthRepositoryImpl@Inject constructor(
 
     override suspend fun updateUserInfo(userTeaching: UserStudent, result: (Resource<String>) ->Unit ) {
             val document=database.collection(userTeaching.grade)
-                .document(userTeaching.department)
-                .collection(userTeaching.section)
+               /* .document(userTeaching.department)
+                .collection(userTeaching.section)*/
                 .document(userTeaching.userId)
             document.set(userTeaching)
                 .addOnSuccessListener {
@@ -146,8 +147,8 @@ class AuthRepositoryImpl@Inject constructor(
     override  suspend fun getUserStudent(id :String,section:String,dep:String,grade:String, result:(Resource<UserStudent?>) -> Unit) {
 
         val docRef =  database.collection(grade)
-            .document(dep)
-            .collection(section)
+          /*  .document(dep)
+            .collection(section)*/
             .document(id)
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -163,7 +164,7 @@ class AuthRepositoryImpl@Inject constructor(
 
 
     override suspend fun addPermission(permission: Permission, result: (Resource<String>) -> Unit) {
-        val document=database.collection(PermissionsRequired.sing_in_permission).document(permission.userId)
+        val document=database.collection(FireStoreTable.permissiont).document(permission.userId)
         permission.permissionId=document.id
         document.set(permission)
             .addOnSuccessListener {

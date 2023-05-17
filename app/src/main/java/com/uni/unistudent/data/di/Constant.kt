@@ -9,6 +9,7 @@ object FireStoreTable {
     val professor="professor"
     val assistant="assistan"
     val attendance="attendance"
+    val permissiont="permissiont"
 }
 
 object SharedPreferencesTable{

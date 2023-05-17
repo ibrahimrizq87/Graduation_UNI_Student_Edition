@@ -31,6 +31,7 @@ class FireStorageRepoImp@Inject constructor(
 
     override suspend  fun downloadUri(userId:String ,result: (Resource<Uri>) -> Unit)  {
         val downloadUriTask=mStorageRef.child("users/$userId.png").downloadUrl
+
         downloadUriTask.addOnSuccessListener {
             result.invoke(
                 Resource.Success(it)
