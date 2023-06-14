@@ -86,27 +86,7 @@ class HomeFragment : Fragment() {
                // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
                progress.visibility=View.INVISIBLE
                observe()           }}
-           /* viewModel.getPosts(
-               coursesList,
-               currentUser.section,
-               currentUser.department,
-               currentUser.userId
-           )
-          postsList.clear()
-            if (currentUser!=null){
-                for(co in  coursesList){
-                    Log.e("error",co.courseCode)
-                }
-                lifecycleScope.launchWhenCreated {
-
-                    viewModel.getPostsCourse(coursesList)
-                }
-                viewModel.getPostsSection(currentUser.section,currentUser.department)
-                viewModel.getPostsPersonal(currentUser.userId)
-            }
-            viewModel.getPostsGeneral()
-
-        */}
+}
 
         adapter= PostsAdapter(requireContext(),postsList,
 

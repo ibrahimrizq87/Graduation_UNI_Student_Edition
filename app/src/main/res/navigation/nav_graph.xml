@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
-        android:name="com.uni.unistudent.ui.fragments.AttendanceFragment"
+        android:name="com.uni.unistudent.ui.fragments.AttendeesFragment"
         android:label="fragment_attendance"
         tools:layout="@layout/fragment_attendees">
         <action

@@ -81,7 +81,6 @@ class CommentFragment : Fragment() {
 
         onUpdate = { pos,comment->
             commentList.removeAt(pos)
-            adapter.update(commentList)
             val com=Comment(comment.commentID,currentUser.userId,comment.description,currentUser.name,comment.time)
 
             when (aud) {
@@ -105,9 +104,7 @@ class CommentFragment : Fragment() {
                    }
             , onDelete = { pos,comment->
                 commentList.removeAt(pos)
-                adapter.update(commentList)
                 val com = Comment(comment.commentID,currentUser.userId,comment.description,currentUser.name,comment.time)
-
                 when (aud) {
                     PostType.course -> {
                         viewModel.deleteCommentsCourse(com,postID ,courseID)
@@ -123,7 +120,6 @@ class CommentFragment : Fragment() {
                     PostType.general -> {
                         viewModel.deleteCommentsGeneral(com,postID)
                     }
-
                 }
                 observeDeletedComment()
             })

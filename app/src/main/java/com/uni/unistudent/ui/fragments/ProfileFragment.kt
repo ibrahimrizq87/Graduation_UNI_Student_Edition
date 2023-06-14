@@ -34,6 +34,9 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        coursesList = arrayListOf()
+        lecturerList = arrayListOf()
+        assistantList = arrayListOf()
         authViewModel.getSessionStudent {user->
             if (user !=null){
                 currentUser=user

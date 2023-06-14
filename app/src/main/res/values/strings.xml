@@ -1,4 +1,4 @@
-<resources>
+ <resources>
     <string name="app_name">UNI Student</string>
     <string-array name="grades">
         <item>grade one</item>

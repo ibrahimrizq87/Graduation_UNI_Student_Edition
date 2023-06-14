@@ -85,6 +85,7 @@ private fun observeImage(){
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
+                    binding.progressBarImage.visibility = View.GONE
                     Glide.with(this@HomeScreen)
                         .load(uri.result)
                         //.diskCacheStrategy(DiskCacheStrategy.RESOURCE)  //TODO https://stackoverflow.com/questions/53140975/load-already-fetched-image-when-offline-in-glide-for-android
@@ -103,6 +104,7 @@ private fun observeImage(){
     }
 }
 
+
     private fun observeUser() {
         lifecycleScope.launchWhenCreated {
             viewModel.userStudent.collectLatest {state ->
@@ -112,9 +114,8 @@ private fun observeImage(){
                     is Resource.Success -> {
                         val user =state.result
                         if (user!=null){
+
                             viewModel.setSession(state.result)
-
-
                             binding.userGrade.text=user.grade
                             binding.userDepartment.text=user.department
                             binding.userName.text=user.name
@@ -134,6 +135,7 @@ private fun observeImage(){
 
     override fun onStart() {
         super.onStart()
+        settingsOnStartApp()
         viewModel.getSessionStudent {user->
             if (user !=null){
                 updateUser(user)
@@ -174,5 +176,23 @@ private fun observeImage(){
             else -> false
         }
     }
+    private fun settingsOnStartApp(){
+        binding.bottomNavigationView.itemIconTintList = null
+        binding.bottomNavigationView.selectedItemId = R.id.home
 
-}
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.home -> replaceFragment(HomeFragment())
+                R.id.notification -> replaceFragment(NotificationsFragment())
+                R.id.profile -> replaceFragment(ProfileFragment())
+                R.id.schedule_and_attendees -> {
+                    replaceFragment(ScheduleFragment())
+                    updateUser(currentUser)
+                }
+                else -> {
+                }
+
+            }
+            true
+           }
+}}

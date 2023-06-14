@@ -54,9 +54,7 @@
                     android:layout_centerInParent="true"
                     android:backgroundTint="@color/black"
                     android:progressBackgroundTint="@color/black"
-                    android:progressTint="@color/black"
-
-                    />
+                    android:progressTint="@color/black" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
