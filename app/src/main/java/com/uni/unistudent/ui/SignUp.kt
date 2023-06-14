@@ -79,9 +79,7 @@ class SignUp : AppCompatActivity() {
         setContentView(binding.root)
 
         nextFragment(FragmentSignUpMainData())
-        binding.close.setOnClickListener {
-            finish()
-        }
+
 
         grade = ""
         dep = ""

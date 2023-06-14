@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_recycler)
-        progress = view.findViewById<ProgressBar>(R.id.progress_par_home)
+        progress = view.findViewById<ProgressBar>(R.id.progress_bar_home)
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
 
 

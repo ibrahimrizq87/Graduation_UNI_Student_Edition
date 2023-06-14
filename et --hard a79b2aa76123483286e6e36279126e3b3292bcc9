@@ -1,0 +1,127 @@
+[33mcommit a79b2aa76123483286e6e36279126e3b3292bcc9[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: ibrahimrizq87 <ibrahimrizqabd@gmail.com>
+Date:   Wed May 17 22:46:14 2023 +0300
+
+    last update
+
+[33mcommit dd9ca424d2bde08074fe2ce0442e4c112b53bf92[m
+Author: ibrahimrizq87 <ibrahimrizqabd@gmail.com>
+Date:   Sat Apr 22 05:33:14 2023 +0200
+
+    last update
+
+[33mcommit bb0fd39629f8497642669b27022645375bbaa66e[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: walidatef <waliddatef@gmail.com>
+Date:   Wed May 17 01:19:21 2023 +0300
+
+    "[Finished] Home Fragment "
+
+[33mcommit 5c27556a8dedbc95ed6959bf745fbd81cc568a25[m
+Merge: 8d22de3 e5d0690
+Author: walidatef <waliddatef@gmail.com>
+Date:   Tue May 16 18:09:07 2023 +0300
+
+    Merge branch 'main' of https://github.com/ibrahimrizq87/Graduation_UNI_Student_Edition
+
+[33mcommit 8d22de38d10f4f90cc3325eb723d44d03f45de07[m
+Author: walidatef <waliddatef@gmail.com>
+Date:   Tue May 16 17:48:20 2023 +0300
+
+    "[Finished] schedule Attendees fragment"
+
+[33mcommit 93febeb42fa727a69f221b7e2cc0cfd61ea3faf4[m
+Author: walidatef <waliddatef@gmail.com>
+Date:   Mon May 15 01:42:46 2023 +0300
+
+    "[Finished] Lecture View for recycler"
+
+[33mcommit e5d0690fc69873c2185a244ef567b7cba3e34ef8[m
+Author: ibrahimrizq87 <ibrahimrizqabd@gmail.com>
+Date:   Tue Apr 18 06:08:34 2023 +0200
+
+    home and comment done
+
+[33mcommit 3ef5e4a2dc11927dacaf2b831cb09cc499cdd1b4[m
+Author: ibrahimrizq87 <ibrahimrizqabd@gmail.com>
+Date:   Mon Apr 17 19:28:22 2023 +0200
+
+    comment done
+
+[33mcommit 07aa1e78b07d48e37d315bb2171d995d6b9c46d2[m
+Author: ibrahimrizq87 <ibrahimrizqabd@gmail.com>
+Date:   Mon Apr 17 05:23:56 2023 +0200
+
+    home nearly done
+
+[33mcommit 43b1b70c1ec7746698afdbb8f332a8d22606d02e[m
+Author: ibrahimrizq87 <ibrahimrizqabd@gmail.com>
+Date:   Sun Apr 16 17:46:31 2023 +0200
+
+    schedule done
+
+[33mcommit 19f8c96a66ad87dbece5bcd16868e9745127c06c[m
+Merge: bcac716 4cf5006
+Author: alenezia2 <alenezia2@coventry.ac.uk>
+Date:   Sun Apr 16 00:40:35 2023 +0200
+
+    Merge remote-tracking branch 'origin/main'
+    
+    # Conflicts:
+    #       app/src/main/AndroidManifest.xml
+    #       app/src/main/res/values-night/themes.xml
+    #       app/src/main/res/values/themes.xml
+
+[33mcommit bcac7164ccde4168933ddc73d8cf1eb917d79c8b[m
+Author: alenezia2 <alenezia2@coventry.ac.uk>
+Date:   Sun Apr 16 00:39:19 2023 +0200
+
+    permission done schedule has error
+
+[33mcommit 180119fb0170c12dfb80ddb35c19afdca15771df[m
+Author: alenezia2 <alenezia2@coventry.ac.uk>
+Date:   Sat Apr 15 19:54:48 2023 +0200
+
+    permission done schedule has error
+
+[33mcommit fa9e26b5fb4e731075c8ec60872b0cb4c8e4fa66[m
+Author: alenezia2 <alenezia2@coventry.ac.uk>
+Date:   Sat Apr 15 19:53:42 2023 +0200
+
+    permission done schedule has error
+
+[33mcommit b06e43f0dd5ab41170a281d311a8fb94160f547b[m
+Author: Ibrahim Rizq <61823561+ibrahimrizq87@users.noreply.github.com>
+Date:   Sun Apr 2 17:44:21 2023 +0200
+
+    sign up last update
+
+[33mcommit 4cf500678f0a1dd13bc262249bc79f1bc520ba16[m
+Author: walidatef <waliddatef@gmail.com>
+Date:   Tue Mar 28 00:41:22 2023 +0200
+
+    "[Finished] (XML)  Sign In and Sign Up"
+
+[33mcommit 1df4f07ffade4ff7806dbc173329df2eda3a2137[m
+Merge: 20f8656 f41e24c
+Author: walidatef <waliddatef@gmail.com>
+Date:   Tue Mar 28 00:38:52 2023 +0200
+
+    Merge branch 'main' of https://github.com/ibrahimrizq87/Graduation_UNI_Student_Edition
+
+[33mcommit 20f86566f5bce0e0a93fbe498d248a793acd72ce[m
+Author: walidatef <waliddatef@gmail.com>
+Date:   Sun Mar 26 22:56:27 2023 +0200
+
+    "Add signUp and signIn "
+
+[33mcommit f41e24c9a1a01b388317936860bf86d9904cd071[m
+Author: ibrahimrizq87 <ibrahimrizqabd@gmail.com>
+Date:   Sun Mar 26 18:02:54 2023 +0200
+
+    sign up done
+
+[33mcommit 04e7edff9fc0707a545490ba14c9906d3973ff97[m
+Author: ibrahimrizq87 <ibrahimrizqabd@gmail.com>
+Date:   Sun Mar 26 02:36:01 2023 +0200
+
+    backend MVVM done

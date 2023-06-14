@@ -20,6 +20,7 @@ import com.uni.unistudent.adapters.CommentAdapter
 import com.uni.unistudent.adapters.PostsAdapter
 import com.uni.unistudent.classes.Comment
 import com.uni.unistudent.classes.Courses
+import com.uni.unistudent.classes.MyComments
 import com.uni.unistudent.classes.Posts
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
@@ -42,11 +43,11 @@ class CommentFragment : Fragment() {
 
     private lateinit var postID: String
     private lateinit var courseID: String
-
+    private lateinit var commentText:EditText
     private lateinit var aud: String
 
     private lateinit var adapter: CommentAdapter
-    private lateinit var commentList: MutableList<Comment>
+    private lateinit var commentList: MutableList<MyComments>
 
     private lateinit var binding: FragmentCommentBinding
     override fun onCreateView(
@@ -75,7 +76,56 @@ class CommentFragment : Fragment() {
         progress = binding.progressBarComment
         commentList = arrayListOf()
 
-        adapter = CommentAdapter(requireContext(), commentList)
+        adapter = CommentAdapter(requireContext(), commentList,
+
+        onUpdate = { pos,comment->
+            commentList.removeAt(pos)
+            adapter.update(commentList)
+            val com=Comment(comment.commentID,currentUser.userId,comment.description,currentUser.name,comment.time)
+
+            when (aud) {
+                PostType.course -> {
+                    viewModel.deleteCommentsCourse(com,postID ,courseID)
+                }
+                PostType.personal_posts -> {
+                    viewModel.deleteCommentsPersonal(com,postID, currentUser.userId)
+                }
+
+                PostType.section_posts -> {
+                    viewModel.deleteCommentsSection(com,postID, currentUser.section, currentUser.department)
+                }
+
+                PostType.general -> {
+                    viewModel.deleteCommentsGeneral(com,postID)
+                }
+
+            }
+            commentText.setText(comment.description)
+                   }
+            , onDelete = { pos,comment->
+                commentList.removeAt(pos)
+                adapter.update(commentList)
+                val com = Comment(comment.commentID,currentUser.userId,comment.description,currentUser.name,comment.time)
+
+                when (aud) {
+                    PostType.course -> {
+                        viewModel.deleteCommentsCourse(com,postID ,courseID)
+                    }
+                    PostType.personal_posts -> {
+                        viewModel.deleteCommentsPersonal(com,postID, currentUser.userId)
+                    }
+
+                    PostType.section_posts -> {
+                        viewModel.deleteCommentsSection(com,postID, currentUser.section, currentUser.department)
+                    }
+
+                    PostType.general -> {
+                        viewModel.deleteCommentsGeneral(com,postID)
+                    }
+
+                }
+                observeDeletedComment()
+            })
 
         val args = this.arguments
         if (args != null) {
@@ -88,22 +138,19 @@ class CommentFragment : Fragment() {
         when (aud) {
             PostType.course -> {
                 viewModel.getCommentsCourse(postID, courseID)
-                //observeCommentCourse()
             }
 
             PostType.personal_posts -> {
                 viewModel.getCommentsPersonal(postID, currentUser.userId)
-                //  observeCommentPersonal()
             }
 
             PostType.section_posts -> {
                 viewModel.getCommentsSection(postID, currentUser.section, currentUser.department)
-                //   observeCommentSection()
             }
 
             PostType.general -> {
                 viewModel.getCommentsGeneral(postID)
-                //   observeCommentGeneral()
+
             }
 
         }
@@ -116,17 +163,45 @@ class CommentFragment : Fragment() {
         return binding.root
     }
 
+    private fun observeDeletedComment() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.addCommentGeneral.collectLatest { state ->
+                when (state) {
+                    is Resource.Loading -> {
+                        progress.visibility = View.VISIBLE
+
+                    }
+
+                    is Resource.Success -> {
+                        progress.visibility = View.GONE
+                        Toast.makeText(context, state.result, Toast.LENGTH_SHORT).show()
+                    }
+
+                    is Resource.Failure -> {
+                        progress.visibility = View.GONE
+                        Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    else -> {}
+                }
+            }
+
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val send = view.findViewById<Button>(R.id.send_comment_bt)
-        val commentText = view.findViewById<EditText>(R.id.comment_ed_text)
+     commentText = view.findViewById<EditText>(R.id.comment_ed_text)
         var comment = ""
         send.setOnClickListener {
             comment = commentText.text.toString()
+
             when (aud) {
                 PostType.course -> {
                     viewModel.addCommentsCourse(
-                        Comment("", comment, currentUser.name, Date()),
+                        Comment("",postID, comment, currentUser.name, Date()),
                         postID,
                         courseID
                     )
@@ -135,7 +210,7 @@ class CommentFragment : Fragment() {
 
                 PostType.personal_posts -> {
                     viewModel.addCommentsPersonal(
-                        Comment("", comment, currentUser.name, Date()),
+                        Comment("",postID, comment, currentUser.name, Date()),
                         postID,
                         currentUser.userId
                     )
@@ -144,7 +219,7 @@ class CommentFragment : Fragment() {
 
                 PostType.section_posts -> {
                     viewModel.addCommentsSection(
-                        Comment("", comment, currentUser.name, Date()),
+                        Comment("",postID, comment, currentUser.name, Date()),
                         postID,
                         currentUser.section,
                         currentUser.department
@@ -154,7 +229,7 @@ class CommentFragment : Fragment() {
 
                 PostType.general -> {
                     viewModel.addCommentsGeneral(
-                        Comment("", comment, currentUser.name, Date()),
+                        Comment("",postID, comment, currentUser.name, Date()),
                         postID
                     )
                 }
@@ -205,7 +280,11 @@ class CommentFragment : Fragment() {
                         progress.visibility = View.GONE
                         commentList.clear()
                         state.result.forEach {
-                            commentList.add(it)
+                            val comment=MyComments(it.commentID,it.description,it.authorName,false,it.time)
+                            if (it.userID == currentUser.userId){
+                                comment.myComment=true
+                            }
+                            commentList.add(comment)
                         }
                         adapter.update(commentList)
 

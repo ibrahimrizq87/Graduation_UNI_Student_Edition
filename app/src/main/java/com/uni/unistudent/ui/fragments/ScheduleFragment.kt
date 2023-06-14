@@ -64,7 +64,7 @@ class ScheduleFragment : Fragment() {
         val recyclerView=view.findViewById<RecyclerView>(R.id.schedule_recycler)
          progress= view.findViewById<ProgressBar>(R.id.progress_par)
 
-        val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout_schedule)
+        //val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.)
 
         /*
         // TODO solve duplicated data problem

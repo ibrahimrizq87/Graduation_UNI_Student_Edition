@@ -46,9 +46,9 @@ class HomeScreen : AppCompatActivity() {
 
             when(it.itemId){
                 R.id.home -> replaceFragment(HomeFragment())
-                R.id.attendance -> replaceFragment(AttendanceFragment())
+                R.id.notification-> replaceFragment(AttendanceFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
-                R.id.lectures -> {
+                R.id.schedule_and_attendees -> {
                     replaceFragment(ScheduleFragment())
                     updateUser(currentUser)
                 }
@@ -116,7 +116,7 @@ private fun observeImage(){
 
 
                             binding.userGrade.text=user.grade
-                            binding.userDepartement.text=user.department
+                            binding.userDepartment.text=user.department
                             binding.userName.text=user.name
 
                         }
