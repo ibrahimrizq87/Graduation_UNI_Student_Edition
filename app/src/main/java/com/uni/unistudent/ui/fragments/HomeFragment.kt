@@ -73,8 +73,19 @@ class HomeFragment : Fragment() {
        swipeRefreshLayout.setOnRefreshListener {
            swipeRefreshLayout.isRefreshing = false
            if (currentUser!=null){
-               viewModel.getCourses(currentUser.grade)
-           }
+               lifecycleScope.launchWhenCreated {
+               viewModel.getPosts(
+                   coursesList,
+                   currentUser.section,
+                   currentUser.department,
+                   currentUser.userId
+               )
+               progress.visibility=View.VISIBLE
+               // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
+               delay(500)
+               // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
+               progress.visibility=View.INVISIBLE
+               observe()           }}
            /* viewModel.getPosts(
                coursesList,
                currentUser.section,

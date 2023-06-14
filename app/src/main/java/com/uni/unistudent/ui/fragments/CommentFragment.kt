@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -192,7 +193,7 @@ class CommentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val send = view.findViewById<Button>(R.id.send_comment_bt)
+        val send = view.findViewById<ImageButton>(R.id.send_comment_bt)
      commentText = view.findViewById<EditText>(R.id.comment_ed_text)
         var comment = ""
         send.setOnClickListener {
@@ -201,7 +202,7 @@ class CommentFragment : Fragment() {
             when (aud) {
                 PostType.course -> {
                     viewModel.addCommentsCourse(
-                        Comment("",postID, comment, currentUser.name, Date()),
+                        Comment("",currentUser.userId, comment, currentUser.name, Date()),
                         postID,
                         courseID
                     )
@@ -210,7 +211,7 @@ class CommentFragment : Fragment() {
 
                 PostType.personal_posts -> {
                     viewModel.addCommentsPersonal(
-                        Comment("",postID, comment, currentUser.name, Date()),
+                        Comment("",currentUser.userId, comment, currentUser.name, Date()),
                         postID,
                         currentUser.userId
                     )
@@ -219,7 +220,7 @@ class CommentFragment : Fragment() {
 
                 PostType.section_posts -> {
                     viewModel.addCommentsSection(
-                        Comment("",postID, comment, currentUser.name, Date()),
+                        Comment("",currentUser.userId, comment, currentUser.name, Date()),
                         postID,
                         currentUser.section,
                         currentUser.department
@@ -229,7 +230,7 @@ class CommentFragment : Fragment() {
 
                 PostType.general -> {
                     viewModel.addCommentsGeneral(
-                        Comment("",postID, comment, currentUser.name, Date()),
+                        Comment("",currentUser.userId, comment, currentUser.name, Date()),
                         postID
                     )
                 }
@@ -302,84 +303,7 @@ class CommentFragment : Fragment() {
         }
 
     }
-    /*  private fun observeCommentCourse() {
-           lifecycleScope.launchWhenCreated {
-               viewModel.getCommentCourse.collectLatest {state->
-                   when (state) {
-                       is Resource.Loading -> {
-                           progress.visibility=View.VISIBLE
 
-                       }
-                       is Resource.Success -> {
-
-                           state.result.forEach {
-                               commentList.add(it)
-                           }
-
-                       }
-                       is Resource.Failure -> {
-                           progress.visibility=View.INVISIBLE
-                           Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
-                       }
-                       else->{}
-                   }
-               }
-           }
-
-       }
-       private fun observeCommentSection() {
-           lifecycleScope.launchWhenCreated {
-               viewModel.getCommentSection.collectLatest {state->
-                   when (state) {
-                       is Resource.Loading -> {
-                           progress.visibility=View.VISIBLE
-
-                       }
-                       is Resource.Success -> {
-
-                           state.result.forEach {
-                               commentList.add(it)
-                           }
-
-                       }
-                       is Resource.Failure -> {
-                           progress.visibility=View.INVISIBLE
-                           Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
-                       }
-                       else->{}
-                   }
-               }
-           }
-
-       }
-
-
-        private fun observeCommentPersonal() {
-            lifecycleScope.launchWhenCreated {
-                viewModel.getCommentPersonal.collectLatest { state ->
-                    when (state) {
-                        is Resource.Loading -> {
-                            progress.visibility = View.VISIBLE
-
-                        }
-                        is Resource.Success -> {
-
-                            state.result.forEach {
-                                commentList.add(it)
-                            }
-
-                        }
-                        is Resource.Failure -> {
-                            progress.visibility = View.INVISIBLE
-                            Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
-                                .show()
-                        }
-                        else -> {}
-                    }
-                }
-            }
-
-        }*/
 }
 
 
