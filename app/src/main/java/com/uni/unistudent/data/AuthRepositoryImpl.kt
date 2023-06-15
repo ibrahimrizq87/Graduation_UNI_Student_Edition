@@ -108,7 +108,6 @@ class AuthRepositoryImpl@Inject constructor(
         firebaseAuth.signOut()
         result.invoke()
         appPreferences.edit().putString(SharedPreferencesTable.user_session,null).apply()
-
     }
 
 

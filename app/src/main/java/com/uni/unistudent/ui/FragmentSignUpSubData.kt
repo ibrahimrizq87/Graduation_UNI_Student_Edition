@@ -12,14 +12,18 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.uni.unistudent.R
 import com.uni.unistudent.data.di.SignUpKey
 import com.uni.unistudent.databinding.FragmentSignupSubdataBinding
+import com.uni.unistudent.viewModel.AuthViewModel
 
 class FragmentSignUpSubData : Fragment() {
+    private val viewModel : AuthViewModel by viewModels()
     private lateinit var binding: FragmentSignupSubdataBinding
     private lateinit var mCollectData: CollectDataListener
     private lateinit var code: String
@@ -61,7 +65,6 @@ class FragmentSignUpSubData : Fragment() {
             if (userImageUri != Uri.EMPTY) {
                 if (code.isNotEmpty() && section.isNotEmpty() && department.isNotEmpty() && grade.isNotEmpty()) {
 
-
                     mainDataBundle.putString("code", code)
                     mainDataBundle.putString("section", section)
                     mainDataBundle.putString("department", department)
@@ -69,7 +72,7 @@ class FragmentSignUpSubData : Fragment() {
                     mainDataBundle.putString("userImageUri", userImageUri.toString())
 
                     mCollectData.signUp(mainDataBundle)
-
+                    //viewModel.Register()
 
                 } else {
                     Toast.makeText(requireContext(), "all data are required", Toast.LENGTH_SHORT)
@@ -106,9 +109,8 @@ class FragmentSignUpSubData : Fragment() {
     }
 
     // To send all data to signUp activity
-    public interface CollectDataListener {
+     interface CollectDataListener {
         fun signUp(bundle: Bundle)
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

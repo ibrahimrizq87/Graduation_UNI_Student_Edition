@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -29,8 +30,6 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class HomeScreen : AppCompatActivity() {
     private val viewModel : AuthViewModel by viewModels()
-   // private val fireViewModel : FirebaseViewModel by viewModels()
-
     private val storageViewModel : FireStorageViewModel by viewModels()
 
 // TODO save the image in a shared prefrance
@@ -39,6 +38,8 @@ class HomeScreen : AppCompatActivity() {
     private lateinit var binding: ActivityHomeScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        settingsOnStartApp()
+        currentUser=UserStudent()
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -60,9 +61,6 @@ class HomeScreen : AppCompatActivity() {
         }
 
     }
-
-
-
 
 
      fun replaceFragment(fragment: Fragment){
@@ -135,7 +133,7 @@ private fun observeImage(){
 
     override fun onStart() {
         super.onStart()
-        settingsOnStartApp()
+        Log.e("start home","I am here")
         viewModel.getSessionStudent {user->
             if (user !=null){
                 updateUser(user)
@@ -181,7 +179,7 @@ private fun observeImage(){
         binding.bottomNavigationView.selectedItemId = R.id.home
 
         binding.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
+           when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
                 R.id.notification -> replaceFragment(NotificationsFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())

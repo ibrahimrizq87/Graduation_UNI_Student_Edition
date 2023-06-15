@@ -13,6 +13,7 @@ import com.uni.unistudent.data.di.SignUpKey
 import com.uni.unistudent.databinding.FragmentSignupMaindataBinding
 
 class FragmentSignUpMainData : Fragment() {
+
     private lateinit var binding: FragmentSignupMaindataBinding
     private lateinit var name: String
     private lateinit var nationalID: String
@@ -26,20 +27,17 @@ class FragmentSignUpMainData : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSignupMaindataBinding.inflate(layoutInflater)
 
+        binding = FragmentSignupMaindataBinding.inflate(layoutInflater)
         binding.nextBtn.setOnClickListener {
             name = binding.signName.text.trim().toString()
             nationalID = binding.signNationalId.text.trim().toString()
             emailAddress = binding.signEmailAddress.text.trim().toString()
             password = binding.signPassword.text.trim().toString()
             confirmPassword = binding.signConfirmPassword.text.trim().toString()
-
-
-
             if (emailAddress.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && nationalID.isNotEmpty() && name.isNotEmpty()) {
                 if (password == confirmPassword) {
-                    if (password.length == 14) {
+                    if (nationalID.length == 14) {
                         var bundle: Bundle = bundleOf()
 
                         bundle.putString("name", name)
