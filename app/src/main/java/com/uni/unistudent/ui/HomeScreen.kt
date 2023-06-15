@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,29 +11,31 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.databinding.ActivityHomeScreenBinding
-import com.uni.unistudent.ui.fragments.*
+import com.uni.unistudent.ui.fragments.AttendanceFragment
+import com.uni.unistudent.ui.fragments.HomeFragment
+import com.uni.unistudent.ui.fragments.NotificationsFragment
+import com.uni.unistudent.ui.fragments.PermissionFragment
+import com.uni.unistudent.ui.fragments.ProfileFragment
+import com.uni.unistudent.ui.fragments.ScheduleFragment
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FireStorageViewModel
-import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class HomeScreen : AppCompatActivity() {
-    private val viewModel : AuthViewModel by viewModels()
-   // private val fireViewModel : FirebaseViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
+    // private val fireViewModel : FirebaseViewModel by viewModels()
 
-    private val storageViewModel : FireStorageViewModel by viewModels()
+    private val storageViewModel: FireStorageViewModel by viewModels()
 
-// TODO save the image in a shared prefrance
-     lateinit var currentUser: UserStudent
+    // TODO save the image in a shared prefrance
+    lateinit var currentUser: UserStudent
 
     private lateinit var binding: ActivityHomeScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,14 +45,15 @@ class HomeScreen : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnItemSelectedListener {
 
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
-                R.id.notification-> replaceFragment(AttendanceFragment())
+                R.id.notification -> replaceFragment(AttendanceFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.schedule_and_attendees -> {
                     replaceFragment(ScheduleFragment())
                     updateUser(currentUser)
                 }
+
                 else -> {
                 }
 
@@ -62,70 +64,79 @@ class HomeScreen : AppCompatActivity() {
     }
 
 
-
-
-
-     fun replaceFragment(fragment: Fragment){
-        val fragmentManager=supportFragmentManager
-        val fragmentTransaction =fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container,fragment)
+    fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
         fragmentTransaction.commit()
 
     }
 
-private fun updateUser(user: UserStudent){
-    viewModel.getUserStudent(user.userId,user.section,user.department,user.grade)
+    private fun updateUser(user: UserStudent) {
+        viewModel.getUserStudent(user.userId, user.section, user.department, user.grade)
     }
-private fun observeImage(){
 
-    lifecycleScope.launchWhenCreated {
-        storageViewModel.getUri.collectLatest { uri ->
+    private fun observeImage() {
 
-            when (uri) {
-                is Resource.Loading -> {
-                }
-                is Resource.Success -> {
-                    binding.progressBarImage.visibility = View.GONE
-                    Glide.with(this@HomeScreen)
-                        .load(uri.result)
-                        //.diskCacheStrategy(DiskCacheStrategy.RESOURCE)  //TODO https://stackoverflow.com/questions/53140975/load-already-fetched-image-when-offline-in-glide-for-android
-                        .placeholder(R.drawable.user_image)
-                        .into(binding.userImage)
-                }
-                is Resource.Failure -> {
-                    Toast.makeText(this@HomeScreen,uri.exception.toString(),Toast.LENGTH_LONG).show()
-                }
-                else ->{
+        lifecycleScope.launchWhenCreated {
+            storageViewModel.getUri.collectLatest { uri ->
+
+                when (uri) {
+                    is Resource.Loading -> {
+                    }
+
+                    is Resource.Success -> {
+                        binding.progressBarImage.visibility = View.GONE
+                        Glide.with(this@HomeScreen)
+                            .load(uri.result)
+                            //.diskCacheStrategy(DiskCacheStrategy.RESOURCE)  //TODO https://stackoverflow.com/questions/53140975/load-already-fetched-image-when-offline-in-glide-for-android
+                            .placeholder(R.drawable.user_image)
+                            .into(binding.userImage)
+                    }
+
+                    is Resource.Failure -> {
+                        Toast.makeText(this@HomeScreen, uri.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    else -> {
+                    }
                 }
             }
+
+
         }
-
-
     }
-}
 
 
     private fun observeUser() {
         lifecycleScope.launchWhenCreated {
-            viewModel.userStudent.collectLatest {state ->
+            viewModel.userStudent.collectLatest { state ->
                 when (state) {
                     is Resource.Loading -> {
                     }
+
                     is Resource.Success -> {
-                        val user =state.result
-                        if (user!=null){
+                        val user = state.result
+                        if (user != null) {
 
                             viewModel.setSession(state.result)
-                            binding.userGrade.text=user.grade
-                            binding.userDepartment.text=user.department
-                            binding.userName.text=user.name
+                            binding.userGrade.text = user.grade
+                            binding.userDepartment.text = user.department
+                            binding.userName.text = user.name
 
                         }
                     }
+
                     is Resource.Failure -> {
-                        Toast.makeText(this@HomeScreen,state.exception.toString(),Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@HomeScreen,
+                            state.exception.toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-                    else ->{
+
+                    else -> {
                     }
                 }
             }
@@ -136,30 +147,30 @@ private fun observeImage(){
     override fun onStart() {
         super.onStart()
         settingsOnStartApp()
-        viewModel.getSessionStudent {user->
-            if (user !=null){
+        viewModel.getSessionStudent { user ->
+            if (user != null) {
                 updateUser(user)
-                currentUser=user
-                if (checkForInternet(this)){
+                currentUser = user
+                if (checkForInternet(this)) {
                     storageViewModel.getUri(user.userId)
 
                 }
                 observeUser()
                 observeImage()
 
-                if (user.hasPermission){
+                if (user.hasPermission) {
                     replaceFragment(HomeFragment())
-                    binding.bottomNavigationView.visibility= View.VISIBLE
+                    binding.bottomNavigationView.visibility = View.VISIBLE
 
-                }else{
+                } else {
                     replaceFragment(PermissionFragment())
-                    binding.bottomNavigationView.visibility= View.INVISIBLE
+                    binding.bottomNavigationView.visibility = View.GONE
 
                 }
 
-            }else{
-                Toast.makeText(this,"no user found. have to register", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this,SignUp::class.java))
+            } else {
+                Toast.makeText(this, "no user found. have to register", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, SignUp::class.java))
             }
         }
     }
@@ -176,7 +187,8 @@ private fun observeImage(){
             else -> false
         }
     }
-    private fun settingsOnStartApp(){
+
+    private fun settingsOnStartApp() {
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.selectedItemId = R.id.home
 
@@ -189,10 +201,12 @@ private fun observeImage(){
                     replaceFragment(ScheduleFragment())
                     updateUser(currentUser)
                 }
+
                 else -> {
                 }
 
             }
             true
-           }
-}}
+        }
+    }
+}

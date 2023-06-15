@@ -53,6 +53,7 @@ class PostsAdapter(
 
         if (currentItem.type == WITHOUT_IMAGE) {
             (holder as ViewHolder2)
+
             holder.auth.text = currentItem.authorName
             holder.audience.text = currentItem.audience
             holder.text.text = currentItem.description

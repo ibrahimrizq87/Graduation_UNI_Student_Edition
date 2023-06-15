@@ -284,6 +284,7 @@ class CommentFragment : Fragment() {
                                 comment.myComment=true
                             }
                             commentList.add(comment)
+
                         }
                         adapter.update(commentList)
 
