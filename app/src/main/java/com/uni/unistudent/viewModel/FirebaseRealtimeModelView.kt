@@ -17,9 +17,6 @@ class FirebaseRealtimeModelView @Inject constructor(
    private val repository: FirebaseRealtimeRepo
 ): ViewModel() {
 
-
-
-
     private val _getAttendanceCode= MutableStateFlow<Resource<Boolean>?>(null)
     val getAttendanceCode=_getAttendanceCode.asStateFlow()
 

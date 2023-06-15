@@ -9,7 +9,7 @@ data class Posts (
     var postID:String="",
     var courseID:String="",
     val time: Date= Date(),
-    val imageUrl: Uri? =null,
+    val imageUrl: Uri? =null, // TODO remove the uri and get the picture from the id of the post
     val audience:String="",
     var type:Int=0
         )

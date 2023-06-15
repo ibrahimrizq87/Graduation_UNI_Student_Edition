@@ -39,8 +39,7 @@ class CommentAdapter(
             holder.update_bt.visibility = View.VISIBLE
         }
         holder.auth.text = currentItem.authorName
-        //todo ya ibrahem
-        holder.auth_id.text = "112222"
+        holder.auth_id.text = currentItem.authorCode
         holder.comment.text = currentItem.description
 
 
