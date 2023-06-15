@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
+import com.uni.unistudent.data.di.SignUpKey
 import com.uni.unistudent.databinding.ActivityHomeScreenBinding
 import com.uni.unistudent.ui.fragments.AttendanceFragment
 import com.uni.unistudent.ui.fragments.HomeFragment
@@ -29,20 +31,21 @@ import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class HomeScreen : AppCompatActivity() {
-    private val viewModel: AuthViewModel by viewModels()
-    // private val fireViewModel : FirebaseViewModel by viewModels()
 
+    private val viewModel: AuthViewModel by viewModels()
     private val storageViewModel: FireStorageViewModel by viewModels()
 
-    // TODO save the image in a shared prefrance
-    lateinit var currentUser: UserStudent
+    //TODO save the image in a shared prefrance
 
+    lateinit var currentUser: UserStudent
     private lateinit var binding: ActivityHomeScreenBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when (it.itemId) {
@@ -146,7 +149,7 @@ class HomeScreen : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        //settingsOnStartApp()
+        // settingsOnStartApp()
         viewModel.getSessionStudent { user ->
             if (user != null) {
                 updateUser(user)
@@ -160,7 +163,9 @@ class HomeScreen : AppCompatActivity() {
 
                 if (user.hasPermission) {
                     replaceFragment(HomeFragment())
+                    binding.layoutHomeScreen.visibility = View.VISIBLE
                     binding.bottomNavigationView.visibility = View.VISIBLE
+
 
                 } else {
                     replaceFragment(PermissionFragment())
@@ -169,8 +174,11 @@ class HomeScreen : AppCompatActivity() {
                 }
 
             } else {
-                Toast.makeText(this, "no user found. have to register", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, SignUp::class.java))
+
+                val intent = Intent(this, SignUp::class.java)
+
+                intent.putExtra(SignUpKey.FROM_HOME_SCREEN, getString(R.string.notFoundUser))
+                startActivity(intent)
             }
         }
     }

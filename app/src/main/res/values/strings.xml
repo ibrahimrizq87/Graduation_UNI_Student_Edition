@@ -114,4 +114,8 @@
      <string name="passwordNotMatch">Password not match!</string>
      <string name="invalidEmail">Email format is not valid</string>
      <string name="alldata">All data are required</string>
+     <string name="notFoundUser">No user found, have to register.</string>
+     <string name="notPickImage">Make sure to choose picture</string>
+     <string name="waitingPermission">Waiting.. \n for permission to log in from the college</string>
+     <string name="checkUpdate">Close app and start again to check for update</string>
  </resources>

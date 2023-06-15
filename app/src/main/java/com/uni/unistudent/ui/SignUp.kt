@@ -10,16 +10,20 @@ import androidx.fragment.app.Fragment
 import com.uni.unistudent.databinding.ActivitySignUpBinding
 
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.R
 import com.uni.unistudent.data.Resource
+import com.uni.unistudent.data.di.SignUpKey
 
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FireStorageViewModel
@@ -84,6 +88,15 @@ class SignUp : AppCompatActivity(), FragmentSignUpSubData.CollectDataListener {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         nextFragment(FragmentSignUpMainData())
+
+        val message = intent.getStringExtra(SignUpKey.FROM_HOME_SCREEN)
+        if (message != null) {
+            if (message.isNotEmpty()){
+                val rootView = findViewById<View>(android.R.id.content)
+                showTopSnackBar(rootView, message)
+
+            }
+        }
 
         userImageUri = Uri.EMPTY
         //----------------
@@ -162,14 +175,6 @@ class SignUp : AppCompatActivity(), FragmentSignUpSubData.CollectDataListener {
     }
 
 
-    //-----------------------------------------------
-
-
-    // if the user is registered go to the home page
-    // if there is no user registered delete user session
-
-
-
     override fun signUp(bundle: Bundle) {
 
         userImageUri = Uri.parse(bundle.getString("userImageUri"))
@@ -189,6 +194,25 @@ class SignUp : AppCompatActivity(), FragmentSignUpSubData.CollectDataListener {
         )
         observeSignUp()
     }
+    private fun showTopSnackBar(view: View, message: String) {
+        val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
 
+        val slideInAnimation = AnimationUtils.loadAnimation(view.context, R.anim.slide_in_top)
+        val slideOutAnimation = AnimationUtils.loadAnimation(view.context, R.anim.slide_out_bottom)
+
+        snackBar.view.animation = slideInAnimation
+        snackBar.addCallback(object : Snackbar.Callback() {
+            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                snackBar.view.animation = slideOutAnimation
+            }
+        })
+
+
+        val params = snackBar.view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+        //  params.setMargins(10,10,10,10)
+        snackBar.view.layoutParams = params
+        snackBar.show()
+    }
 
 }

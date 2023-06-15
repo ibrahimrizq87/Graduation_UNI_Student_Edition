@@ -64,6 +64,7 @@ object RealTime{
     val lab="lab"
 }
 object SignUpKey{
-    val MAIN_DATA="main_data"
-    val SUB_DATA="sub_data"
+    const val MAIN_DATA="main_data"
+    const val BACK_DATA="back_data"
+   const val FROM_HOME_SCREEN="message_from_home"
 }
