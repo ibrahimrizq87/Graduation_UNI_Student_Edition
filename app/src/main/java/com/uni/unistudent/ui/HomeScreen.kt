@@ -146,7 +146,7 @@ class HomeScreen : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        settingsOnStartApp()
+        //settingsOnStartApp()
         viewModel.getSessionStudent { user ->
             if (user != null) {
                 updateUser(user)

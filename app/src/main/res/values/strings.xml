@@ -113,4 +113,5 @@
      <string name="passwordCheck">Make sure to write the 14 number of the national id</string>
      <string name="passwordNotMatch">Password not match!</string>
      <string name="invalidEmail">Email format is not valid</string>
+     <string name="alldata">All data are required</string>
  </resources>

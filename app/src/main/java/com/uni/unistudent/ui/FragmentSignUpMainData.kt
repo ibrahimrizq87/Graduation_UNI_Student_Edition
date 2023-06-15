@@ -41,12 +41,8 @@ class FragmentSignUpMainData : Fragment() {
                 val isEmailValid = isEmailValid(emailAddress)
                 if (isEmailValid){
 
-                    val password = "Password123"
-                    val isValid = isPasswordValid(password)
-                    if (isValid) {
-                        // Password format is valid
-
-
+                    val isPassValid = isPasswordValid(password)
+                    if (isPassValid) {
                     if (password == confirmPassword) {
                     if (nationalID.length == 14) {
                         var bundle: Bundle = bundleOf()
@@ -87,15 +83,9 @@ class FragmentSignUpMainData : Fragment() {
                     ).show()
 
                 }
-
-
-
-
             } else {
-                Toast.makeText(requireContext(), "All data are required", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.alldata, Toast.LENGTH_SHORT).show()
             }
-
-
 
         }
 

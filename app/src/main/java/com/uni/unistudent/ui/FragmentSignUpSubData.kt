@@ -88,12 +88,13 @@ class FragmentSignUpSubData : Fragment() {
         return binding.root
     }
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is CollectDataListener) {
             mCollectData = context
         } else {
-            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "error in collect data listener", Toast.LENGTH_SHORT).show()
         }
     }
 
