@@ -100,11 +100,14 @@
     <string name="running">Running</string>
     <string name="lab">Lab</string>
     <string name="to">To</string>
-    <string name="comment">Comment</string>
+    <string name="comment">Comment here..</string>
     <string name="zero_comments">0</string>
     <string name="grade">Grade</string>
     <string name="dot">></string>
     <string name="home">Home</string>
     <string name="notification">Notification</string>
     <string name="Schedule">Schedule</string>
-</resources>
+     <string name="edit">Edit</string>
+     <string name="delete">Delete</string>
+     <string name="author">Author</string>
+ </resources>
