@@ -1,5 +1,6 @@
 package com.uni.unistudent.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,8 +21,11 @@ import com.uni.unistudent.adapters.ScheduleAdapter
 import com.uni.unistudent.classes.Courses
 import com.uni.unistudent.classes.ScheduleDataType
 import com.uni.unistudent.classes.user.UserStudent
+import com.uni.unistudent.data.IsScanSuccess
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.databinding.FragmentScheduleBinding
+import com.uni.unistudent.ui.CustomDialog
+import com.uni.unistudent.ui.Scan
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +34,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @AndroidEntryPoint
-class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
+class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSuccess{
 
     private lateinit var binding: FragmentScheduleBinding
     private val viewModel: FirebaseViewModel by viewModels()
@@ -46,7 +50,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
     private var isLecLoaded = false
     private var isSecLoaded = false
     private var isCorLoaded = false
-
+    private lateinit var waitDialog: CustomDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +69,12 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                 ).show()
             }
         }
+
+
+
+        waitDialog = activity?.let { CustomDialog(it) }!!
+        IsScanSuccess.setListener(this)
+
         return binding.root
     }
 
@@ -94,12 +104,18 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                 Toast.makeText(requireContext(), item.professorName, Toast.LENGTH_SHORT).show()
             }, onAttendClicked = { pos, item ->
                 if (scheduleDataType[pos].isRunning) {
+                    //TODO  MOVE TO SCAN Activity @WALID
+                    /*
                     val bundle = Bundle()
                     bundle.putString("id", item.eventId)
                     val attendanceFragment = ScheduleFragment()
                     attendanceFragment.arguments = bundle
                     Navigation.findNavController(view)
                         .navigate(R.id.action_scheduleFragment_to_attendanceFragment)
+*/
+
+                    val intent = Intent(requireContext(), Scan::class.java)
+                    startActivity(intent)
 
                 } else {
 
@@ -285,5 +301,34 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
     override fun onCustomClick(day: String) {
         daySelected.postValue(day)
        }
+
+    override fun isScanSuccess(flag: Boolean, qr: String) {
+
+        if (flag && qr.isNotEmpty()) {
+
+            val strings = qr.split('-')
+            if (strings.size == 2) {
+                /*
+                waitDialog.showWait()
+                checkQRViewModel.checkQR(requireContext(), strings[0])
+                checkQRViewModel.qr.observe(requireActivity(), Observer {
+                    if (it == strings[1]) {
+                        //TODO add user id or student in list attendees in firebase here
+
+                        waitDialog.showSuccess()
+                    } else {
+                        waitDialog.showFailed()
+                    }
+                })
+                */
+            }else{
+                waitDialog.showFailed()
+            }
+        }else{
+            waitDialog.showFailed()
+        }
+
+
+    }
 
 }

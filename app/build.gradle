@@ -91,6 +91,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     // swiper refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    //QrCode
+    implementation 'com.google.android.gms:play-services-vision:20.1.3'
 }

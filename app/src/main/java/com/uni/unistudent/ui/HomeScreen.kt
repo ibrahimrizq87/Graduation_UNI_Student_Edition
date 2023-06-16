@@ -12,13 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.data.di.SignUpKey
 import com.uni.unistudent.databinding.ActivityHomeScreenBinding
-import com.uni.unistudent.ui.fragments.AttendanceFragment
 import com.uni.unistudent.ui.fragments.HomeFragment
 import com.uni.unistudent.ui.fragments.NotificationsFragment
 import com.uni.unistudent.ui.fragments.PermissionFragment
@@ -46,11 +44,12 @@ class HomeScreen : AppCompatActivity() {
 
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        settingsOnStartApp()
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
-                R.id.notification -> replaceFragment(AttendanceFragment())
+                R.id.notification -> replaceFragment(NotificationsFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.schedule_and_attendees -> {
                     replaceFragment(ScheduleFragment())
@@ -169,6 +168,7 @@ class HomeScreen : AppCompatActivity() {
 
                 } else {
                     replaceFragment(PermissionFragment())
+                    binding.layoutHomeScreen.visibility = View.VISIBLE
                     binding.bottomNavigationView.visibility = View.GONE
 
                 }
