@@ -112,10 +112,10 @@ class AuthRepositoryImpl@Inject constructor(
 
 
     override fun storeSession(id :String, user :UserStudent, result :(UserStudent?)-> Unit){
-       val document =database.collection(user.grade)
-           .document(user.department)
-           .collection(user.section)
-           .document(user.userId)
+        val document=database.collection(user.grade)
+            /* .document(userTeaching.department)
+             .collection(userTeaching.section)*/
+            .document(user.userId)
         document
             .get()
             .addOnCompleteListener {
