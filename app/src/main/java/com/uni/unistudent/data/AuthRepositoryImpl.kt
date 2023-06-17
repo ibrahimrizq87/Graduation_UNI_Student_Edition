@@ -108,11 +108,11 @@ class AuthRepositoryImpl@Inject constructor(
         firebaseAuth.signOut()
         result.invoke()
         appPreferences.edit().putString(SharedPreferencesTable.user_session,null).apply()
+
     }
 
-
-    override fun storeSession(id :String, user :UserStudent, result :(UserStudent?)-> Unit){
-        val document=database.collection(user.grade)
+    override fun storeSession(id :String, user :UserStudent, result :(UserStudent?)-> Unit) {
+        val document = database.collection(user.grade)
             /* .document(userTeaching.department)
              .collection(userTeaching.section)*/
             .document(user.userId)
@@ -125,7 +125,7 @@ class AuthRepositoryImpl@Inject constructor(
                         setSession(userTeaching)
                     }
                     result.invoke(userTeaching)
-                }else{
+                } else {
                     result.invoke(null)
                 }
             }

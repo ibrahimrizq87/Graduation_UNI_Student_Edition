@@ -62,7 +62,6 @@ class CommentFragment : Fragment() {
         authViewModel.getSessionStudent { user ->
             if (user != null) {
                 currentUser = user
-                Toast.makeText(context, currentUser.name, Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(
                     context,
@@ -81,31 +80,30 @@ class CommentFragment : Fragment() {
 
         adapter = CommentAdapter(requireContext(), commentList,
 
-        onUpdate = { pos,comment->
-            commentList.removeAt(pos)
-            val com=Comment(comment.commentID,currentUser.userId,comment.description,currentUser.name,currentUser.code,comment.time)
+            onUpdate = { pos,comment->
+                val com = Comment(comment.commentID,currentUser.userId,comment.description,currentUser.name,currentUser.code,comment.time)
 
-            when (aud) {
-                PostType.course -> {
-                    viewModel.deleteCommentsCourse(com,postID ,courseID)
-                }
-                PostType.personal_posts -> {
-                    viewModel.deleteCommentsPersonal(com,postID, currentUser.userId)
-                }
+                when (aud) {
+                    PostType.course -> {
+                        viewModel.deleteCommentsCourse(com,postID ,courseID)
+                    }
+                    PostType.personal_posts -> {
+                        viewModel.deleteCommentsPersonal(com,postID, currentUser.userId)
+                    }
 
-                PostType.section_posts -> {
-                    viewModel.deleteCommentsSection(com,postID, currentUser.section, currentUser.department)
-                }
+                    PostType.section_posts -> {
+                        viewModel.deleteCommentsSection(com,postID, currentUser.section, currentUser.department)
+                    }
 
-                PostType.general -> {
-                    viewModel.deleteCommentsGeneral(com,postID)
-                }
+                    PostType.general -> {
+                        viewModel.deleteCommentsGeneral(com,postID)
+                    }
 
+                }
+                commentText.setText(comment.description)
             }
-            commentText.setText(comment.description)
-                   }
             , onDelete = { pos,comment->
-                commentList.removeAt(pos)
+
                 val com = Comment(comment.commentID,currentUser.userId,comment.description,currentUser.name,currentUser.code,comment.time)
                 when (aud) {
                     PostType.course -> {
@@ -192,11 +190,11 @@ class CommentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val send = view.findViewById<ImageButton>(R.id.send_comment_bt)
-     commentText = view.findViewById<EditText>(R.id.comment_ed_text)
+        commentText = view.findViewById(R.id.comment_ed_text)
         var comment = ""
         send.setOnClickListener {
             comment = commentText.text.toString()
-
+            commentText.text.clear()
             when (aud) {
                 PostType.course -> {
                     viewModel.addCommentsCourse(
@@ -272,7 +270,6 @@ class CommentFragment : Fragment() {
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
-
                     }
 
                     is Resource.Success -> {
@@ -298,10 +295,8 @@ class CommentFragment : Fragment() {
                     else -> {}
                 }
             }
+           }
+
         }
 
-    }
-
 }
-
-

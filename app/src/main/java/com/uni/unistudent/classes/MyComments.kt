@@ -9,5 +9,5 @@ data class MyComments (
     val authorName : String="",
     val authorCode : String="",
     var myComment:Boolean=false,
-    val time: Date = Date()
+    val time:Date=Date()
 )

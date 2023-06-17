@@ -10,5 +10,5 @@ data class Comment (
     val authorName : String="",
     val authorCode : String="",
     val time: Date = Date()
-//TODO set user type for the comment
+    //TODO set user type for the comment
 )

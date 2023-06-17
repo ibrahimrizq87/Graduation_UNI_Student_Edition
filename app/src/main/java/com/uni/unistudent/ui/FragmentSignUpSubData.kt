@@ -4,26 +4,26 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.uni.unistudent.R
 import com.uni.unistudent.data.di.SignUpKey
 import com.uni.unistudent.databinding.FragmentSignupSubdataBinding
-import com.uni.unistudent.viewModel.AuthViewModel
 
 class FragmentSignUpSubData : Fragment() {
-    private val viewModel : AuthViewModel by viewModels()
     private lateinit var binding: FragmentSignupSubdataBinding
     private lateinit var mCollectData: CollectDataListener
     private lateinit var code: String
@@ -63,53 +63,54 @@ class FragmentSignUpSubData : Fragment() {
 
 
             if (userImageUri != Uri.EMPTY) {
-                if (code.isNotEmpty() && section.isNotEmpty() && department.isNotEmpty() && grade.isNotEmpty()) {
 
+                if (code.isNotEmpty() && section.isNotEmpty() && department.isNotEmpty() && grade.isNotEmpty()) {
                     mainDataBundle.putString("code", code)
                     mainDataBundle.putString("section", section)
                     mainDataBundle.putString("department", department)
                     mainDataBundle.putString("grade", grade)
                     mainDataBundle.putString("userImageUri", userImageUri.toString())
-
+                    /// ----------- ///
                     mCollectData.signUp(mainDataBundle)
-                    //viewModel.Register()
+                    /// ------------- ///
 
                 } else {
-                    Toast.makeText(requireContext(), "all data are required", Toast.LENGTH_SHORT)
-                        .show()
+                    showTopSnackBar(binding.root,  R.string.alldata)
+
                 }
             } else {
-                Toast.makeText(requireContext(), "make sure to choose picture", Toast.LENGTH_SHORT)
-                    .show()
+                showTopSnackBar(binding.root, R.string.notPickImage)
+
             }
         }
 
         binding.backBtn.setOnClickListener {
+            parentFragmentManager.setFragmentResult(SignUpKey.BACK_DATA, mainDataBundle)
             (activity as SignUp).previousFragment(FragmentSignUpMainData())
         }
 
         return binding.root
     }
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is CollectDataListener) {
             mCollectData = context
         } else {
-            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "error in collect data listener", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // pick an image from the gallery
+
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, SignUp.IMAGE_REQUEST_CODE)
-
     }
 
     // To send all data to signUp activity
-     interface CollectDataListener {
+    public interface CollectDataListener {
         fun signUp(bundle: Bundle)
     }
 
@@ -146,7 +147,6 @@ class FragmentSignUpSubData : Fragment() {
             }
         }
     }
-
     private fun setSectionSpinner() {
         val sectionList = resources.getStringArray(R.array.Section)
         val sectionAdapter: ArrayAdapter<CharSequence> =
@@ -172,7 +172,6 @@ class FragmentSignUpSubData : Fragment() {
             }
         }
     }
-
     private fun setDepartmentSpinner() {
         val depList = resources.getStringArray(R.array.departement)
         val depAdapter: ArrayAdapter<CharSequence> =
@@ -196,5 +195,25 @@ class FragmentSignUpSubData : Fragment() {
 
             }
         }
+    }
+    private fun showTopSnackBar(view: View, message: Int) {
+        val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+
+        val slideInAnimation = AnimationUtils.loadAnimation(view.context, R.anim.slide_in_top)
+        val slideOutAnimation = AnimationUtils.loadAnimation(view.context, R.anim.slide_out_bottom)
+
+        snackBar.view.animation = slideInAnimation
+        snackBar.addCallback(object : Snackbar.Callback() {
+            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                snackBar.view.animation = slideOutAnimation
+            }
+        })
+
+
+        val params = snackBar.view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+        //  params.setMargins(10,10,10,10)
+        snackBar.view.layoutParams = params
+        snackBar.show()
     }
 }

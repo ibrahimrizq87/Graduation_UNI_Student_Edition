@@ -30,7 +30,7 @@
             android:textColor="@color/black_100"
             android:textSize="@dimen/text_size_12"
             android:textStyle="bold"
-            tools:text="Walid Atef" />
+            tools:text="Walid atef " />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,11 +55,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+
         android:background="@drawable/comment_background"
         android:minWidth="120dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
@@ -69,14 +67,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="start"
-            android:orientation="horizontal"
             android:paddingStart="@dimen/margin_16dp"
+
             android:paddingEnd="@dimen/margin_16dp"
             android:textColor="@color/black_70"
             android:textSize="@dimen/text_size_12"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="comment 4" />
+            tools:text="commentcommjjjjjhhhhntcomment 4" />
 
 
         <LinearLayout

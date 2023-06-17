@@ -40,6 +40,7 @@ class CommentAdapter(
         }
         holder.auth.text = currentItem.authorName
         holder.auth_id.text = currentItem.authorCode
+
         holder.comment.text = currentItem.description
 
 

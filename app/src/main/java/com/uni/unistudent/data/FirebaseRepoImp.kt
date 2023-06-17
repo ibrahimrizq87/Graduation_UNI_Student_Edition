@@ -4,6 +4,7 @@ package com.uni.unistudent.data
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.uni.unistudent.classes.*
 import com.uni.unistudent.data.di.FireStoreTable
 import com.uni.unistudent.data.di.PermissionsRequired
@@ -467,14 +468,15 @@ class FirebaseRepoImp@Inject constructor(
         }
     }
 
+
     override suspend fun addCommentGeneralPosts(
         comment: Comment,
         postID: String,
         result: (Resource<String>) -> Unit
     ) {
-        val document=database.collection(FireStoreTable.post).document(postID).collection(FireStoreTable.comment)
+        val document=database.collection(FireStoreTable.post).document(postID).collection(FireStoreTable.comment).document()
         comment.commentID=document.id
-        document.add(comment)
+        document.set(comment)
             .addOnSuccessListener {
                 result.invoke(
                     Resource.Success("comment added successfully")
@@ -499,9 +501,9 @@ class FirebaseRepoImp@Inject constructor(
     ) {
 
         val document=database.collection(PostType.section_posts).document(dep).collection(section)
-            .document(postID).collection(FireStoreTable.comment)
+            .document(postID).collection(FireStoreTable.comment).document()
         comment.commentID=document.id
-        document.add(comment)
+        document.set(comment)
             .addOnSuccessListener {
                 result.invoke(
                     Resource.Success("comment added successfully")
@@ -524,9 +526,9 @@ class FirebaseRepoImp@Inject constructor(
         result: (Resource<String>) -> Unit
     ) {
         val document=database.collection(FireStoreTable.courses).document(courseID).collection(FireStoreTable.post)
-            .document(postID).collection(FireStoreTable.comment)
+            .document(postID).collection(FireStoreTable.comment).document()
         comment.commentID=document.id
-        document.add(comment)
+        document.set(comment)
             .addOnSuccessListener {
                 result.invoke(
                     Resource.Success("comment added successfully")
@@ -548,9 +550,9 @@ class FirebaseRepoImp@Inject constructor(
         result: (Resource<String>) -> Unit
     ) {
         val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
-            .document(postID).collection(FireStoreTable.comment)
+            .document(postID).collection(FireStoreTable.comment).document()
         comment.commentID=document.id
-        document.add(comment)
+        document.set(comment)
             .addOnSuccessListener {
                 result.invoke(
                     Resource.Success("comment added successfully")
@@ -562,31 +564,38 @@ class FirebaseRepoImp@Inject constructor(
                         it.localizedMessage
                     )
                 )
-            }
-    }
-
-    override suspend fun getCommentGeneralPosts(
-        postID: String,
-        result: (Resource<List<Comment>>) -> Unit
-    ) {
-        val document=database.collection(FireStoreTable.post)
-            .document(postID).collection(FireStoreTable.comment)
-
-        document.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                result.invoke(Resource.Failure(e.toString()))
-                return@addSnapshotListener
-            }
-
-            val listOfPosts= arrayListOf<Comment>()
-            for (rec in snapshot!!){
-                val post = rec.toObject(Comment::class.java)
-                listOfPosts.add(post)
-            }
-            result.invoke(Resource.Success(listOfPosts))
+                }
         }
 
+
+
+
+
+
+
+
+override suspend fun getCommentGeneralPosts(
+    postID: String,
+    result: (Resource<List<Comment>>) -> Unit
+) {
+    val document=database.collection(FireStoreTable.post)
+        .document(postID).collection(FireStoreTable.comment).orderBy("time", Query.Direction.ASCENDING)
+
+    document.addSnapshotListener { snapshot, e ->
+        if (e != null) {
+            result.invoke(Resource.Failure(e.toString()))
+            return@addSnapshotListener
+        }
+
+        val listOfPosts= arrayListOf<Comment>()
+        for (rec in snapshot!!){
+            val post = rec.toObject(Comment::class.java)
+            listOfPosts.add(post)
+        }
+        result.invoke(Resource.Success(listOfPosts))
     }
+
+}
 
     override suspend fun getCommentSectionPosts(
         postID: String,
@@ -596,7 +605,7 @@ class FirebaseRepoImp@Inject constructor(
         result: (Resource<List<Comment>>) -> Unit
     ) {
         val document=database.collection(PostType.section_posts).document(dep).collection(section)
-            .document(postID).collection(FireStoreTable.comment)
+            .document(postID).collection(FireStoreTable.comment).orderBy("time", Query.Direction.ASCENDING)
         document.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 result.invoke(Resource.Failure(e.toString()))
@@ -618,7 +627,7 @@ class FirebaseRepoImp@Inject constructor(
         result: (Resource<List<Comment>>) -> Unit
     ) {
         val document=database.collection(FireStoreTable.courses).document(courseID).collection(FireStoreTable.post)
-            .document(postID).collection(FireStoreTable.comment)
+            .document(postID).collection(FireStoreTable.comment).orderBy("time", Query.Direction.ASCENDING)
         document.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 result.invoke(Resource.Failure(e.toString()))
@@ -641,22 +650,32 @@ class FirebaseRepoImp@Inject constructor(
         userID: String,
         result: (Resource<List<Comment>>) -> Unit
     ) {
-        val document=database.collection(PostType.personal_posts).document(userID).collection(FireStoreTable.post)
+        val document = database.collection(PostType.personal_posts).document(userID)
+            .collection(FireStoreTable.post)
             .document(postID).collection(FireStoreTable.comment)
+            .orderBy("time", Query.Direction.ASCENDING)
         document.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 result.invoke(Resource.Failure(e.toString()))
                 return@addSnapshotListener
             }
 
-            val listOfPosts= arrayListOf<Comment>()
-            for (rec in snapshot!!){
+            val listOfPosts = arrayListOf<Comment>()
+            for (rec in snapshot!!) {
                 val post = rec.toObject(Comment::class.java)
                 listOfPosts.add(post)
             }
             result.invoke(Resource.Success(listOfPosts))
         }
     }
+
+
+
+
+
+
+
+
 
 
     override suspend fun getProfessor(
@@ -760,11 +779,6 @@ class FirebaseRepoImp@Inject constructor(
 
     }
 
-
-
-
-
-
      override fun getLectures2(courses: List<Courses>,dep:String, result: (List<Lecture>?) -> Unit) {
         val listOfPosts = arrayListOf<Lecture>()
         for (course in courses) {
@@ -794,7 +808,6 @@ class FirebaseRepoImp@Inject constructor(
 
 
     }
-
 
 
 }

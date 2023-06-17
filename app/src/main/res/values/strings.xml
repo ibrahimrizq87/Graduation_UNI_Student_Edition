@@ -57,7 +57,7 @@
     <string name="action_sign_in">Sign in or register</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">The password must be an uppercase letter and a number</string>
     <string name="login_failed">"Login failed"</string>
     <string name="close">Close</string>
     <string name="doNotHaveAccount">Don\'t have any account?</string>
@@ -110,4 +110,12 @@
      <string name="edit">Edit</string>
      <string name="delete">Delete</string>
      <string name="author">Author</string>
+     <string name="passwordCheck">Make sure to write the 14 number of the national id</string>
+     <string name="passwordNotMatch">Password not match!</string>
+     <string name="invalidEmail">Email format is not valid</string>
+     <string name="alldata">All data are required</string>
+     <string name="notFoundUser">No user found, have to register.</string>
+     <string name="notPickImage">Make sure to choose picture</string>
+     <string name="waitingPermission">Waiting.. \n for permission to log in from the college</string>
+     <string name="checkUpdate">Close app and start again to check for update</string>
  </resources>
