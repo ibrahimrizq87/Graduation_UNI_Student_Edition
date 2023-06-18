@@ -93,16 +93,18 @@ class PostsAdapter(
     inner class ViewHolder1(item: View) : RecyclerView.ViewHolder(item) {
         val image = item.findViewById<ImageView>(R.id.post_image)
         val auth = item.findViewById<TextView>(R.id.auth_with)
+
         val audience = item.findViewById<TextView>(R.id.audience_with)
         val text = item.findViewById<TextView>(R.id.text_with)
-        val addComment = item.findViewById<Button>(R.id.bt_comment)
+
+        val itemComments: LinearLayout = item.findViewById(R.id.comment_layout)
         val recyItem = item.findViewById<ConstraintLayout>(R.id.post_item_with)
 
         init {
             recyItem.setOnClickListener {
                 onItemClicked.invoke(adapterPosition, postList[adapterPosition])
             }
-            addComment.setOnClickListener {
+            itemComments.setOnClickListener {
                 onComment.invoke(adapterPosition, postList[adapterPosition])
             }
 

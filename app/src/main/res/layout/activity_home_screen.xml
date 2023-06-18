@@ -159,6 +159,7 @@
             android:background="@drawable/background_bottom_navigation"
             android:elevation="@dimen/elevation"
             app:labelVisibilityMode="unlabeled"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
