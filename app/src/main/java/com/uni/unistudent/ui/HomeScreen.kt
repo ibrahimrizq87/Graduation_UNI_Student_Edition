@@ -45,6 +45,7 @@ class HomeScreen : AppCompatActivity() {
         settingsOnStartApp()
 
     }
+
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -52,9 +53,11 @@ class HomeScreen : AppCompatActivity() {
         fragmentTransaction.commit()
 
     }
+
     private fun updateUser(user: UserStudent) {
         viewModel.getUserStudent(user.userId, user.section, user.department, user.grade)
     }
+
     private fun observeImage() {
 
         lifecycleScope.launchWhenCreated {
@@ -86,6 +89,7 @@ class HomeScreen : AppCompatActivity() {
 
         }
     }
+
     private fun observeUser() {
         lifecycleScope.launchWhenCreated {
             viewModel.userStudent.collectLatest { state ->
@@ -120,6 +124,7 @@ class HomeScreen : AppCompatActivity() {
 
         }
     }
+
     override fun onStart() {
         super.onStart()
 
@@ -152,6 +157,7 @@ class HomeScreen : AppCompatActivity() {
             }
         }
     }
+
     private fun checkForInternet(context: Context): Boolean {
 
         val connectivityManager =
@@ -171,13 +177,28 @@ class HomeScreen : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.notification -> replaceFragment(NotificationsFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
+                R.id.home -> {
+
+                    replaceFragment(HomeFragment())
+                    binding.profileData.visibility = View.VISIBLE
+                }
+
+                R.id.notification -> {
+                    replaceFragment(NotificationsFragment())
+                    binding.profileData.visibility = View.VISIBLE
+                }
+
+                R.id.profile -> {
+                    replaceFragment(ProfileFragment())
+                    binding.profileData.visibility = View.GONE
+                }
+
                 R.id.schedule_and_attendees -> {
                     replaceFragment(ScheduleFragment())
+                    binding.profileData.visibility = View.VISIBLE
                     updateUser(currentUser)
                 }
+
                 else -> {
                 }
             }

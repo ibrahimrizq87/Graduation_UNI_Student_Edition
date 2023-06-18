@@ -53,6 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_8dp"
                 android:layout_marginTop="@dimen/margin_4dp"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_18"
                 android:text="@{user.name}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{user.code}"
+                android:textSize="@dimen/text_size_12"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_student_name"
@@ -100,6 +103,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:textSize="@dimen/text_size_12"
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -110,8 +114,9 @@
                         style="@style/TextDataStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_14"
                         android:text="@{user.grade}"
-                        tools:text="4" />
+                        tools:text="grade 4" />
 
                 </LinearLayout>
 
@@ -127,12 +132,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:textSize="@dimen/text_size_12"
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/department" />
 
                     <TextView
+                        android:textSize="@dimen/text_size_14"
                         android:id="@+id/text_department_name"
                         style="@style/TextDataStyle"
                         android:layout_width="wrap_content"
@@ -153,12 +160,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:textSize="@dimen/text_size_12"
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section" />
 
                     <TextView
+                        android:textSize="@dimen/text_size_14"
                         android:id="@+id/text_section"
                         style="@style/TextDataStyle"
                         android:layout_width="wrap_content"
@@ -176,6 +185,9 @@
                 android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/courses"
+                android:textColor="@color/black_50"
+                android:textSize="@dimen/text_size_14"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/student_data" />
 
