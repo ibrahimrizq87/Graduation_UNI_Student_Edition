@@ -3,16 +3,15 @@ package com.uni.unistudent.ui.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.unistudent.R
@@ -21,10 +20,8 @@ import com.uni.unistudent.adapters.ScheduleAdapter
 import com.uni.unistudent.classes.Courses
 import com.uni.unistudent.classes.ScheduleDataType
 import com.uni.unistudent.classes.user.UserStudent
-import com.uni.unistudent.data.IsScanSuccess
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.databinding.FragmentScheduleBinding
-import com.uni.unistudent.ui.CustomDialog
 import com.uni.unistudent.ui.Scan
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
@@ -116,13 +113,12 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
 
                     Toast.makeText(
                         context,
-                        "wait for the lecturer to be arrived",
+                        R.string.wait_lecturer_arrived,
                         Toast.LENGTH_LONG
                     ).show()
 
                 }
             })
-
         //-------------- setting the recycler data---------------------------//
         recyclerView.adapter = adapter
         //-------------- setting the recycler data---------------------------//
@@ -132,10 +128,8 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
         //---------------------- getting the required data ---------------------------//
 
         daySelected.observe(viewLifecycleOwner) { it2 ->
-
             val scheduleDataType =
                 scheduleDataType.filter { it.day == it2 } as MutableList<ScheduleDataType>
-
             if (scheduleDataType.size == 0) {
                 binding.imageEmptySchedule.visibility = View.VISIBLE
             } else {
@@ -144,9 +138,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
             adapter.update(scheduleDataType)
             adapter.notifyDataSetChanged()
         }
-
     }
-
     private fun observeSections() {
         lifecycleScope.launchWhenCreated {
             viewModel.getSection.collectLatest { state ->
@@ -196,7 +188,6 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
         }
 
     }
-
     private fun observeLectures() {
         lifecycleScope.launchWhenCreated {
             viewModel.getLecture.collectLatest { state ->
@@ -247,7 +238,6 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
             }
         }
     }
-
     private fun observeCourses() {
         lifecycleScope.launchWhenCreated {
             viewModel.getCourses.collectLatest { state ->
@@ -261,9 +251,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                     is Resource.Success -> {
                         isCorLoaded = true
                         if (isSecLoaded && isLecLoaded) {
-
                             progress.visibility = View.GONE
-
                         }
 
                         state.result.forEach {
@@ -278,7 +266,6 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                         delay(1000)
                         observeLectures()
                         observeSections()
-
                     }
 
                     is Resource.Failure -> {
@@ -293,10 +280,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
             }
         }
     }
-
     override fun onCustomClick(day: String) {
         daySelected.postValue(day)
     }
-
-
 }
