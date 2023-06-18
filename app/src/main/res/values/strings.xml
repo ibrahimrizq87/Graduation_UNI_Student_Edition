@@ -121,4 +121,5 @@
     <string name="permissionDenied">Permission Denied!</string>
     <string name="at">\@</string>
     <string name="notOurCode">This is not our code!</string>
+    <string name="wait_lecturer_arrived">Wait for the lecturer to be arrived</string>
 </resources>

@@ -1,5 +1,4 @@
 package com.uni.unistudent.classes
-
 data class ScheduleDataType(
 
     val eventId: String = "",
