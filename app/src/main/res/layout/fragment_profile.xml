@@ -54,7 +54,6 @@
                 android:layout_marginStart="@dimen/margin_8dp"
                 android:layout_marginTop="@dimen/margin_4dp"
                 android:text="@{user.name}"
-                android:textSize="@dimen/text_size_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_profile"
@@ -66,7 +65,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{user.code}"
-                android:textSize="@dimen/text_size_12"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_student_name"
@@ -79,7 +77,7 @@
                 android:onClick="OpenSetting"
                 android:src="@drawable/ic_setting"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="31dp" />
+                app:layout_constraintTop_toTopOf="@id/image_profile" />
 
             <LinearLayout
                 android:id="@+id/student_data"
@@ -105,8 +103,7 @@
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/grade"
-                        android:textSize="@dimen/text_size_12" />
+                        android:text="@string/grade" />
 
                     <TextView
                         android:id="@+id/text_grade"
@@ -114,8 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{user.grade}"
-                        android:textSize="@dimen/text_size_14"
-                        tools:text="grade four" />
+                        tools:text="4" />
 
                 </LinearLayout>
 
@@ -134,8 +130,7 @@
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/department"
-                        android:textSize="@dimen/text_size_12" />
+                        android:text="@string/department" />
 
                     <TextView
                         android:id="@+id/text_department_name"
@@ -143,7 +138,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{user.department}"
-                        android:textSize="@dimen/text_size_14"
                         tools:text="CS" />
                 </LinearLayout>
 
@@ -162,8 +156,7 @@
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/section"
-                        android:textSize="@dimen/text_size_12" />
+                        android:text="@string/section" />
 
                     <TextView
                         android:id="@+id/text_section"
@@ -171,7 +164,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{user.section}"
-                        android:textSize="@dimen/text_size_14"
                         tools:text="s1" />
                 </LinearLayout>
 
@@ -184,8 +176,6 @@
                 android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_marginTop="@dimen/margin_16dp"
                 android:text="@string/courses"
-                android:textSize="@dimen/text_size_14"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/student_data" />
 

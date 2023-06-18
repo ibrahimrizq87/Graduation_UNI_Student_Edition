@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +16,6 @@ import com.uni.unistudent.classes.Professor
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.databinding.FragmentProfileBinding
-import com.uni.unistudent.ui.HomeScreen
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FireStorageViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
@@ -45,13 +43,11 @@ class ProfileFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentProfileBinding>(
             inflater, R.layout.fragment_profile, container, false
         )
-
-
-
         authViewModel.getSessionStudent { user ->
             if (user != null) {
                 currentUser = user
                 binding.user = currentUser
+                Toast.makeText(context, currentUser.name, Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(
                     context,
