@@ -35,16 +35,43 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_profile"
-                android:layout_width="@dimen/profile_pic_size"
-                android:layout_height="@dimen/profile_pic_size"
-                android:layout_marginStart="@dimen/margin_16dp"
-                android:layout_marginTop="@dimen/margin_8dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_pic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="22dp"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/radius"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_name"
-                tools:src="@drawable/user_image" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/image_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/user_image" />
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar_image_profile"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:backgroundTint="@color/black"
+                        android:progressBackgroundTint="@color/black"
+                        android:progressTint="@color/black" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/text_student_name"
@@ -52,13 +79,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_8dp"
-                android:layout_marginTop="@dimen/margin_4dp"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_18"
+                android:layout_marginTop="4dp"
                 android:text="@{user.name}"
+                android:textSize="@dimen/text_size_18"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_profile"
+                app:layout_constraintTop_toBottomOf="@+id/card_pic"
                 tools:text="Febronia Sameh" />
 
             <TextView
@@ -66,12 +93,13 @@
                 style="@style/TextBodyStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{user.code}"
+                android:text="@{'@'+ user.code}"
                 android:textSize="@dimen/text_size_12"
+                android:layout_marginTop="-8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_student_name"
-                tools:text="febronia2012" />
+                tools:text="@febronia2012" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -80,7 +108,7 @@
                 android:onClick="OpenSetting"
                 android:src="@drawable/ic_setting"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/image_profile" />
+                app:layout_constraintTop_toTopOf="@+id/card_pic" />
 
             <LinearLayout
                 android:id="@+id/student_data"
@@ -103,19 +131,19 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:textSize="@dimen/text_size_12"
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/grade" />
+                        android:text="@string/grade"
+                        android:textSize="@dimen/text_size_12" />
 
                     <TextView
                         android:id="@+id/text_grade"
                         style="@style/TextDataStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_14"
                         android:text="@{user.grade}"
+                        android:textSize="@dimen/text_size_14"
                         tools:text="grade 4" />
 
                 </LinearLayout>
@@ -132,19 +160,19 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:textSize="@dimen/text_size_12"
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/department" />
+                        android:text="@string/department"
+                        android:textSize="@dimen/text_size_12" />
 
                     <TextView
-                        android:textSize="@dimen/text_size_14"
                         android:id="@+id/text_department_name"
                         style="@style/TextDataStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{user.department}"
+                        android:textSize="@dimen/text_size_14"
                         tools:text="CS" />
                 </LinearLayout>
 
@@ -160,19 +188,19 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:textSize="@dimen/text_size_12"
                         style="@style/TextBodyStyle.Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/section" />
+                        android:text="@string/section"
+                        android:textSize="@dimen/text_size_12" />
 
                     <TextView
-                        android:textSize="@dimen/text_size_14"
                         android:id="@+id/text_section"
                         style="@style/TextDataStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{user.section}"
+                        android:textSize="@dimen/text_size_14"
                         tools:text="s1" />
                 </LinearLayout>
 
@@ -183,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_16dp"
-                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_8dp"
                 android:text="@string/courses"
                 android:textColor="@color/black_50"
                 android:textSize="@dimen/text_size_14"
@@ -191,29 +219,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/student_data" />
 
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_courses"
-                style="@style/RecyclerStyle"
-                android:paddingVertical="@dimen/margin_16dp"
-                android:paddingHorizontal="@dimen/margin_8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_courses"
-                tools:listitem="@layout/item_profile_course">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
             <ProgressBar
                 android:id="@+id/progress_bar_profile"
                 android:layout_width="@dimen/progress_bar_size"
                 android:layout_height="@dimen/progress_bar_size"
                 android:layout_gravity="center"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_userid" />
+                app:layout_constraintTop_toBottomOf="@+id/text_courses" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_courses"
+                style="@style/RecyclerStyle"
+                android:layout_height="0dp"
+                android:paddingHorizontal="@dimen/margin_16dp"
+                android:layout_marginTop="-8dp"
+                android:paddingVertical="@dimen/margin_8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progress_bar_profile"
+                tools:listitem="@layout/item_profile_course">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

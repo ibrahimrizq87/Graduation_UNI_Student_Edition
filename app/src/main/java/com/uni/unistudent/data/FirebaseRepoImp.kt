@@ -256,7 +256,9 @@ class FirebaseRepoImp@Inject constructor(
             }
             val listOfPosts= arrayListOf<Courses>()
             for (rec in snapshot!!){
+
                 val post = rec.toObject(Courses::class.java)
+                Log.e("coures-test-walid", post.courseCode)
                 listOfPosts.add(post)
             }
             result.invoke(Resource.Success(listOfPosts))

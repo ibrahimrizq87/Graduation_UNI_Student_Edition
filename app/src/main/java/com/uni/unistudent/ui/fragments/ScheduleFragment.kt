@@ -142,12 +142,10 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
     private fun observeSections() {
         lifecycleScope.launchWhenCreated {
             viewModel.getSection.collectLatest { state ->
-
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
                     }
-
                     is Resource.Success -> {
                         isSecLoaded = true
                         if (isLecLoaded && isCorLoaded) {
@@ -172,15 +170,12 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
 
                         }
                         daySelected.postValue("Saturday")
-
                     }
-
                     is Resource.Failure -> {
                         progress.visibility = View.INVISIBLE
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
                             .show()
                     }
-
                     else -> {
                     }
                 }
@@ -245,15 +240,12 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
                         binding.imageEmptySchedule.visibility = View.GONE
-
                     }
-
                     is Resource.Success -> {
                         isCorLoaded = true
                         if (isSecLoaded && isLecLoaded) {
                             progress.visibility = View.GONE
                         }
-
                         state.result.forEach {
                             coursesList.add(it)
                         }
@@ -267,13 +259,11 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                         observeLectures()
                         observeSections()
                     }
-
                     is Resource.Failure -> {
                         progress.visibility = View.INVISIBLE
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
                             .show()
                     }
-
                     else -> {
                     }
                 }
