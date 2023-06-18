@@ -1,8 +1,7 @@
 plugins {
-        id("com.google.dagger.hilt.android")
-        id 'com.google.gms.google-services'
-
     id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.dagger.hilt.android'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
     id 'kotlin-kapt'
@@ -14,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.uni.unistudent"
-        minSdk 24
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"

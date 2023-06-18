@@ -121,5 +121,14 @@
     <string name="permissionDenied">Permission Denied!</string>
     <string name="at">\@</string>
     <string name="notOurCode">This is not our code!</string>
+
+    <string name="information">Information</string>
+    <string name="faculty">Faculty</string>
+    <string name="section">Section</string>
+    <string name="gpa">GPA</string>
+    <string name="courses">Courses</string>
+    <string name="error_message_in_profile_screen">"Error on loading user data please refresh the current screen "</string>
+
     <string name="wait_lecturer_arrived">Wait for the lecturer to be arrived</string>
+
 </resources>
