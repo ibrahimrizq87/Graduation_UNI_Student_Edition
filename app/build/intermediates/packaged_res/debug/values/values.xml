@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Section">
+        <item>S1</item>
+        <item>S2</item>
+        <item>S3</item>
+        <item>S4</item>
+        <item>S5</item>
+        <item>S6</item>
+        <item>S7</item>
+        <item>S8</item>
+    </string-array>
+    <string-array name="departement">
+        <item>CS</item>
+        <item>IS</item>
+        <item>IT</item>
+        <item>BIO</item>
+        <item>SOFT</item>
+        <item>GROUP1</item>
+        <item>GROUP2</item>
+        <item>GROUP3</item>
+        <item>GROUP4</item>
+        <item>GROUP5</item>
+    </string-array>
+    <string-array name="grades">
+        <item>grade one</item>
+        <item>grade two</item>
+        <item>grade three</item>
+        <item>grade four</item>
+    </string-array>
+    <string-array name="who_array">
+        <item>Student</item>
+        <item>Professor</item>
+        <item>Assistant</item>
+    </string-array>
+    <color name="black">#FF000000</color>
+    <color name="black_10">#1A121212</color>
+    <color name="black_100">#FF000000</color>
+    <color name="black_50">#848E99</color>
+    <color name="black_70">#B3000000</color>
+    <color name="blue">#2B0077</color>
+    <color name="colorAccent">@color/black</color>
+    <color name="colorBackground">@color/white_50</color>
+    <color name="colorOnPrimary">@color/white_100</color>
+    <color name="colorPrimary">@color/white_50</color>
+    <color name="colorPrimaryDark">@color/white_50</color>
+    <color name="colorPrimaryVariant">@color/white_50</color>
+    <color name="colorSecondary">@color/black_100</color>
+    <color name="color_post_item">#D9FFFFFF</color>
+    <color name="color_section_item">#F4FDF1</color>
+    <color name="green">#12D245</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_100">#FFFFFFFF</color>
+    <color name="white_50">#E1E1ED</color>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="app_bar_height">64dp</dimen>
+    <dimen name="cardView_default_height">80dp</dimen>
+    <dimen name="cardView_default_radius">12dp</dimen>
+    <dimen name="cardView_radius_10">10dp</dimen>
+    <dimen name="corner_20">20dp</dimen>
+    <dimen name="elevation">1dp</dimen>
+    <dimen name="icon_16">16dp</dimen>
+    <dimen name="icon_30">30dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="margin_2dp">2dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="profile_course_card_height">64dp</dimen>
+    <dimen name="profile_pic_size">80dp</dimen>
+    <dimen name="progress_bar_size">24dp</dimen>
+    <dimen name="radius">50dp</dimen>
+    <dimen name="radius_16">16dp</dimen>
+    <dimen name="radius_24">24dp</dimen>
+    <dimen name="small_elevation">1dp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_36">36sp</dimen>
+    <dimen name="text_size_8">8sp</dimen>
+    <dimen name="view_height">40dp</dimen>
+    <dimen name="view_stroke">1dp</dimen>
+    <string name="Attend">Attend</string>
+    <string name="Collage_ID">Collage ID</string>
+    <string name="Confirm_Password">Confirm Password</string>
+    <string name="Email">Academic Email</string>
+    <string name="Faculty">Faculty</string>
+    <string name="Name">Name</string>
+    <string name="National_ID">National ID</string>
+    <string name="Password">Password</string>
+    <string name="Schedule">Schedule</string>
+    <string name="SignIn">Sign In</string>
+    <string name="SignInUnderLine"><u>Sign in</u></string>
+    <string name="SignUp">SignUp</string>
+    <string name="SignUpUnderLine"><u>Sign Up</u></string>
+    <string name="Sign_Up">Sign up</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="alldata">All data are required</string>
+    <string name="app_name">UNI Student</string>
+    <string name="at">\@</string>
+    <string name="attendance_failed">There was a problem, try again</string>
+    <string name="attendance_succeeded">Attendance succeeded</string>
+    <string name="author">Author</string>
+    <string name="back">Back</string>
+    <string name="checkUpdate">Close app and start again to check for update</string>
+    <string name="choose_department">Choose department</string>
+    <string name="choose_grade">Choose grade</string>
+    <string name="choose_section">Choose section</string>
+    <string name="city">City</string>
+    <string name="close">Close</string>
+    <string name="comment">Comment here..</string>
+    <string name="comments">Comments</string>
+    <string name="courses">Courses</string>
+    <string name="default_web_client_id" translatable="false">645258939659-q0udhcnuhgue7ms8nvclp3ll0jsk6fem.apps.googleusercontent.com</string>
+    <string name="delete">Delete</string>
+    <string name="department">Department</string>
+    <string name="doNotHaveAccount">Don\'t have any account?</string>
+    <string name="dot">></string>
+    <string name="edit">Edit</string>
+    <string name="error_message_in_profile_screen">"Error on loading user data please refresh the current screen "</string>
+    <string name="faculty">Faculty</string>
+    <string name="firebase_database_url" translatable="false">https://graduation-ef946-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">645258939659</string>
+    <string name="google_api_key" translatable="false">AIzaSyAdowieYqVCqYNxvZDGyHIZkS0tf3lbrmw</string>
+    <string name="google_app_id" translatable="false">1:645258939659:android:693db1b2b6461fc7b4e60e</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAdowieYqVCqYNxvZDGyHIZkS0tf3lbrmw</string>
+    <string name="google_storage_bucket" translatable="false">graduation-ef946.appspot.com</string>
+    <string name="gpa">GPA</string>
+    <string name="grade">Grade</string>
+    <string name="hall_and_lab">Hall</string>
+    <string name="haveAccount">Already have any account?</string>
+    <string name="have_acc">Already have an account?</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="id_test">\@fci125</string>
+    <string name="information">Information</string>
+    <string name="invalidEmail">Email format is not valid</string>
+    <string name="invalid_password">The password must be an uppercase letter and a number</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="lab">Lab</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="next_slider">Next</string>
+    <string name="notFoundUser">No user found, have to register.</string>
+    <string name="notOurCode">This is not our code!</string>
+    <string name="notPickImage">Make sure to choose picture</string>
+    <string name="not_running">Not running</string>
+    <string name="notification">Notification</string>
+    <string name="ok">OK</string>
+    <string name="passwordCheck">Make sure to write the 14 number of the national id</string>
+    <string name="passwordNotMatch">Password not match!</string>
+    <string name="password_encoding">*******</string>
+    <string name="permissionDenied">Permission Denied!</string>
+    <string name="phone">Phone</string>
+    <string name="point">.</string>
+    <string name="profile">Profile</string>
+    <string name="project_id" translatable="false">graduation-ef946</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="register">Register</string>
+    <string name="running">Running</string>
+    <string name="scan">Scan</string>
+    <string name="scan_subTitle">The QR code to take attendance</string>
+    <string name="section">Section</string>
+    <string name="student">Student</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="to">To</string>
+    <string name="uni">UNI</string>
+    <string name="wait">wait ..</string>
+    <string name="wait_lecturer_arrived">Wait for the lecturer to be arrived</string>
+    <string name="waitingPermission">Waiting.. \n for permission to log in from the college</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="zero_comments">0</string>
+    <style name="MainTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="fontFamily">@font/poppins_semi_bold</item>
+    </style>
+    <style name="RecyclerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/margin_16dp</item>
+        <item name="spanCount">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="TextBodyStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:textColor">@color/black_50</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+    </style>
+    <style name="TextBodyStyle.Profile" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:textColor">@color/black_50</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <style name="TextCardStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+    </style>
+    <style name="TextDataStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <style name="Theme.UNIStudent" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+    <style name="Theme.UNIStudent.custom" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+
+
+    </style>
+</resources>

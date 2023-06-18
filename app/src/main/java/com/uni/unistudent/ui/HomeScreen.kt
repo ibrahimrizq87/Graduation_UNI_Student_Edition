@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -44,7 +45,9 @@ class HomeScreen : AppCompatActivity() {
         setContentView(binding.root)
         settingsOnStartApp()
 
+
     }
+
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -52,9 +55,11 @@ class HomeScreen : AppCompatActivity() {
         fragmentTransaction.commit()
 
     }
+
     private fun updateUser(user: UserStudent) {
         viewModel.getUserStudent(user.userId, user.section, user.department, user.grade)
     }
+
     private fun observeImage() {
 
         lifecycleScope.launchWhenCreated {
@@ -86,6 +91,7 @@ class HomeScreen : AppCompatActivity() {
 
         }
     }
+
     private fun observeUser() {
         lifecycleScope.launchWhenCreated {
             viewModel.userStudent.collectLatest { state ->
@@ -120,6 +126,7 @@ class HomeScreen : AppCompatActivity() {
 
         }
     }
+
     override fun onStart() {
         super.onStart()
 
@@ -152,6 +159,7 @@ class HomeScreen : AppCompatActivity() {
             }
         }
     }
+
     private fun checkForInternet(context: Context): Boolean {
 
         val connectivityManager =
@@ -171,17 +179,33 @@ class HomeScreen : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.notification -> replaceFragment(NotificationsFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
+                R.id.home -> {
+                    binding.profileData.visibility = View.VISIBLE
+                    replaceFragment(HomeFragment())
+                }
+
+                R.id.notification -> {
+                    binding.profileData.visibility = View.VISIBLE
+                    replaceFragment(NotificationsFragment())
+                }
+
+                R.id.profile -> {
+
+                    replaceFragment(ProfileFragment())
+                    binding.profileData.visibility = View.GONE
+                }
+
                 R.id.schedule_and_attendees -> {
+                    binding.profileData.visibility = View.VISIBLE
                     replaceFragment(ScheduleFragment())
                     updateUser(currentUser)
                 }
+
                 else -> {
                 }
             }
             true
         }
     }
+
 }
