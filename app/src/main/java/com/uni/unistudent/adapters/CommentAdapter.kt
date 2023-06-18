@@ -17,8 +17,10 @@ import com.uni.unistudent.R
 import com.uni.unistudent.classes.Comment
 import com.uni.unistudent.classes.MyComments
 import com.uni.unistudent.classes.Posts
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import java.util.Date
 
 
 class CommentAdapter(
@@ -35,7 +37,7 @@ class CommentAdapter(
 
         return myViewHolder(view)
     }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: myViewHolder, position: Int) {
         val currentItem = commentList[position]
         if (currentItem.myComment) {
@@ -46,10 +48,23 @@ class CommentAdapter(
         holder.auth_id.text = currentItem.authorCode
 
         holder.comment.text = currentItem.description
-
+        holder.time.text = formatDate( currentItem.time)
 
     }
+    @RequiresApi(Build.VERSION_CODES.O)
 
+    fun formatDate(date: Date): String {
+        val currentTime = Date().toInstant()
+        val inputTime = date.toInstant()
+        val diff = Duration.between(inputTime, currentTime)
+        return when {
+            diff.seconds < 60 -> "just now"
+            diff.toMinutes() < 60 -> "${diff.toMinutes()}m"
+            diff.toHours() < 24 -> "${diff.toHours()}h"
+            diff.toDays() < 31 -> "${diff.toDays()} day"
+            else -> "${diff.toDays() / 30} month"
+        }
+    }
     fun update(list: MutableList<MyComments>) {
         this.commentList = list
         notifyDataSetChanged()
