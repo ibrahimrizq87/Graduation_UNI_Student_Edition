@@ -34,10 +34,8 @@ class HomeScreen : AppCompatActivity() {
     private val storageViewModel: FireStorageViewModel by viewModels()
 
     //TODO save the image in a shared prefrance
-
     lateinit var currentUser: UserStudent
     private lateinit var binding: ActivityHomeScreenBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,27 +43,8 @@ class HomeScreen : AppCompatActivity() {
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         settingsOnStartApp()
-        binding.bottomNavigationView.setOnItemSelectedListener {
-
-            when (it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.notification -> replaceFragment(NotificationsFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
-                R.id.schedule_and_attendees -> {
-                    replaceFragment(ScheduleFragment())
-                    updateUser(currentUser)
-                }
-
-                else -> {
-                }
-
-            }
-            true
-        }
 
     }
-
-
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -73,11 +52,9 @@ class HomeScreen : AppCompatActivity() {
         fragmentTransaction.commit()
 
     }
-
     private fun updateUser(user: UserStudent) {
         viewModel.getUserStudent(user.userId, user.section, user.department, user.grade)
     }
-
     private fun observeImage() {
 
         lifecycleScope.launchWhenCreated {
@@ -109,8 +86,6 @@ class HomeScreen : AppCompatActivity() {
 
         }
     }
-
-
     private fun observeUser() {
         lifecycleScope.launchWhenCreated {
             viewModel.userStudent.collectLatest { state ->
@@ -145,10 +120,9 @@ class HomeScreen : AppCompatActivity() {
 
         }
     }
-
     override fun onStart() {
         super.onStart()
-        // settingsOnStartApp()
+
         viewModel.getSessionStudent { user ->
             if (user != null) {
                 updateUser(user)
@@ -164,25 +138,20 @@ class HomeScreen : AppCompatActivity() {
                     replaceFragment(HomeFragment())
                     binding.layoutHomeScreen.visibility = View.VISIBLE
                     binding.bottomNavigationView.visibility = View.VISIBLE
-
-
+                    settingsOnStartApp()
                 } else {
                     replaceFragment(PermissionFragment())
                     binding.layoutHomeScreen.visibility = View.VISIBLE
                     binding.bottomNavigationView.visibility = View.GONE
-
                 }
 
             } else {
-
                 val intent = Intent(this, SignUp::class.java)
-
                 intent.putExtra(SignUpKey.FROM_HOME_SCREEN, getString(R.string.notFoundUser))
                 startActivity(intent)
             }
         }
     }
-
     private fun checkForInternet(context: Context): Boolean {
 
         val connectivityManager =
@@ -209,10 +178,8 @@ class HomeScreen : AppCompatActivity() {
                     replaceFragment(ScheduleFragment())
                     updateUser(currentUser)
                 }
-
                 else -> {
                 }
-
             }
             true
         }

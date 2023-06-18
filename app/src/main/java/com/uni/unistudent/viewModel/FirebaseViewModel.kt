@@ -4,17 +4,19 @@ package com.uni.unistudent.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.uni.unistudent.classes.*
+import com.uni.unistudent.classes.Assistant
+import com.uni.unistudent.classes.Comment
+import com.uni.unistudent.classes.Courses
+import com.uni.unistudent.classes.Lecture
+import com.uni.unistudent.classes.Permission
+import com.uni.unistudent.classes.Posts
+import com.uni.unistudent.classes.Professor
+import com.uni.unistudent.classes.Section
 import com.uni.unistudent.data.FirebaseRepo
 import com.uni.unistudent.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

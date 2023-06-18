@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:name=".data.di.MyApplication"
         android:allowBackup="true"
@@ -22,13 +28,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.SignUp"
-            android:exported="false">
-
+            android:exported="false"
+            >
         </activity>
 
-
+        <activity
+            android:name=".ui.Scan"
+            android:exported="false"
+            android:parentActivityName=".ui.HomeScreen">
+        </activity>
     </application>
 
 </manifest>

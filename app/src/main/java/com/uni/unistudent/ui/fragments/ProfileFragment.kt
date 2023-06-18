@@ -23,9 +23,9 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
-    lateinit var coursesList:MutableList<Courses>
-    lateinit var lecturerList:MutableList<Professor>
-    lateinit var assistantList:MutableList<Assistant>
+    lateinit var coursesList: MutableList<Courses>
+    lateinit var lecturerList: MutableList<Professor>
+    lateinit var assistantList: MutableList<Assistant>
 
     lateinit var currentUser: UserStudent
     private val viewModel: FirebaseViewModel by viewModels()
@@ -37,29 +37,37 @@ class ProfileFragment : Fragment() {
         coursesList = arrayListOf()
         lecturerList = arrayListOf()
         assistantList = arrayListOf()
-        authViewModel.getSessionStudent {user->
-            if (user !=null){
-                currentUser=user
-                Toast.makeText(context,currentUser.name, Toast.LENGTH_LONG).show()
+        authViewModel.getSessionStudent { user ->
+            if (user != null) {
+                currentUser = user
+
+            } else {
+                Toast.makeText(
+                    context,
+                    "error on loading user data please refresh the current screen ",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-            else{
-                Toast.makeText(context,"error on loading user data please refresh the current screen ", Toast.LENGTH_LONG).show()
-            }}
-        val view= inflater.inflate(R.layout.fragment_profile, container, false)
-//TODO viewPager2 to view 3 lists lecturer , assistant and courses
+        }
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        //todo viewPager2 to view 3 lists lecturer , assistant and courses
         viewModel.getCourses(currentUser.grade)
         observeCourses()
+
+     
         return view
 
     }
+
     private fun observeCourses() {
         lifecycleScope.launchWhenCreated {
             viewModel.getCourses.collectLatest { state ->
                 when (state) {
                     is Resource.Loading -> {
-                      //  progress.visibility=View.VISIBLE
+                        //  progress.visibility=View.VISIBLE
 
                     }
+
                     is Resource.Success -> {
 
                         state.result.forEach {
@@ -67,26 +75,28 @@ class ProfileFragment : Fragment() {
                         }
                         viewModel.getProfessor(coursesList)
                         viewModel.getAssistant(coursesList)
-                      //  progress.visibility=View.VISIBLE
+                        //  progress.visibility=View.VISIBLE
                         // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
                         delay(200)
                         // ---------------------------- wait until the data is updated because of the delay done because of the loops---------------------//
-                     //   progress.visibility=View.INVISIBLE
+                        //   progress.visibility=View.INVISIBLE
 
                         observeLecturers()
                         observeAssistant()
 
                     }
+
                     is Resource.Failure -> {
-                       // progress.visibility=View.INVISIBLE
-                        Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                        // progress.visibility=View.INVISIBLE
+                        Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
                     }
-                    else->{}
+
+                    else -> {}
                 }
             }
-        }}
-
-
+        }
+    }
 
     private fun observeAssistant() {
         lifecycleScope.launchWhenCreated {
@@ -96,26 +106,29 @@ class ProfileFragment : Fragment() {
                         //progress.visibility=View.VISIBLE
 
                     }
+
                     is Resource.Success -> {
                         //progress.visibility=View.INVISIBLE
 
                         state.result.forEach {
-                assistantList.add(it)
+                            assistantList.add(it)
 
                         }
 
                     }
+
                     is Resource.Failure -> {
-                       // progress.visibility=View.INVISIBLE
-                        Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                        // progress.visibility=View.INVISIBLE
+                        Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
                     }
-                    else->{}
-                }}}
+
+                    else -> {}
+                }
+            }
+        }
 
     }
-
-
-
 
     private fun observeLecturers() {
         lifecycleScope.launchWhenCreated {
@@ -123,21 +136,27 @@ class ProfileFragment : Fragment() {
 
                 when (state) {
                     is Resource.Loading -> {
-                       // progress.visibility=View.VISIBLE
+                        // progress.visibility=View.VISIBLE
 
                     }
+
                     is Resource.Success -> {
-                       // progress.visibility=View.INVISIBLE
+                        // progress.visibility=View.INVISIBLE
                         state.result.forEach {
-                         lecturerList.add(it)
+                            lecturerList.add(it)
                         }
                     }
+
                     is Resource.Failure -> {
-                      //  progress.visibility=View.INVISIBLE
-                        Toast.makeText(context,state.exception.toString(),Toast.LENGTH_LONG).show()
+                        //  progress.visibility=View.INVISIBLE
+                        Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
                     }
-                    else->{}
-                }}}
+
+                    else -> {}
+                }
+            }
+        }
     }
 
 }

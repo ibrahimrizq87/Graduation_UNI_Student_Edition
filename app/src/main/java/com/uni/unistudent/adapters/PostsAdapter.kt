@@ -2,6 +2,7 @@ package com.uni.unistudent.adapters
 
 
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.Posts
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 class PostsAdapter(
     val context: Context,
@@ -56,7 +60,7 @@ class PostsAdapter(
 
             holder.auth.text = currentItem.authorName
             holder.audience.text = currentItem.audience
-            holder.text.text = currentItem.description
+            holder.text.text =currentItem.description
 
         } else {
             (holder as ViewHolder1)
@@ -69,6 +73,7 @@ class PostsAdapter(
             holder.auth.text = currentItem.authorName
             holder.audience.text = currentItem.audience
             holder.text.text = currentItem.description
+
 
 
         }
@@ -124,6 +129,9 @@ class PostsAdapter(
                 onItemClicked.invoke(adapterPosition, postList[adapterPosition])
             }
 
-          }
+        }
 
-}}
+    }
+
+
+}

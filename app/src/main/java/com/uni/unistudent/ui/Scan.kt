@@ -10,12 +10,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.uni.unistudent.R
-import com.uni.unistudent.data.IsScanSuccess
 import com.uni.unistudent.databinding.ActivityScanBinding
 import java.io.IOException
 
@@ -25,21 +25,21 @@ class Scan : AppCompatActivity() {
     private lateinit var barcodeDetector: BarcodeDetector
     private var scannedValue = ""
     private lateinit var binding: ActivityScanBinding
-
+    private var isPermissionDenied = false
+    private lateinit var customDialog: CustomDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         binding.icBack.setOnClickListener { finish() }
+        customDialog = CustomDialog(this)
 
-        if (ContextCompat.checkSelfPermission(
-                this@Scan,
-                android.Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
+
+        val permission =
+            ContextCompat.checkSelfPermission(this@Scan, android.Manifest.permission.CAMERA)
+        if (permission != PackageManager.PERMISSION_GRANTED
         ) {
             askForCameraPermission()
         } else {
@@ -100,17 +100,41 @@ class Scan : AppCompatActivity() {
                 val barcodes = detections.detectedItems
                 if (barcodes.size() == 1) {
                     scannedValue = barcodes.valueAt(0).rawValue
+                    //TODO @walid CHECK QR HERE
+                    if (scannedValue.contains('@')) {
+                        val strings = scannedValue.split('@')
+                        if (strings.size == 3) {
+                            val hallId = strings[0]
+                            val code = strings[1]
+                            val x = strings[2]
+
+                            runOnUiThread {
+                                binding.barcodeLine.startAnimation(
+                                    AnimationUtils.loadAnimation(
+                                        this@Scan,
+                                        R.anim.scanner_animation_stop
+                                    )
+                                )
+                                cameraSource.stop()
+                                Toast.makeText(
+                                    this@Scan,
+                                    "hall = $hallId code= $code x = $x",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                            }
 
 
-                    //Don't forget to add this line printing value or finishing activity must run on main thread
-                    runOnUiThread {
-                        cameraSource.stop()
-                        IsScanSuccess.set(true, scannedValue)
-                        finish()
+                        } else {
+                            runOnUiThread {
+                                customDialog.showNotOurCode()
+                            }
+                        }
+                    } else {
+                        runOnUiThread {
+                            customDialog.showNotOurCode()
+                        }
                     }
-                } else {
-                    Toast.makeText(this@Scan, "value- else", Toast.LENGTH_SHORT).show()
-
                 }
             }
         })
@@ -132,15 +156,36 @@ class Scan : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == requestCodeCameraPermission && grantResults.isNotEmpty()) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
                 setupControls()
+                setContentView(binding.root)
+                val aniSlide: Animation =
+                    AnimationUtils.loadAnimation(this@Scan, R.anim.scanner_animation)
+                binding.barcodeLine.startAnimation(aniSlide)
+
             } else {
-                Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+                isPermissionDenied = true
+                Toast.makeText(applicationContext, R.string.permissionDenied, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
-        cameraSource.stop()
+        if (!isPermissionDenied) {
+            cameraSource.stop()
+        }
+
     }
+
+    fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.commit()
+
+    }
+
 }

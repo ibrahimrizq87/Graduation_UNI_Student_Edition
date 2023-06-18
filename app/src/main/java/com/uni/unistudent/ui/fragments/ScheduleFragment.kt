@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @AndroidEntryPoint
-class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSuccess{
+class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
 
     private lateinit var binding: FragmentScheduleBinding
     private val viewModel: FirebaseViewModel by viewModels()
@@ -50,7 +50,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
     private var isLecLoaded = false
     private var isSecLoaded = false
     private var isCorLoaded = false
-    private lateinit var waitDialog: CustomDialog
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,10 +71,6 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
         }
 
 
-
-        waitDialog = activity?.let { CustomDialog(it) }!!
-        IsScanSuccess.setListener(this)
-
         return binding.root
     }
 
@@ -84,7 +80,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
 
         coursesList = arrayListOf()
         scheduleDataType = arrayListOf()
-        daySelected =MutableLiveData()
+        daySelected = MutableLiveData()
 
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.schedule_recycler)
@@ -112,11 +108,10 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
                     attendanceFragment.arguments = bundle
                     Navigation.findNavController(view)
                         .navigate(R.id.action_scheduleFragment_to_attendanceFragment)
-*/
+                    */
 
                     val intent = Intent(requireContext(), Scan::class.java)
                     startActivity(intent)
-
                 } else {
 
                     Toast.makeText(
@@ -131,20 +126,19 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
         //-------------- setting the recycler data---------------------------//
         recyclerView.adapter = adapter
         //-------------- setting the recycler data---------------------------//
-
         //---------------------- getting the required data ---------------------------//
-
         viewModel.getCourses(currentUser.grade)
         observeCourses()
         //---------------------- getting the required data ---------------------------//
 
         daySelected.observe(viewLifecycleOwner) { it2 ->
 
-            val scheduleDataType = scheduleDataType.filter {  it.day == it2  } as MutableList<ScheduleDataType>
+            val scheduleDataType =
+                scheduleDataType.filter { it.day == it2 } as MutableList<ScheduleDataType>
 
-            if(scheduleDataType.size ==0){
+            if (scheduleDataType.size == 0) {
                 binding.imageEmptySchedule.visibility = View.VISIBLE
-            }else{
+            } else {
                 binding.imageEmptySchedule.visibility = View.GONE
             }
             adapter.update(scheduleDataType)
@@ -202,6 +196,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
         }
 
     }
+
     private fun observeLectures() {
         lifecycleScope.launchWhenCreated {
             viewModel.getLecture.collectLatest { state ->
@@ -252,13 +247,14 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
             }
         }
     }
+
     private fun observeCourses() {
         lifecycleScope.launchWhenCreated {
             viewModel.getCourses.collectLatest { state ->
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
-                        binding.imageEmptySchedule.visibility =View.GONE
+                        binding.imageEmptySchedule.visibility = View.GONE
 
                     }
 
@@ -300,35 +296,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
 
     override fun onCustomClick(day: String) {
         daySelected.postValue(day)
-       }
-
-    override fun isScanSuccess(flag: Boolean, qr: String) {
-
-        if (flag && qr.isNotEmpty()) {
-
-            val strings = qr.split('-')
-            if (strings.size == 2) {
-                /*
-                waitDialog.showWait()
-                checkQRViewModel.checkQR(requireContext(), strings[0])
-                checkQRViewModel.qr.observe(requireActivity(), Observer {
-                    if (it == strings[1]) {
-                        //TODO add user id or student in list attendees in firebase here
-
-                        waitDialog.showSuccess()
-                    } else {
-                        waitDialog.showFailed()
-                    }
-                })
-                */
-            }else{
-                waitDialog.showFailed()
-            }
-        }else{
-            waitDialog.showFailed()
-        }
-
-
     }
+
 
 }

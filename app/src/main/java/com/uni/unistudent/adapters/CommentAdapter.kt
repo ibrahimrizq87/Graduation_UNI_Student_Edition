@@ -1,6 +1,7 @@
 package com.uni.unistudent.adapters
 
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -9,12 +10,15 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.Comment
 import com.uni.unistudent.classes.MyComments
 import com.uni.unistudent.classes.Posts
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 
 class CommentAdapter(
@@ -63,6 +67,7 @@ class CommentAdapter(
         val auth = item.findViewById<TextView>(R.id.author_comment)
         val auth_id = item.findViewById<TextView>(R.id.author_id)
         val comment = item.findViewById<TextView>(R.id.comment_text)
+        val time = item.findViewById<TextView>(R.id.time_text)
         val update_bt: ImageButton = item.findViewById(R.id.update_comment)
         val delete_bt: ImageButton = item.findViewById(R.id.delete_comment)
 
@@ -80,5 +85,6 @@ class CommentAdapter(
 
 
     }
+
 
 }

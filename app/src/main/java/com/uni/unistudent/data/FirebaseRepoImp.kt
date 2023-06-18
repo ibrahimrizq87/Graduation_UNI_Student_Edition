@@ -670,14 +670,6 @@ override suspend fun getCommentGeneralPosts(
     }
 
 
-
-
-
-
-
-
-
-
     override suspend fun getProfessor(
         courses: List<Courses>,
         result: (Resource<List<Professor>>) -> Unit
