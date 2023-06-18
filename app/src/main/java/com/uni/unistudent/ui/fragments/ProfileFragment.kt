@@ -1,6 +1,7 @@
 package com.uni.unistudent.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.uni.unistudent.R
+import com.uni.unistudent.adapters.ProfileAdapter
 import com.uni.unistudent.classes.Assistant
 import com.uni.unistudent.classes.Courses
 import com.uni.unistudent.classes.Professor
@@ -25,7 +27,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
-
+lateinit var binding: FragmentProfileBinding
     lateinit var coursesList: MutableList<Courses>
     lateinit var lecturerList: MutableList<Professor>
     lateinit var assistantList: MutableList<Assistant>
@@ -33,6 +35,7 @@ class ProfileFragment : Fragment() {
     private val viewModel: FirebaseViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     private val storageViewModel: FireStorageViewModel by viewModels()
+    lateinit var testList:List<Courses>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +43,7 @@ class ProfileFragment : Fragment() {
         coursesList = arrayListOf()
         lecturerList = arrayListOf()
         assistantList = arrayListOf()
-        val binding = DataBindingUtil.inflate<FragmentProfileBinding>(
+         binding = DataBindingUtil.inflate<FragmentProfileBinding>(
             inflater, R.layout.fragment_profile, container, false
         )
         authViewModel.getSessionStudent { user ->
@@ -59,6 +62,9 @@ class ProfileFragment : Fragment() {
 //TODO viewPager2 to view 3 lists lecturer , assistant and courses
         viewModel.getCourses(currentUser.grade)
         observeCourses()
+        //for testing
+         testList= listOf(Courses("software","4","ahmed","ali"))
+        setRecycler()
         return binding.root
 
     }
@@ -164,5 +170,10 @@ class ProfileFragment : Fragment() {
             }
         }
     }
-
+//todo @Walid: review why list return empty
+    fun setRecycler(){
+binding.recyclerCourses.adapter=ProfileAdapter(testList)
+    Log.i("Fofa","actual list size : ${coursesList.size}")
+    Log.i("Fofa","test list size : ${testList.size}")
+}
 }
