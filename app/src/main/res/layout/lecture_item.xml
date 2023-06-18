@@ -227,7 +227,7 @@
                         android:background="?android:attr/selectableItemBackground">
 
                         <ImageView
-                            android:id="@+id/imageView"
+                            android:id="@+id/image_profile"
                             android:layout_width="14dp"
                             android:layout_height="14dp"
                             android:layout_margin="8dp"
@@ -252,7 +252,7 @@
                             android:textStyle="normal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView"
+                            app:layout_constraintStart_toEndOf="@+id/image_profile"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
