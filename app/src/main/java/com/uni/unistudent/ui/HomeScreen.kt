@@ -170,39 +170,53 @@ class HomeScreen : AppCompatActivity() {
             else -> false
         }
     }
-
     private fun settingsOnStartApp() {
+        setupBadge()
+        setupBottomNavigation()
+    }
+
+    private fun setupBadge() {
+        val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.notification)
+        badge.isVisible = true
+       badge.number = 5
+    }
+
+    private fun setupBottomNavigation() {
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.selectedItemId = R.id.home
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> {
-
-                    replaceFragment(HomeFragment())
-                    binding.profileData.visibility = View.VISIBLE
-                }
-
-                R.id.notification -> {
-                    replaceFragment(NotificationsFragment())
-                    binding.profileData.visibility = View.VISIBLE
-                }
-
-                R.id.profile -> {
-                    replaceFragment(ProfileFragment())
-                    binding.profileData.visibility = View.GONE
-                }
-
-                R.id.schedule_and_attendees -> {
-                    replaceFragment(ScheduleFragment())
-                    binding.profileData.visibility = View.VISIBLE
-                    updateUser(currentUser)
-                }
-
-                else -> {
-                }
+                R.id.home -> navigateToHome()
+                R.id.notification -> navigateToNotifications()
+                R.id.profile -> navigateToProfile()
+                R.id.schedule_and_attendees -> navigateToSchedule()
             }
             true
         }
     }
+
+    private fun navigateToHome() {
+        replaceFragment(HomeFragment())
+        binding.profileData.visibility = View.VISIBLE
+    }
+
+    private fun navigateToNotifications() {
+        replaceFragment(NotificationsFragment())
+        binding.profileData.visibility = View.VISIBLE
+        val badge = binding.bottomNavigationView.getBadge(R.id.notification)
+        badge?.isVisible = false
+    }
+
+    private fun navigateToProfile() {
+        replaceFragment(ProfileFragment())
+        binding.profileData.visibility = View.GONE
+    }
+
+    private fun navigateToSchedule() {
+        replaceFragment(ScheduleFragment())
+        binding.profileData.visibility = View.VISIBLE
+        updateUser(currentUser)
+    }
+
 }
