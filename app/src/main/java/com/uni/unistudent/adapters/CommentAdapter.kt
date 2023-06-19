@@ -2,6 +2,7 @@ package com.uni.unistudent.adapters
 
 import android.content.Context
 import android.os.Build
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -37,7 +38,7 @@ class CommentAdapter(
 
         return myViewHolder(view)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onBindViewHolder(holder: myViewHolder, position: Int) {
         val currentItem = commentList[position]
         if (currentItem.myComment) {
@@ -51,18 +52,30 @@ class CommentAdapter(
         holder.time.text = formatDate( currentItem.time)
 
     }
-    @RequiresApi(Build.VERSION_CODES.O)
 
-    fun formatDate(date: Date): String {
-        val currentTime = Date().toInstant()
-        val inputTime = date.toInstant()
-        val diff = Duration.between(inputTime, currentTime)
+   private fun formatDate(date: Date): String {
+        val currentTimeMillis = System.currentTimeMillis()
+        val inputTimeMillis = date.time
+        val timeDifference = currentTimeMillis - inputTimeMillis
+
         return when {
-            diff.seconds < 60 -> "just now"
-            diff.toMinutes() < 60 -> "${diff.toMinutes()}m"
-            diff.toHours() < 24 -> "${diff.toHours()}h"
-            diff.toDays() < 31 -> "${diff.toDays()} day"
-            else -> "${diff.toDays() / 30} month"
+            timeDifference < DateUtils.MINUTE_IN_MILLIS -> "just now"
+            timeDifference < DateUtils.HOUR_IN_MILLIS -> {
+                val minutes = (timeDifference / DateUtils.MINUTE_IN_MILLIS).toInt()
+                "${minutes}m"
+            }
+            timeDifference < DateUtils.DAY_IN_MILLIS -> {
+                val hours = (timeDifference / DateUtils.HOUR_IN_MILLIS).toInt()
+                "${hours}h "
+            }
+            timeDifference < 31 * DateUtils.DAY_IN_MILLIS -> {
+                val days = (timeDifference / DateUtils.DAY_IN_MILLIS).toInt()
+                "${days} day "
+            }
+            else -> {
+                val months = (timeDifference / (31 * DateUtils.DAY_IN_MILLIS)).toInt()
+                "${months} month "
+            }
         }
     }
     fun update(list: MutableList<MyComments>) {
