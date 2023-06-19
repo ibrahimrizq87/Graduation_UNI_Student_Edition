@@ -39,5 +39,6 @@
     <dimen name="radius_16">16dp</dimen>
     <dimen name="radius_24">24dp</dimen>
     <dimen name="profile_course_card_height">64dp</dimen>
+    <dimen name="profile_card_size">48dp</dimen>
 
 </resources>
