@@ -199,6 +199,7 @@ class HomeFragment : Fragment() {
                             }
                             postsList.add(it)
                         }
+                      postsList.sortByDescending {  it.time  }
                         adapter.update(postsList)
                     }
 
