@@ -130,5 +130,6 @@
     <string name="error_message_in_profile_screen">"Error on loading user data please refresh the current screen "</string>
 
     <string name="wait_lecturer_arrived">Wait for the lecturer to be arrived</string>
+    <string name="logout">Log out</string>
 
 </resources>

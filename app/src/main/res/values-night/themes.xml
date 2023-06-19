@@ -14,7 +14,7 @@
 
     </style>
     <!-- Customize your theme here. -->
-    <style name="Theme.UNIStudent.custom" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.UNIStudent.custom" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
@@ -26,4 +26,14 @@
 
 
     </style>
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalStyle</item>
+    </style>
+
+    <style name="ModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_dialog</item>
+        <item name="android:state_expanded">true</item>
+
+    </style>
+
 </resources>

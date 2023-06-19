@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -24,6 +26,7 @@ import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.data.di.SignUpKey
 import com.uni.unistudent.databinding.FragmentProfileBinding
+import com.uni.unistudent.ui.BottomSheetFragment
 import com.uni.unistudent.ui.SignUp
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FireStorageViewModel
@@ -35,6 +38,7 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
     lateinit var binding: FragmentProfileBinding
+    private lateinit var bottomSheetFragment: BottomSheetFragment
     lateinit var coursesList: MutableList<Courses>
     lateinit var lecturerList: MutableList<Professor>
     lateinit var assistantList: MutableList<Assistant>
@@ -54,9 +58,10 @@ class ProfileFragment : Fragment() {
         coursesList = arrayListOf()
         lecturerList = arrayListOf()
         assistantList = arrayListOf()
-        binding = DataBindingUtil.inflate<FragmentProfileBinding>(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_profile, container, false
         )
+
         authViewModel.getSessionStudent { user ->
             if (user != null) {
                 currentUser = user
@@ -79,7 +84,15 @@ class ProfileFragment : Fragment() {
 
         viewModel.getCourses(currentUser.grade)
         observeCourses()
+
+        binding.settingBtn.setOnClickListener { showBottomSheetSettings() }
         return binding.root
+    }
+    private fun showBottomSheetSettings() {
+        bottomSheetFragment = BottomSheetFragment()
+        bottomSheetFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
+        bottomSheetFragment.isCancelable = true
+        bottomSheetFragment.show(childFragmentManager, BottomSheetFragment.TAG)
     }
     private fun observeImage() {
 

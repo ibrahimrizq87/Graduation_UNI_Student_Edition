@@ -145,6 +145,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
+                        binding.imageEmptySchedule.visibility = View.GONE
                     }
                     is Resource.Success -> {
                         isSecLoaded = true
@@ -190,7 +191,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
-
+                        binding.imageEmptySchedule.visibility = View.GONE
                     }
 
                     is Resource.Success -> {
@@ -239,7 +240,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
-                        binding.imageEmptySchedule.visibility = View.GONE
+                        binding.imageEmptySchedule.visibility = View.INVISIBLE
                     }
                     is Resource.Success -> {
                         isCorLoaded = true
