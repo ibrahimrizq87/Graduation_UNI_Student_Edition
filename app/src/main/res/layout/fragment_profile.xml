@@ -58,7 +58,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:scaleType="fitCenter"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/user_image" />
 
                     <ProgressBar
@@ -69,10 +69,22 @@
                         android:backgroundTint="@color/black"
                         android:progressBackgroundTint="@color/black"
                         android:progressTint="@color/black" />
+
+
                 </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
-
+            <ImageButton
+                android:id="@+id/choose_image_profile_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="-10dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/round_comment_btn"
+                android:src="@drawable/ic_edit"
+                app:layout_constraintBottom_toBottomOf="@+id/card_pic"
+                app:layout_constraintEnd_toEndOf="@+id/card_pic" />
             <TextView
                 android:id="@+id/text_student_name"
                 style="@style/MainTitle"

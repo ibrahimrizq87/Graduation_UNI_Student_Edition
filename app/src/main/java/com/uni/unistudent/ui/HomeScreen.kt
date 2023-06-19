@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -218,5 +219,10 @@ class HomeScreen : AppCompatActivity() {
         binding.profileData.visibility = View.VISIBLE
         updateUser(currentUser)
     }
+
+
+
+
+
 
 }

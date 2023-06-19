@@ -4,19 +4,24 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.uni.unistudent.R
 import com.uni.unistudent.adapters.ProfileAdapter
 import com.uni.unistudent.classes.Assistant
@@ -24,10 +29,8 @@ import com.uni.unistudent.classes.Courses
 import com.uni.unistudent.classes.Professor
 import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
-import com.uni.unistudent.data.di.SignUpKey
 import com.uni.unistudent.databinding.FragmentProfileBinding
 import com.uni.unistudent.ui.BottomSheetFragment
-import com.uni.unistudent.ui.SignUp
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FireStorageViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
@@ -48,9 +51,11 @@ class ProfileFragment : Fragment() {
     private var isLecLoaded = false
     private var isAssLoaded = false
     private var isCorLoaded = false
-
+    private lateinit var userImageUri: Uri
     private val storageViewModel: FireStorageViewModel by viewModels()
-    lateinit var testList: List<Courses>
+    private lateinit var auth: FirebaseAuth
+    private val fireStorageViewModel: FireStorageViewModel by viewModels()
+    private val CODEPICKPROFILEIMAGE = 333
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,7 +66,10 @@ class ProfileFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_profile, container, false
         )
-
+        userImageUri = Uri.EMPTY
+        //----------------
+        auth = Firebase.auth
+        //----------------
         authViewModel.getSessionStudent { user ->
             if (user != null) {
                 currentUser = user
@@ -86,14 +94,75 @@ class ProfileFragment : Fragment() {
         observeCourses()
 
         binding.settingBtn.setOnClickListener { showBottomSheetSettings() }
+        binding.chooseImageProfileBtn.setOnClickListener {
+            pickImageFromGallery()
+        }
         return binding.root
     }
+
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, CODEPICKPROFILEIMAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
+
+        if (requestCode == CODEPICKPROFILEIMAGE && resultCode == AppCompatActivity.RESULT_OK) {
+        //@WALID TODO HERE MUST BE BACK TO SAME STATE (PROFILE FRAGMENT) AFTER PICK IMAGE
+           userImageUri = data?.data!!
+             binding.imageProfile.setImageURI(userImageUri)
+
+             if (userImageUri != Uri.EMPTY) {
+                 val userId = auth.currentUser?.uid
+                 if (userId != null) {
+                     fireStorageViewModel.addUri(userId, userImageUri)
+                     observeUploadedImage()
+                 }
+             }
+
+
+        }
+
+    }
+
+
+    private fun observeUploadedImage() {
+        lifecycleScope.launchWhenCreated {
+            fireStorageViewModel.addUri.collectLatest {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.progressBarImageProfile.visibility = View.VISIBLE
+                    }
+
+                    is Resource.Success -> {
+                        binding.progressBarImageProfile.visibility = View.GONE
+                    }
+
+                    is Resource.Failure -> {
+                        binding.progressBarImageProfile.visibility = View.GONE
+                        Toast.makeText(context, it.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    else -> {}
+                }
+
+            }
+        }
+
+    }
+
     private fun showBottomSheetSettings() {
         bottomSheetFragment = BottomSheetFragment()
         bottomSheetFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
         bottomSheetFragment.isCancelable = true
         bottomSheetFragment.show(childFragmentManager, BottomSheetFragment.TAG)
     }
+
     private fun observeImage() {
 
         lifecycleScope.launchWhenCreated {
@@ -125,6 +194,7 @@ class ProfileFragment : Fragment() {
 
         }
     }
+
     private fun checkForInternet(context: Context): Boolean {
 
         val connectivityManager =
@@ -248,10 +318,21 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setRecycler(list: List<Courses>) {
-
-      //  Toast.makeText(context,   list[0].professor.toString(), Toast.LENGTH_SHORT).show()
         binding.recyclerCourses.adapter = ProfileAdapter(list)
         Log.i("Fofa", "actual list size : ${coursesList.size}")
+
+    }
+
+    private fun backToProfile() {
+        replaceFragment(ProfileFragment())
+
+    }
+
+    fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = childFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.commit()
 
     }
 }

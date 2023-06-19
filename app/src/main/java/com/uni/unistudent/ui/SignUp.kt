@@ -169,8 +169,6 @@ class SignUp : AppCompatActivity(), FragmentSignUpSubData.CollectDataListener {
         }
 
     }
-
-
     override fun signUp(bundle: Bundle) {
 
         userImageUri = Uri.parse(bundle.getString("userImageUri"))

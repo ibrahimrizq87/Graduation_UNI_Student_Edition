@@ -14,7 +14,7 @@
         android:id="@+id/card_profile_course"
         android:layout_width="match_parent"
         android:layout_height="@dimen/profile_course_card_height"
-        android:layout_marginBottom="@dimen/margin_8dp"
+        android:layout_marginBottom="@dimen/margin_4dp"
         android:backgroundTint="@color/white_100"
         android:elevation="@dimen/small_elevation"
         app:cardCornerRadius="@dimen/radius_16">
