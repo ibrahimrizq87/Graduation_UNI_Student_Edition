@@ -43,7 +43,10 @@ class FragmentSignUpSubData : Fragment() {
         mainDataBundle = bundleOf()
         userImageUri = Uri.EMPTY
         userImage = binding.signUserImage
-
+        code = ""
+        section = ""
+        department = ""
+        grade = ""
 
 //------------------------------------//
         setGradeSpinner()
@@ -75,7 +78,7 @@ class FragmentSignUpSubData : Fragment() {
                     /// ------------- ///
 
                 } else {
-                    showTopSnackBar(binding.root,  R.string.alldata)
+                    showTopSnackBar(binding.root, R.string.alldata)
 
                 }
             } else {
@@ -98,7 +101,8 @@ class FragmentSignUpSubData : Fragment() {
         if (context is CollectDataListener) {
             mCollectData = context
         } else {
-            Toast.makeText(requireContext(), "error in collect data listener", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "error in collect data listener", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -147,6 +151,7 @@ class FragmentSignUpSubData : Fragment() {
             }
         }
     }
+
     private fun setSectionSpinner() {
         val sectionList = resources.getStringArray(R.array.Section)
         val sectionAdapter: ArrayAdapter<CharSequence> =
@@ -172,6 +177,7 @@ class FragmentSignUpSubData : Fragment() {
             }
         }
     }
+
     private fun setDepartmentSpinner() {
         val depList = resources.getStringArray(R.array.departement)
         val depAdapter: ArrayAdapter<CharSequence> =
@@ -188,7 +194,7 @@ class FragmentSignUpSubData : Fragment() {
         depSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
-               department = depList[p2]
+                department = depList[p2]
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -196,6 +202,7 @@ class FragmentSignUpSubData : Fragment() {
             }
         }
     }
+
     private fun showTopSnackBar(view: View, message: Int) {
         val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
 

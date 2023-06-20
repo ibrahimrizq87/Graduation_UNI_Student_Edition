@@ -1,4 +1,4 @@
- <resources>
+<resources>
     <string name="app_name">UNI Student</string>
     <string-array name="grades">
         <item>grade one</item>
@@ -107,15 +107,29 @@
     <string name="home">Home</string>
     <string name="notification">Notification</string>
     <string name="Schedule">Schedule</string>
-     <string name="edit">Edit</string>
-     <string name="delete">Delete</string>
-     <string name="author">Author</string>
-     <string name="passwordCheck">Make sure to write the 14 number of the national id</string>
-     <string name="passwordNotMatch">Password not match!</string>
-     <string name="invalidEmail">Email format is not valid</string>
-     <string name="alldata">All data are required</string>
-     <string name="notFoundUser">No user found, have to register.</string>
-     <string name="notPickImage">Make sure to choose picture</string>
-     <string name="waitingPermission">Waiting.. \n for permission to log in from the college</string>
-     <string name="checkUpdate">Close app and start again to check for update</string>
- </resources>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="author">Author</string>
+    <string name="passwordCheck">Make sure to write the 14 number of the national id</string>
+    <string name="passwordNotMatch">Password not match!</string>
+    <string name="invalidEmail">Email format is not valid</string>
+    <string name="alldata">All data are required</string>
+    <string name="notFoundUser">No user found, have to register.</string>
+    <string name="notPickImage">Make sure to choose picture</string>
+    <string name="waitingPermission">Waiting.. \n for permission to log in from the college</string>
+    <string name="checkUpdate">Close app and start again to check for update</string>
+    <string name="permissionDenied">Permission Denied!</string>
+    <string name="at">\@</string>
+    <string name="notOurCode">This is not our code!</string>
+
+    <string name="information">Information</string>
+    <string name="faculty">Faculty</string>
+    <string name="section">Section</string>
+    <string name="gpa">GPA</string>
+    <string name="courses">Courses</string>
+    <string name="error_message_in_profile_screen">"Error on loading user data please refresh the current screen "</string>
+
+    <string name="wait_lecturer_arrived">Wait for the lecturer to be arrived</string>
+    <string name="logout">Log out</string>
+
+</resources>

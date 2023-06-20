@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingStart="0dp"
-        android:gravity="center"
         android:paddingEnd="@dimen/margin_16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -31,16 +31,17 @@
             android:textSize="@dimen/text_size_12"
             android:textStyle="bold"
             tools:text="Walid atef " />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_2dp"
             android:fontFamily="@font/poppins_bold"
+            android:text="@string/at"
             android:textColor="@color/black_50"
             android:textSize="@dimen/text_size_8"
-            android:textStyle="bold"
-            android:layout_marginEnd="@dimen/margin_2dp"
-            android:layout_marginStart="@dimen/margin_4dp"
-            android:text="@string/dot" />
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/author_id"
             android:layout_width="wrap_content"
@@ -50,32 +51,53 @@
             android:textSize="@dimen/text_size_8"
             android:textStyle="bold"
             tools:text="162019179" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_4dp"
+            android:layout_marginEnd="@dimen/margin_2dp"
+            android:text="@string/point"
+            android:layout_gravity="center"
+            android:layout_marginTop="-4dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black_50"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black_50"
+            android:textSize="@dimen/text_size_8"
+            android:textStyle="bold"
+            tools:text="1h" />
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:background="@drawable/comment_background"
         android:minWidth="120dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
         <TextView
             android:id="@+id/comment_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="start"
+            android:maxLines="15"
             android:paddingStart="@dimen/margin_16dp"
-
             android:paddingEnd="@dimen/margin_16dp"
             android:textColor="@color/black_70"
             android:textSize="@dimen/text_size_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="commentcommjjjjjhhhhntcomment 4" />
+            tools:text="وليد" />
 
 
         <LinearLayout
@@ -85,7 +107,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:gravity="center"
+            android:gravity="end"
+
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +134,7 @@
                 android:src="@drawable/icon_edit"
                 android:visibility="gone" />
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

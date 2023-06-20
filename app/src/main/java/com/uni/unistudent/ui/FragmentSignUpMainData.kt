@@ -35,7 +35,11 @@ class FragmentSignUpMainData : Fragment() {
 
         binding = FragmentSignupMaindataBinding.inflate(layoutInflater)
         backData = bundleOf()
-
+        name = ""
+        nationalID = ""
+        emailAddress = ""
+        password = ""
+        confirmPassword = ""
 
         parentFragmentManager.setFragmentResultListener(
             SignUpKey.BACK_DATA, this
@@ -50,8 +54,6 @@ class FragmentSignUpMainData : Fragment() {
                 binding.signNationalId.setText(backData.getString("nationalID").toString())
             }
         }
-
-
 
         binding.nextBtn.setOnClickListener {
             name = binding.signName.text.trim().toString()
@@ -82,10 +84,10 @@ class FragmentSignUpMainData : Fragment() {
                                 (activity as SignUp).nextFragment(FragmentSignUpSubData())
 
                             } else {
-                                showTopSnackBar(binding.root,  R.string.passwordCheck)
+                                showTopSnackBar(binding.root, R.string.passwordCheck)
                             }
                         } else {
-                            showTopSnackBar(binding.root,  R.string.passwordNotMatch)
+                            showTopSnackBar(binding.root, R.string.passwordNotMatch)
                         }
                     } else {
                         showTopSnackBar(binding.root, R.string.invalid_password)

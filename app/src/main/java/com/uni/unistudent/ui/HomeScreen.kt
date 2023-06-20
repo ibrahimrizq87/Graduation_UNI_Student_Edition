@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -34,10 +35,8 @@ class HomeScreen : AppCompatActivity() {
     private val storageViewModel: FireStorageViewModel by viewModels()
 
     //TODO save the image in a shared prefrance
-
     lateinit var currentUser: UserStudent
     private lateinit var binding: ActivityHomeScreenBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,26 +44,8 @@ class HomeScreen : AppCompatActivity() {
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         settingsOnStartApp()
-        binding.bottomNavigationView.setOnItemSelectedListener {
-
-            when (it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.notification -> replaceFragment(NotificationsFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
-                R.id.schedule_and_attendees -> {
-                    replaceFragment(ScheduleFragment())
-                    updateUser(currentUser)
-                }
-
-                else -> {
-                }
-
-            }
-            true
-        }
 
     }
-
 
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
@@ -110,7 +91,6 @@ class HomeScreen : AppCompatActivity() {
         }
     }
 
-
     private fun observeUser() {
         lifecycleScope.launchWhenCreated {
             viewModel.userStudent.collectLatest { state ->
@@ -148,7 +128,7 @@ class HomeScreen : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // settingsOnStartApp()
+
         viewModel.getSessionStudent { user ->
             if (user != null) {
                 updateUser(user)
@@ -164,19 +144,15 @@ class HomeScreen : AppCompatActivity() {
                     replaceFragment(HomeFragment())
                     binding.layoutHomeScreen.visibility = View.VISIBLE
                     binding.bottomNavigationView.visibility = View.VISIBLE
-
-
+                    settingsOnStartApp()
                 } else {
                     replaceFragment(PermissionFragment())
                     binding.layoutHomeScreen.visibility = View.VISIBLE
                     binding.bottomNavigationView.visibility = View.GONE
-
                 }
 
             } else {
-
                 val intent = Intent(this, SignUp::class.java)
-
                 intent.putExtra(SignUpKey.FROM_HOME_SCREEN, getString(R.string.notFoundUser))
                 startActivity(intent)
             }
@@ -195,26 +171,58 @@ class HomeScreen : AppCompatActivity() {
             else -> false
         }
     }
-
     private fun settingsOnStartApp() {
+        setupBadge()
+        setupBottomNavigation()
+    }
+
+    private fun setupBadge() {
+        val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.notification)
+        badge.isVisible = true
+       badge.number = 5
+    }
+
+    private fun setupBottomNavigation() {
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.selectedItemId = R.id.home
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.notification -> replaceFragment(NotificationsFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
-                R.id.schedule_and_attendees -> {
-                    replaceFragment(ScheduleFragment())
-                    updateUser(currentUser)
-                }
-
-                else -> {
-                }
-
+                R.id.home -> navigateToHome()
+                R.id.notification -> navigateToNotifications()
+                R.id.profile -> navigateToProfile()
+                R.id.schedule_and_attendees -> navigateToSchedule()
             }
             true
         }
     }
+
+    private fun navigateToHome() {
+        replaceFragment(HomeFragment())
+        binding.profileData.visibility = View.VISIBLE
+    }
+
+    private fun navigateToNotifications() {
+        replaceFragment(NotificationsFragment())
+        binding.profileData.visibility = View.VISIBLE
+        val badge = binding.bottomNavigationView.getBadge(R.id.notification)
+        badge?.isVisible = false
+    }
+
+    private fun navigateToProfile() {
+        replaceFragment(ProfileFragment())
+        binding.profileData.visibility = View.GONE
+    }
+
+    private fun navigateToSchedule() {
+        replaceFragment(ScheduleFragment())
+        binding.profileData.visibility = View.VISIBLE
+        updateUser(currentUser)
+    }
+
+
+
+
+
+
 }

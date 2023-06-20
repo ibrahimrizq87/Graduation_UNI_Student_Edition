@@ -3,16 +3,15 @@ package com.uni.unistudent.ui.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.unistudent.R
@@ -21,10 +20,8 @@ import com.uni.unistudent.adapters.ScheduleAdapter
 import com.uni.unistudent.classes.Courses
 import com.uni.unistudent.classes.ScheduleDataType
 import com.uni.unistudent.classes.user.UserStudent
-import com.uni.unistudent.data.IsScanSuccess
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.databinding.FragmentScheduleBinding
-import com.uni.unistudent.ui.CustomDialog
 import com.uni.unistudent.ui.Scan
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
@@ -34,7 +31,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @AndroidEntryPoint
-class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSuccess{
+class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
 
     private lateinit var binding: FragmentScheduleBinding
     private val viewModel: FirebaseViewModel by viewModels()
@@ -50,7 +47,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
     private var isLecLoaded = false
     private var isSecLoaded = false
     private var isCorLoaded = false
-    private lateinit var waitDialog: CustomDialog
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,10 +68,6 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
         }
 
 
-
-        waitDialog = activity?.let { CustomDialog(it) }!!
-        IsScanSuccess.setListener(this)
-
         return binding.root
     }
 
@@ -84,7 +77,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
 
         coursesList = arrayListOf()
         scheduleDataType = arrayListOf()
-        daySelected =MutableLiveData()
+        daySelected = MutableLiveData()
 
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.schedule_recycler)
@@ -112,56 +105,48 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
                     attendanceFragment.arguments = bundle
                     Navigation.findNavController(view)
                         .navigate(R.id.action_scheduleFragment_to_attendanceFragment)
-*/
+                    */
 
                     val intent = Intent(requireContext(), Scan::class.java)
                     startActivity(intent)
-
                 } else {
 
                     Toast.makeText(
                         context,
-                        "wait for the lecturer to be arrived",
+                        R.string.wait_lecturer_arrived,
                         Toast.LENGTH_LONG
                     ).show()
 
                 }
             })
-
         //-------------- setting the recycler data---------------------------//
         recyclerView.adapter = adapter
         //-------------- setting the recycler data---------------------------//
-
         //---------------------- getting the required data ---------------------------//
-
         viewModel.getCourses(currentUser.grade)
         observeCourses()
         //---------------------- getting the required data ---------------------------//
 
         daySelected.observe(viewLifecycleOwner) { it2 ->
-
-            val scheduleDataType = scheduleDataType.filter {  it.day == it2  } as MutableList<ScheduleDataType>
-
-            if(scheduleDataType.size ==0){
+            val scheduleDataType =
+                scheduleDataType.filter { it.day == it2 } as MutableList<ScheduleDataType>
+            if (scheduleDataType.size == 0) {
                 binding.imageEmptySchedule.visibility = View.VISIBLE
-            }else{
+            } else {
                 binding.imageEmptySchedule.visibility = View.GONE
             }
             adapter.update(scheduleDataType)
             adapter.notifyDataSetChanged()
         }
-
     }
-
     private fun observeSections() {
         lifecycleScope.launchWhenCreated {
             viewModel.getSection.collectLatest { state ->
-
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
+                        binding.imageEmptySchedule.visibility = View.GONE
                     }
-
                     is Resource.Success -> {
                         isSecLoaded = true
                         if (isLecLoaded && isCorLoaded) {
@@ -186,15 +171,12 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
 
                         }
                         daySelected.postValue("Saturday")
-
                     }
-
                     is Resource.Failure -> {
                         progress.visibility = View.INVISIBLE
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
                             .show()
                     }
-
                     else -> {
                     }
                 }
@@ -209,7 +191,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
-
+                        binding.imageEmptySchedule.visibility = View.GONE
                     }
 
                     is Resource.Success -> {
@@ -258,18 +240,13 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
                 when (state) {
                     is Resource.Loading -> {
                         progress.visibility = View.VISIBLE
-                        binding.imageEmptySchedule.visibility =View.GONE
-
+                        binding.imageEmptySchedule.visibility = View.INVISIBLE
                     }
-
                     is Resource.Success -> {
                         isCorLoaded = true
                         if (isSecLoaded && isLecLoaded) {
-
                             progress.visibility = View.GONE
-
                         }
-
                         state.result.forEach {
                             coursesList.add(it)
                         }
@@ -282,53 +259,19 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener ,IsScanSucc
                         delay(1000)
                         observeLectures()
                         observeSections()
-
                     }
-
                     is Resource.Failure -> {
                         progress.visibility = View.INVISIBLE
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
                             .show()
                     }
-
                     else -> {
                     }
                 }
             }
         }
     }
-
     override fun onCustomClick(day: String) {
         daySelected.postValue(day)
-       }
-
-    override fun isScanSuccess(flag: Boolean, qr: String) {
-
-        if (flag && qr.isNotEmpty()) {
-
-            val strings = qr.split('-')
-            if (strings.size == 2) {
-                /*
-                waitDialog.showWait()
-                checkQRViewModel.checkQR(requireContext(), strings[0])
-                checkQRViewModel.qr.observe(requireActivity(), Observer {
-                    if (it == strings[1]) {
-                        //TODO add user id or student in list attendees in firebase here
-
-                        waitDialog.showSuccess()
-                    } else {
-                        waitDialog.showFailed()
-                    }
-                })
-                */
-            }else{
-                waitDialog.showFailed()
-            }
-        }else{
-            waitDialog.showFailed()
-        }
-
-
     }
-
 }

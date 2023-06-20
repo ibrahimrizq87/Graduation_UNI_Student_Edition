@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MainTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="fontFamily">@font/poppins_semi_bold</item>
+    </style>
+
+    <style name="TextBodyStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:textColor">@color/black_50</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="TextBodyStyle.Profile" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:textColor">@color/black_50</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="TextDataStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="TextCardStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+    </style>
+    <!--    Recycler style-->
+    <style name="RecyclerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="spanCount">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+</resources>

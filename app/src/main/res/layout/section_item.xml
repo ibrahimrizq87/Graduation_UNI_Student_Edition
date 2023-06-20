@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/cardView_radius_10"
-        app:cardBackgroundColor="#F4FDF1"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/color_section_item"
         tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -227,7 +228,7 @@
                         android:background="?android:attr/selectableItemBackground">
 
                         <ImageView
-                            android:id="@+id/imageView"
+                            android:id="@+id/image_profile"
                             android:layout_width="14dp"
                             android:layout_height="14dp"
                             android:layout_margin="8dp"
@@ -252,7 +253,7 @@
                             android:textStyle="normal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView"
+                            app:layout_constraintStart_toEndOf="@+id/image_profile"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 package com.uni.unistudent.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,13 +24,18 @@ class PermissionFragment : Fragment() {
 
     private lateinit var permissionText: TextView
     private lateinit var user: FirebaseUser
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         user = FirebaseAuth.getInstance().currentUser!!
         viewModel.getPermission(user.uid)
         observePermission()
+
+
         return inflater.inflate(R.layout.fragment_permission, container, false)
     }
 
@@ -39,9 +43,7 @@ class PermissionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         permissionText = view.findViewById(R.id.permission_text)
 
-
     }
-
     private fun observePermission() {
 
 

@@ -119,18 +119,14 @@ class SignUp : AppCompatActivity(), FragmentSignUpSubData.CollectDataListener {
                 when (state) {
                     is Resource.Loading -> {
                         progressPar.visibility = View.VISIBLE
-
                     }
                     is Resource.Success -> {
-
                         Toast.makeText(this@SignUp, state.result, Toast.LENGTH_LONG).show()
                         val userId = auth.currentUser?.uid
                         if (userId != null) {
                             fireStorageViewModel.addUri(userId, userImageUri)
                             observeUploadedImage()
-
                         }
-
                         startActivity(Intent(this@SignUp, HomeScreen::class.java))
                     }
                     is Resource.Failure -> {
@@ -173,8 +169,6 @@ class SignUp : AppCompatActivity(), FragmentSignUpSubData.CollectDataListener {
         }
 
     }
-
-
     override fun signUp(bundle: Bundle) {
 
         userImageUri = Uri.parse(bundle.getString("userImageUri"))

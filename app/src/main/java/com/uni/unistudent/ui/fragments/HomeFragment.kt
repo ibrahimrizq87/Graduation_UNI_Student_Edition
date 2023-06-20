@@ -35,10 +35,7 @@ class HomeFragment : Fragment() {
     lateinit var progress: ProgressBar
     private lateinit var currentUser: UserStudent
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
-
-
     lateinit var coursesList: MutableList<Courses>
-
     lateinit var adapter: PostsAdapter
     lateinit var postsList: MutableList<Posts>
     override fun onCreateView(
@@ -59,7 +56,7 @@ class HomeFragment : Fragment() {
                     ).show()
                 }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Toast.makeText(
                 context,
                 e.message.toString(),
@@ -131,14 +128,6 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = adapter
 //-------------- setting the recycler data---------------------------//
 
-
-        /*   if (currentUser!=null){
-               viewModel.getPostsSection(currentUser.section,currentUser.department)
-               viewModel.getCourses(currentUser.grade)
-               viewModel.getPostsPersonal(currentUser.userId)
-           }
-   */
-        // viewModel.getPostsGeneral()
         if (currentUser != null) {
             viewModel.getCourses(currentUser.grade)
         }
@@ -210,6 +199,7 @@ class HomeFragment : Fragment() {
                             }
                             postsList.add(it)
                         }
+                      postsList.sortByDescending {  it.time  }
                         adapter.update(postsList)
                     }
 

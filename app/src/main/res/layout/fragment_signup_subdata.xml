@@ -16,7 +16,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/card"
                 android:layout_width="100dp"
@@ -35,7 +34,6 @@
 
 
             </androidx.cardview.widget.CardView>
-
             <ImageButton
                 android:id="@+id/chooseImageBtn"
                 android:layout_width="16dp"
@@ -172,7 +170,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/signup_btn"
-
                 android:fontFamily="@font/poppins_bold"
                 android:paddingStart="8dp"
                 android:paddingEnd="16dp"
