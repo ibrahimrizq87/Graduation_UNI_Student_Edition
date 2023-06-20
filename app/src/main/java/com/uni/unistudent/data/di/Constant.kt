@@ -19,7 +19,7 @@ object SharedPreferencesTable{
 
 }
 object PermissionsRequired{
-    val sing_in_permission="sign_in_permission"
+    val sing_in_permission="permissions"
 
 }
 object grades{

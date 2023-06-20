@@ -68,7 +68,15 @@ class AuthRepositoryImpl@Inject constructor(
                                         } else {
 
                                             GlobalScope.launch {
-                                                addPermission(Permission(PermissionsRequired.sing_in_permission,userId,"")){
+                                                addPermission(
+                                                    Permission(
+                                                        "sing_up_permission needed"
+                                                        ,userId,
+                                                        ""
+                                                        ,userTeaching.grade
+                                                        ,userTeaching.name,
+                                                        userTeaching.section,
+                                                        userTeaching.department)){
                                             when(it){
                                                 Resource.Loading -> result.invoke(Resource.Loading)
                                                 is Resource.Failure -> {result.invoke(Resource.Success("user created successfully but you need to check you permission with admin"))}
@@ -163,9 +171,9 @@ class AuthRepositoryImpl@Inject constructor(
 
 
     override suspend fun addPermission(permission: Permission, result: (Resource<String>) -> Unit) {
-        val document=database.collection(FireStoreTable.permissiont).document(permission.userId)
+        val document=database.collection(PermissionsRequired.sing_in_permission)
         permission.permissionId=document.id
-        document.set(permission)
+        document.add(permission)
             .addOnSuccessListener {
                 result.invoke(
                     Resource.Success("asking for permission")
