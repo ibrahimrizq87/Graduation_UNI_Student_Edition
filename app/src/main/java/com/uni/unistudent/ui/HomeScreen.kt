@@ -50,7 +50,7 @@ class HomeScreen : AppCompatActivity() {
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.replace(R.id.fragment_container, fragment).addToBackStack(null)
         fragmentTransaction.commit()
 
     }

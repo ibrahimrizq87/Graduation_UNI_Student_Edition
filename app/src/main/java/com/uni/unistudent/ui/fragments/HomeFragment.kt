@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.uni.unistudent.R
 import com.uni.unistudent.adapters.PostsAdapter
 import com.uni.unistudent.classes.Courses
@@ -71,6 +72,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.home_recycler)
         progress = view.findViewById(R.id.progress_bar_home)
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
@@ -117,8 +119,6 @@ class HomeFragment : Fragment() {
                 val commentFragment = CommentFragment()
                 commentFragment.arguments = bundle
                 (activity as HomeScreen).replaceFragment(commentFragment)
-                //Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_commentFragment)
-
 
             })
 
@@ -199,7 +199,7 @@ class HomeFragment : Fragment() {
                             }
                             postsList.add(it)
                         }
-                      postsList.sortByDescending {  it.time  }
+                        postsList.sortByDescending { it.time }
                         adapter.update(postsList)
                     }
 

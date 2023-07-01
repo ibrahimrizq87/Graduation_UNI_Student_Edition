@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.uni.unistudent.R
 import com.uni.unistudent.adapters.CommentAdapter
 import com.uni.unistudent.adapters.PostsAdapter
@@ -29,6 +30,7 @@ import com.uni.unistudent.classes.user.UserStudent
 import com.uni.unistudent.data.Resource
 import com.uni.unistudent.data.di.PostType
 import com.uni.unistudent.databinding.FragmentCommentBinding
+import com.uni.unistudent.ui.HomeScreen
 import com.uni.unistudent.viewModel.AuthViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,6 +60,16 @@ class CommentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        binding = FragmentCommentBinding.inflate(layoutInflater)
+        //++++++++++++++++++++++++++//
+        val bottomNavigationView =  (activity as HomeScreen).findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.GONE
+        binding.backFragmentBtn.setOnClickListener {
+            parentFragmentManager.popBackStack()
+            bottomNavigationView.visibility = View.VISIBLE
+
+        }
+        //+++++++++++++++++++++++++//
         // update user data --------------------------------------------------------------------------------
         authViewModel.getSessionStudent { user ->
             if (user != null) {
@@ -71,8 +83,6 @@ class CommentFragment : Fragment() {
             }
         }
         // update user data --------------------------------------------------------------------------------
-
-        binding = FragmentCommentBinding.inflate(layoutInflater)
 
         val recyclerView = binding.commentRecycler
         progress = binding.progressBarComment
@@ -343,7 +353,7 @@ class CommentFragment : Fragment() {
                             if (it.userID == currentUser.userId) {
                                 comment.myComment = true
                             }
-                            binding.NoCommentsYet.visibility =View.GONE
+                            binding.NoCommentsYet.visibility = View.GONE
                             commentList.add(comment)
                         }
                         adapter.update(commentList)

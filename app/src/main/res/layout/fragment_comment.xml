@@ -6,6 +6,10 @@
     <data>
 
     </data>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -13,6 +17,27 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.CommentFragment">
 
+        <ImageButton
+            android:id="@+id/back_fragment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back_fragment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:text="@string/comments"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/back_fragment_btn"
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/NoCommentsYet"
             android:layout_width="wrap_content"
@@ -31,12 +56,11 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
 
             android:progressTint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/comment_recycler"
@@ -71,9 +95,9 @@
                 android:gravity="center_vertical"
                 android:hint="@string/comment"
                 android:paddingStart="@dimen/margin_16dp"
-                android:paddingTop="2dp"
+                android:paddingTop="@dimen/margin_8dp"
                 android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="2dp"
+                android:paddingBottom="@dimen/margin_8dp"
                 android:textColor="@color/black_70"
                 android:textColorHint="@color/black_50"
                 android:textSize="@dimen/text_size_14"
@@ -90,7 +114,7 @@
                 android:layout_marginEnd="@dimen/margin_16dp"
                 android:background="@drawable/round_comment_btn"
                 android:backgroundTintMode="multiply"
-                android:padding="4dp"
+                android:padding="@dimen/margin_4dp"
                 android:src="@drawable/ic_add_comment"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -98,4 +122,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
 </layout>
