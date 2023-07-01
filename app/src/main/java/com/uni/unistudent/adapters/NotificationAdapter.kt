@@ -46,7 +46,6 @@ class NotificationAdapter(private var items: List<Posts>):
 
     class NotificationViewHolder(private val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(item: Posts) {
             binding.apply {
                 setVariable(BR.post, item)
@@ -58,7 +57,6 @@ class NotificationAdapter(private var items: List<Posts>):
                 executePendingBindings()
             }
         }
-
         private fun formatDate(date: Date): String {
             val currentTimeMillis = System.currentTimeMillis()
             val inputTimeMillis = date.time
@@ -87,10 +85,7 @@ class NotificationAdapter(private var items: List<Posts>):
                 }
             }
         }
-
-
         class NotificationViewHolder(val binding: ViewDataBinding) :
             RecyclerView.ViewHolder(binding.root)
-
     }
 }

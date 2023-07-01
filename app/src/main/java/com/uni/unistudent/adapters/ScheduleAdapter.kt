@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -80,7 +79,7 @@ class ScheduleAdapter(
             holder.from_sec.text = getTime12h(currentItem.time)
             holder.to_sec.text = getTime12h(currentItem.endTime)
             holder.amPm_sec_sec.text = getTypeTime(currentItem.time)
-            Toast.makeText(context, currentItem.isRunning.toString(), Toast.LENGTH_SHORT).show()
+
             if (currentItem.isRunning) {
                 holder.attend_sec.alpha =1f
                 holder.isRunning_sec.text = context.getString(R.string.running)
