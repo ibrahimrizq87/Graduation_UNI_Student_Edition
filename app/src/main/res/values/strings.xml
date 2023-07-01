@@ -131,5 +131,6 @@
 
     <string name="wait_lecturer_arrived">Wait for the lecturer to be arrived</string>
     <string name="logout">Log out</string>
+    <string name="NoCommentsYet">No comments yet</string>
 
 </resources>

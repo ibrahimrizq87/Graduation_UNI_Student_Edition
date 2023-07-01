@@ -13,6 +13,18 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.CommentFragment">
 
+        <TextView
+            android:id="@+id/NoCommentsYet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NoCommentsYet"
+            android:textColor="@color/black_50"
+            android:visibility="gone"
+            android:textSize="@dimen/text_size_14"
+            app:layout_constraintBottom_toBottomOf="@+id/comment_section"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progress_bar_comment"
@@ -42,10 +54,10 @@
             android:id="@+id/comment_section"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="@dimen/margin_8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:ignore="MissingConstraints">
 
             <EditText
@@ -76,8 +88,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_16dp"
-                android:backgroundTintMode="multiply"
                 android:background="@drawable/round_comment_btn"
+                android:backgroundTintMode="multiply"
                 android:padding="4dp"
                 android:src="@drawable/ic_add_comment"
                 app:layout_constraintBottom_toBottomOf="parent"

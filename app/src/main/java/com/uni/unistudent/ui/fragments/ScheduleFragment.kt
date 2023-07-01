@@ -1,13 +1,19 @@
 package com.uni.unistudent.ui.fragments
 
 import android.content.Intent
+import android.hardware.biometrics.BiometricManager
+import android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -28,6 +34,7 @@ import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import java.util.concurrent.Executor
 
 
 @AndroidEntryPoint
@@ -47,8 +54,10 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
     private var isLecLoaded = false
     private var isSecLoaded = false
     private var isCorLoaded = false
-
-
+    private var hasBiomatric = false
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var executor: Executor
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,6 +76,40 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
             }
         }
 
+        //++++++++++++++biomatric+++++++++++++++//
+        executor = context?.let { ContextCompat.getMainExecutor(it) }!!
+        biometricPrompt = BiometricPrompt(
+            requireActivity(),
+            executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+
+                    val intent = Intent(requireContext(), Scan::class.java)
+                    startActivity(intent)
+
+
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    Toast.makeText(context, "Authentication error $errString", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    Toast.makeText(context, "Authentication Failed", Toast.LENGTH_SHORT).show()
+                }
+            })
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Verify your identity")
+            .setSubtitle("To take attend")
+            .setNegativeButtonText("Cancel")
+            .build()
+
+
+        //++++++++++++++++++++++++++++++++//
 
         return binding.root
     }
@@ -82,7 +125,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.schedule_recycler)
         progress = view.findViewById(R.id.progress_bar)
-
+        checkDeviceHasBiomatric()
         //-------------- setting the recycler data---------------------------//
         binding.recyclerDays.layoutManager =
             LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
@@ -91,13 +134,23 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         //-------------- setting the recycler data---------------------------//
 
+        //+++++++++++++++++++biomatric++++++++++++++++++++++++//
+
+
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++//
 
         adapter = ScheduleAdapter(requireContext(), scheduleDataType,
             onItemClicked = { pos, item ->
                 Toast.makeText(requireContext(), item.professorName, Toast.LENGTH_SHORT).show()
             }, onAttendClicked = { pos, item ->
-                if (scheduleDataType[pos].isRunning) {
-                    //TODO  MOVE TO SCAN Activity @WALID
+
+
+                if (!scheduleDataType[pos].isRunning) {
+
+                    if (hasBiomatric) {
+                        biometricPrompt.authenticate(promptInfo)
+                    }
+
                     /*
                     val bundle = Bundle()
                     bundle.putString("id", item.eventId)
@@ -107,10 +160,8 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                         .navigate(R.id.action_scheduleFragment_to_attendanceFragment)
                     */
 
-                    val intent = Intent(requireContext(), Scan::class.java)
-                    startActivity(intent)
-                } else {
 
+                } else {
                     Toast.makeText(
                         context,
                         R.string.wait_lecturer_arrived,
@@ -139,6 +190,33 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
             adapter.notifyDataSetChanged()
         }
     }
+
+    private fun checkDeviceHasBiomatric() {
+        val biometricManager = context?.let { androidx.biometric.BiometricManager.from(it) }
+        if (biometricManager != null) {
+            when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+                androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS -> {
+                    hasBiomatric = true
+                }
+
+                androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                    hasBiomatric = false
+                }
+
+                androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                    val intent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                        putExtra(
+                            Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                            BIOMETRIC_STRONG or DEVICE_CREDENTIAL
+                        )
+                    }
+                    hasBiomatric = false
+                    startActivityForResult(intent, 10121)
+                }
+            }
+        }
+    }
+
     private fun observeSections() {
         lifecycleScope.launchWhenCreated {
             viewModel.getSection.collectLatest { state ->
@@ -147,6 +225,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                         progress.visibility = View.VISIBLE
                         binding.imageEmptySchedule.visibility = View.GONE
                     }
+
                     is Resource.Success -> {
                         isSecLoaded = true
                         if (isLecLoaded && isCorLoaded) {
@@ -172,11 +251,13 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                         }
                         daySelected.postValue("Saturday")
                     }
+
                     is Resource.Failure -> {
                         progress.visibility = View.INVISIBLE
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
                             .show()
                     }
+
                     else -> {
                     }
                 }
@@ -184,6 +265,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
         }
 
     }
+
     private fun observeLectures() {
         lifecycleScope.launchWhenCreated {
             viewModel.getLecture.collectLatest { state ->
@@ -234,6 +316,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
             }
         }
     }
+
     private fun observeCourses() {
         lifecycleScope.launchWhenCreated {
             viewModel.getCourses.collectLatest { state ->
@@ -242,6 +325,7 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                         progress.visibility = View.VISIBLE
                         binding.imageEmptySchedule.visibility = View.INVISIBLE
                     }
+
                     is Resource.Success -> {
                         isCorLoaded = true
                         if (isSecLoaded && isLecLoaded) {
@@ -260,17 +344,20 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                         observeLectures()
                         observeSections()
                     }
+
                     is Resource.Failure -> {
                         progress.visibility = View.INVISIBLE
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
                             .show()
                     }
+
                     else -> {
                     }
                 }
             }
         }
     }
+
     override fun onCustomClick(day: String) {
         daySelected.postValue(day)
     }

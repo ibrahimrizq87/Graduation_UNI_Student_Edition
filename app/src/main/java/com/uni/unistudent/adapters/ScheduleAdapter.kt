@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.unistudent.R
 import com.uni.unistudent.classes.ScheduleDataType
+
 var daySelected: String = "Saturday"
+
 class ScheduleAdapter(
     val context: Context,
     var dataList: MutableList<ScheduleDataType>,
@@ -53,35 +56,38 @@ class ScheduleAdapter(
             holder.location_lec.text = currentItem.hallID
             holder.lecturer.text = "Dr.${currentItem.professorName}"
 
-
             holder.amPm_lec.text = getTypeTime(currentItem.time)
             holder.from_lec.text = getTime12h(currentItem.time)
             holder.to_lec.text = getTime12h(currentItem.endTime)
 
             if (currentItem.isRunning) {
-                holder.isRunning.text = context.getString(R.string.running)
+
+                holder.attend_lec.alpha = 1f
+                holder.isRunning_lec.text = context.getString(R.string.running)
                 holder.isRunning_img.setImageResource(R.drawable.ic_running)
             } else {
-                holder.isRunning.text = context.getString(R.string.not_running)
+                holder.attend_lec.alpha = .5f
+                holder.isRunning_lec.text = context.getString(R.string.not_running)
                 holder.isRunning_img.setImageResource(R.drawable.ic_not_running)
             }
-
 
         } else {
             (holder as ViewHolder1)
             holder.courseName.text = currentItem.courseName
-            holder.location.text = currentItem.hallID
-            holder.assistant.text = "eng.${currentItem.professorName}"
+            holder.location_sec.text = currentItem.hallID
+            holder.assistant_sec.text = "eng.${currentItem.professorName}"
 
-            holder.from.text = getTime12h(currentItem.time)
-            holder.to.text = getTime12h(currentItem.endTime)
-            holder.amPm_sec.text = getTypeTime(currentItem.time)
-
+            holder.from_sec.text = getTime12h(currentItem.time)
+            holder.to_sec.text = getTime12h(currentItem.endTime)
+            holder.amPm_sec_sec.text = getTypeTime(currentItem.time)
+            Toast.makeText(context, currentItem.isRunning.toString(), Toast.LENGTH_SHORT).show()
             if (currentItem.isRunning) {
-                holder.isRunning.text = context.getString(R.string.running)
+                holder.attend_sec.alpha =1f
+                holder.isRunning_sec.text = context.getString(R.string.running)
                 holder.isRunning_img.setImageResource(R.drawable.ic_running)
             } else {
-                holder.isRunning.text = context.getString(R.string.not_running)
+                holder.attend_sec.alpha =.5f
+                holder.isRunning_sec.text = context.getString(R.string.not_running)
                 holder.isRunning_img.setImageResource(R.drawable.ic_not_running)
             }
 
@@ -100,24 +106,24 @@ class ScheduleAdapter(
     }
 
     inner class ViewHolder1(item: View) : RecyclerView.ViewHolder(item) {
-        val isRunning = item.findViewById<TextView>(R.id.sec_is_running)
+        val isRunning_sec = item.findViewById<TextView>(R.id.sec_is_running)
         val isRunning_img = item.findViewById<ImageView>(R.id.lecture_is_running_img)
         val courseName = item.findViewById<TextView>(R.id.course_name_s)
-        val location = item.findViewById<TextView>(R.id.section_location)
-        val assistant = item.findViewById<TextView>(R.id.section_assistant)
+        val location_sec = item.findViewById<TextView>(R.id.section_location)
+        val assistant_sec = item.findViewById<TextView>(R.id.section_assistant)
 
-        val from = item.findViewById<TextView>(R.id.from_time_tv)
-        val to = item.findViewById<TextView>(R.id.to_time_tv)
-        val amPm_sec = item.findViewById<TextView>(R.id.time_AmPm_tv)
+        val from_sec = item.findViewById<TextView>(R.id.from_time_tv)
+        val to_sec = item.findViewById<TextView>(R.id.to_time_tv)
+        val amPm_sec_sec = item.findViewById<TextView>(R.id.time_AmPm_tv)
 
-        val attend = item.findViewById<CardView>(R.id.attend_card_lecture)
+        val attend_sec = item.findViewById<CardView>(R.id.attend_card_section)
         val recyItem = item.findViewById<ConstraintLayout>(R.id.section_view)
 
         init {
             recyItem.setOnClickListener {
                 onItemClicked.invoke(adapterPosition, dataList[adapterPosition])
             }
-            attend.setOnClickListener {
+            attend_sec.setOnClickListener {
                 onAttendClicked.invoke(adapterPosition, dataList[adapterPosition])
             }
 
@@ -128,7 +134,7 @@ class ScheduleAdapter(
 
     private inner class ViewHolder2(item: View) :
         RecyclerView.ViewHolder(item) {
-        val isRunning = item.findViewById<TextView>(R.id.lecture_is_running)
+        val isRunning_lec = item.findViewById<TextView>(R.id.lecture_is_running)
         val isRunning_img = item.findViewById<ImageView>(R.id.lecture_is_running_img)
 
         val course_name_lec = item.findViewById<TextView>(R.id.subject_name_tv)

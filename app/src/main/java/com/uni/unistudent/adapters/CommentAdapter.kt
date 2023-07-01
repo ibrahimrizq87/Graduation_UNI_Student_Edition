@@ -40,6 +40,7 @@ class CommentAdapter(
     }
 
     override fun onBindViewHolder(holder: myViewHolder, position: Int) {
+
         val currentItem = commentList[position]
         if (currentItem.myComment) {
             holder.delete_bt.visibility = View.VISIBLE
@@ -49,11 +50,11 @@ class CommentAdapter(
         holder.auth_id.text = currentItem.authorCode
 
         holder.comment.text = currentItem.description
-        holder.time.text = formatDate( currentItem.time)
+        holder.time.text = formatDate(currentItem.time)
 
     }
 
-   private fun formatDate(date: Date): String {
+    private fun formatDate(date: Date): String {
         val currentTimeMillis = System.currentTimeMillis()
         val inputTimeMillis = date.time
         val timeDifference = currentTimeMillis - inputTimeMillis
@@ -64,20 +65,24 @@ class CommentAdapter(
                 val minutes = (timeDifference / DateUtils.MINUTE_IN_MILLIS).toInt()
                 "${minutes}m"
             }
+
             timeDifference < DateUtils.DAY_IN_MILLIS -> {
                 val hours = (timeDifference / DateUtils.HOUR_IN_MILLIS).toInt()
                 "${hours}h "
             }
+
             timeDifference < 31 * DateUtils.DAY_IN_MILLIS -> {
                 val days = (timeDifference / DateUtils.DAY_IN_MILLIS).toInt()
                 "${days} day "
             }
+
             else -> {
                 val months = (timeDifference / (31 * DateUtils.DAY_IN_MILLIS)).toInt()
                 "${months} month "
             }
         }
     }
+
     fun update(list: MutableList<MyComments>) {
         this.commentList = list
         notifyDataSetChanged()
@@ -85,6 +90,7 @@ class CommentAdapter(
 
 
     override fun getItemCount(): Int {
+
         return commentList.size
     }
 
@@ -99,8 +105,8 @@ class CommentAdapter(
         val update_bt: ImageButton = item.findViewById(R.id.update_comment)
         val delete_bt: ImageButton = item.findViewById(R.id.delete_comment)
 
-        init {
 
+        init {
 
             update_bt.setOnClickListener {
                 onUpdate.invoke(adapterPosition, commentList[adapterPosition])
