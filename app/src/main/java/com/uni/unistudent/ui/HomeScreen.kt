@@ -43,6 +43,34 @@ class HomeScreen : AppCompatActivity() {
 
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel.getSessionStudent { user ->
+            if (user != null) {
+                updateUser(user)
+                currentUser = user
+                if (checkForInternet(this)) {
+                    storageViewModel.getUri(user.userId)
+
+                }
+                observeUser()
+                observeImage()
+
+                if (user.hasPermission) {
+                    replaceFragment(HomeFragment())
+                    binding.layoutHomeScreen.visibility = View.VISIBLE
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+                    settingsOnStartApp()
+                } else {
+                    replaceFragment(PermissionFragment())
+                    binding.layoutHomeScreen.visibility = View.VISIBLE
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+
+            } else {
+                val intent = Intent(this, SignUp::class.java)
+                intent.putExtra(SignUpKey.FROM_HOME_SCREEN, getString(R.string.notFoundUser))
+                startActivity(intent)
+            }
+        }
         settingsOnStartApp()
 
     }
@@ -129,34 +157,7 @@ class HomeScreen : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        viewModel.getSessionStudent { user ->
-            if (user != null) {
-                updateUser(user)
-                currentUser = user
-                if (checkForInternet(this)) {
-                    storageViewModel.getUri(user.userId)
 
-                }
-                observeUser()
-                observeImage()
-
-                if (user.hasPermission) {
-                    replaceFragment(HomeFragment())
-                    binding.layoutHomeScreen.visibility = View.VISIBLE
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-                    settingsOnStartApp()
-                } else {
-                    replaceFragment(PermissionFragment())
-                    binding.layoutHomeScreen.visibility = View.VISIBLE
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-
-            } else {
-                val intent = Intent(this, SignUp::class.java)
-                intent.putExtra(SignUpKey.FROM_HOME_SCREEN, getString(R.string.notFoundUser))
-                startActivity(intent)
-            }
-        }
     }
 
     private fun checkForInternet(context: Context): Boolean {
