@@ -140,24 +140,28 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
             onItemClicked = { pos, item ->
                 Toast.makeText(requireContext(), item.professorName, Toast.LENGTH_SHORT).show()
             }, onAttendClicked = { pos, item ->
+if (item.hasRunning){
 
-                val intent = Intent(requireContext(), Scan::class.java)
-                if (item.type == ScheduleAdapter.VIEW_TYPE_ONE) {
-                    intent.putExtra("course", item.courseID)
-                    intent.putExtra("dep", item.dep)
-                    intent.putExtra("section", item.section)
-                    intent.putExtra("id", item.eventId)
+    val intent = Intent(requireContext(), Scan::class.java)
+    if (item.type == ScheduleAdapter.VIEW_TYPE_ONE) {
+        intent.putExtra("course", item.courseID)
+        intent.putExtra("dep", item.dep)
+        intent.putExtra("section", item.section)
+        intent.putExtra("id", item.eventId)
 
-                } else {
+    } else {
 
 
-                    intent.putExtra("course", item.courseID)
-                    intent.putExtra("dep", item.dep)
-                    intent.putExtra("section", "no")
-                    intent.putExtra("id", item.eventId)
+        intent.putExtra("course", item.courseID)
+        intent.putExtra("dep", item.dep)
+        intent.putExtra("section", "no")
+        intent.putExtra("id", item.eventId)
 
-                }
-                startActivity(intent)
+    }
+    startActivity(intent)
+}else{
+    Toast.makeText(context,"did not started yet",Toast.LENGTH_SHORT).show()
+}
             })
         //-------------- setting the recycler data---------------------------//
         recyclerView.adapter = adapter

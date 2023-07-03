@@ -73,6 +73,7 @@ class Scan : AppCompatActivity() {
         dep = intent.getStringExtra("dep")!!
         section = intent.getStringExtra("section")!!
         id = intent.getStringExtra("id")!!
+        Log.e("scan","$course ")
         binding.icBack.setOnClickListener { finish() }
         customDialog = CustomDialog(this)
 
@@ -119,7 +120,7 @@ class Scan : AppCompatActivity() {
             BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.ALL_FORMATS).build()
 
         cameraSource = CameraSource.Builder(this, barcodeDetector)
-            .setRequestedPreviewSize(250, 250)
+            .setRequestedPreviewSize(250, 350)
             .setAutoFocusEnabled(true) //you should add this feature
             .build()
 
@@ -181,10 +182,8 @@ class Scan : AppCompatActivity() {
                                 )
                                 cameraSource.stop()
 
-                                viewModelRealTime.getAttendanceCode(hallId,x.toInt())
+                                viewModelRealTime.getAttendanceCode(hallId, x.toInt())
                                 observeAttendanceCodeValidation()
-
-                                }
 
                             }
 
@@ -200,6 +199,7 @@ class Scan : AppCompatActivity() {
                         }
                     }
                 }
+            }
 
         })
     }

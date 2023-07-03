@@ -58,7 +58,7 @@
             <SurfaceView
                 android:id="@+id/cameraSurfaceView"
                 android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_height="350dp"
                 android:background="@drawable/ic_corner_camera"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
