@@ -1,5 +1,4 @@
 package com.uni.unistudent.ui.fragments
-
 import android.content.Intent
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL
@@ -35,8 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import java.util.concurrent.Executor
-
-
 @AndroidEntryPoint
 class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
 
@@ -144,31 +141,23 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                 Toast.makeText(requireContext(), item.professorName, Toast.LENGTH_SHORT).show()
             }, onAttendClicked = { pos, item ->
 
-
-                if (!scheduleDataType[pos].isRunning) {
-
-                    if (hasBiomatric) {
-                        biometricPrompt.authenticate(promptInfo)
-                    }
-
-                    /*
-                    val bundle = Bundle()
-                    bundle.putString("id", item.eventId)
-                    val attendanceFragment = ScheduleFragment()
-                    attendanceFragment.arguments = bundle
-                    Navigation.findNavController(view)
-                        .navigate(R.id.action_scheduleFragment_to_attendanceFragment)
-                    */
-
+                val intent = Intent(requireContext(), Scan::class.java)
+                if (item.type == ScheduleAdapter.VIEW_TYPE_ONE) {
+                    intent.putExtra("course", item.courseID)
+                    intent.putExtra("dep", item.dep)
+                    intent.putExtra("section", item.section)
+                    intent.putExtra("id", item.eventId)
 
                 } else {
-                    Toast.makeText(
-                        context,
-                        R.string.wait_lecturer_arrived,
-                        Toast.LENGTH_LONG
-                    ).show()
+
+
+                    intent.putExtra("course", item.courseID)
+                    intent.putExtra("dep", item.dep)
+                    intent.putExtra("section", "no")
+                    intent.putExtra("id", item.eventId)
 
                 }
+                startActivity(intent)
             })
         //-------------- setting the recycler data---------------------------//
         recyclerView.adapter = adapter
@@ -232,20 +221,21 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
                             progress.visibility = View.GONE
                         }
                         state.result.forEach {
-                            scheduleDataType.add(
-                                ScheduleDataType(
-                                    it.sectionId,
-                                    it.courseName,
-                                    it.lapID,
-                                    it.assistantName,
-                                    it.day,
-                                    it.time,
-                                    it.endTime,
-                                    ScheduleAdapter.VIEW_TYPE_ONE,
-                                    it.isRunning
-                                )
+                            val item = ScheduleDataType(
+                                it.sectionId,
+                                it.courseName,
+                                it.courseCode,
+                                it.lapID,
+                                it.section,
+                                it.dep,
+                                it.assistantName,
+                                it.day,
+                                it.time,
+                                it.endTime,
+                                ScheduleAdapter.VIEW_TYPE_ONE,
+                                it.hasRunning
                             )
-                            Log.e("test", it.sectionId)
+                            scheduleDataType.add(item)
 
 
                         }
@@ -284,20 +274,21 @@ class ScheduleFragment : Fragment(), DaysAdapter.CustomClickListener {
 
                         state.result.forEach {
 
-                            scheduleDataType.add(
-                                ScheduleDataType(
-                                    it.lectureId,
-                                    it.courseName,
-                                    it.hallID,
-                                    it.professorName,
-                                    it.day,
-                                    it.time,
-                                    it.endTime,
-                                    ScheduleAdapter.VIEW_TYPE_TWO,
-                                    it.isRunning
-
-                                )
+                            val item = ScheduleDataType(
+                                it.lectureId,
+                                it.courseName,
+                                it.courseCode,
+                                it.hallID,
+                                "",
+                                it.dep,
+                                it.professorName,
+                                it.day,
+                                it.time,
+                                it.endTime,
+                                ScheduleAdapter.VIEW_TYPE_ONE,
+                                it.hasRunning
                             )
+                            scheduleDataType.add(item)
                         }
 
                         daySelected.postValue("Saturday")

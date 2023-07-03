@@ -209,18 +209,24 @@ class FirebaseRepoImp@Inject constructor(
 
 
 
-
-
-    override suspend fun updateSectionAttendance(attendance: Attendance, sectionId: String, result: (Resource<String>) -> Unit) {
-        val document=database.collection(FireStoreTable.attendance).document(FireStoreTable.sections)
-            .collection(sectionId)
-        document.add(attendance)
+    override suspend fun updateSectionAttendance(
+        attendance: Attendance,
+        section: Section,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document = database.collection(FireStoreTable.courses)
+            .document(section.courseCode)
+            .collection(FireStoreTable.sections)
+            .document(section.dep)
+            .collection(section.section).document(section.sectionId).collection(FireStoreTable.attendance).document()
+        attendance.attendanceID=document.id
+        document.set(attendance)
             .addOnSuccessListener {
                 result.invoke(
                     Resource.Success("attendance added successfully")
                 )
             }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 result.invoke(
                     Resource.Failure(
                         it.localizedMessage
@@ -228,16 +234,26 @@ class FirebaseRepoImp@Inject constructor(
                 )
             }
     }
-    override suspend fun updateLectureAttendance(attendance: Attendance,lectureId: String, result: (Resource<String>) -> Unit) {
-        val document=database.collection(FireStoreTable.attendance).document(FireStoreTable.lectures)
-            .collection(lectureId)
-        document.add(attendance)
+    override suspend fun updateLectureAttendance(
+        attendance: Attendance,
+        lecture: Lecture,
+        result: (Resource<String>) -> Unit
+    ) {
+        val document = database.collection(FireStoreTable.courses).document(lecture.courseCode)
+            .collection(FireStoreTable.lectures)
+            .document(lecture.dep)
+            .collection(lecture.dep)
+            .document(lecture.lectureId)
+            .collection(FireStoreTable.attendance).document()
+        attendance.attendanceID=document.id
+
+        document.set(attendance)
             .addOnSuccessListener {
                 result.invoke(
                     Resource.Success("attendance added successfully")
                 )
             }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 result.invoke(
                     Resource.Failure(
                         it.localizedMessage

@@ -21,6 +21,7 @@ import com.uni.unistudent.data.Resource
 import com.uni.unistudent.data.di.PostType
 import com.uni.unistudent.ui.HomeScreen
 import com.uni.unistudent.viewModel.AuthViewModel
+import com.uni.unistudent.viewModel.FireStorageViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -28,8 +29,8 @@ import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    // there is a problem here the list of posts and with the
-// modification of data as https://stackoverflow.com/questions/72760708/kotlin-stateflow-not-emitting-updates-to-its-collectors
+    private val storageViewModel: FireStorageViewModel by viewModels()
+
     private val viewModel: FirebaseViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     lateinit var progress: ProgressBar
@@ -144,10 +145,8 @@ class HomeFragment : Fragment() {
                     is Resource.Success -> {
 
                         state.result.forEach {
-                            // Log.e("MNB",it.courseCode)
                             coursesList.add(it)
                         }
-                        //viewModel.getPostsCourse(coursesList)
                         viewModel.getPosts(
                             coursesList,
                             currentUser.section,
@@ -187,19 +186,17 @@ class HomeFragment : Fragment() {
                     is Resource.Success -> {
                         postsList.clear()
                         state.result.forEach {
+                            if(it.type == PostsAdapter.WITH_IMAGE){
+                                storageViewModel.getPostUri(it.postID)
+                                observeImage(it)
 
-
-                            if (it.imageUrl != null) {
-                                it.type = PostsAdapter.WITH_IMAGE
-                            } else {
-                                it.type = PostsAdapter.WITHOUT_IMAGE
+                            }else{
+                                postsList.add(it)
                             }
-                            postsList.add(it)
                         }
                         postsList.sortByDescending { it.time }
                         adapter.update(postsList)
                     }
-
                     is Resource.Failure -> {
                         progress.visibility = View.GONE
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
@@ -211,6 +208,37 @@ class HomeFragment : Fragment() {
             }
         }
     }
+    private fun observeImage(post: Posts) {
+        lifecycleScope.launchWhenCreated {
+            storageViewModel.getPostUri.collectLatest { uri ->
+                when (uri) {
+                    is Resource.Loading -> {
+                    }
+
+                    is Resource.Success -> {
+
+                        post.imageUrl=uri.result
+                        if (postsList.indexOf(post) == -1){
+                            postsList.add(post)
+                            adapter.update(postsList)
+                        }
+
+
+                    }
+
+
+                    is Resource.Failure -> {
+                        Toast.makeText(context, uri.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    else -> {
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 
