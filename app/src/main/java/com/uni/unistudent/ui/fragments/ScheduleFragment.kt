@@ -295,7 +295,7 @@ if (item.hasRunning){
                             scheduleDataType.add(item)
                         }
 
-                        daySelected.postValue("Saturday")
+                        daySelected.postValue("Sat")
 
                     }
 

@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.uni.unistudent.R
 import com.uni.unistudent.adapters.PostsAdapter
 import com.uni.unistudent.classes.Courses
@@ -34,6 +36,7 @@ class HomeFragment : Fragment() {
     private val viewModel: FirebaseViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     lateinit var progress: ProgressBar
+    lateinit var mStorageRef: StorageReference
     private lateinit var currentUser: UserStudent
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     lateinit var coursesList: MutableList<Courses>
@@ -43,7 +46,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+mStorageRef = FirebaseStorage.getInstance().reference
 // update user data --------------------------------------------------------------------------------
         try {
             authViewModel.getSessionStudent { user ->
@@ -187,9 +190,8 @@ class HomeFragment : Fragment() {
                         postsList.clear()
                         state.result.forEach {
                             if(it.type == PostsAdapter.WITH_IMAGE){
-                                storageViewModel.getPostUri(it.postID)
-                                observeImage(it)
-
+                                downloadImage(it.postID,it)
+                                //observeImage(it)
                             }else{
                                 postsList.add(it)
                             }
@@ -238,6 +240,17 @@ class HomeFragment : Fragment() {
             }
         }
     }
+fun downloadImage(id:String,post: Posts){
+    val downloadUriTask=mStorageRef.child("posts/$id.png").downloadUrl
+    downloadUriTask.addOnSuccessListener {
+        post.imageUrl=it
+        postsList.add(post)
+        adapter.update(postsList)
+    }.addOnFailureListener {
+        Toast.makeText(context, it.toString(), Toast.LENGTH_LONG)
+            .show()
+    }
+}
 
 }
 

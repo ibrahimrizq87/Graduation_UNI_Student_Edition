@@ -17,13 +17,13 @@ class DaysAdapter(private val customClickListener: CustomClickListener,private v
     }
 
     private var days = mutableListOf<String>(
-        "Saturday",
-        "Sunday",
-        "Monday",
+        "Sat",
+        "Sun",
+        "Mon",
         "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
+        "Wed",
+        "Thu",
+        "Fri",
     )
     private var oldDaySelected: CardView? = null
     private var oldDaySelectedTV: TextView? = null
