@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.uni.unistudent.R
 import com.uni.unistudent.adapters.PostsAdapter
 import com.uni.unistudent.classes.Courses
@@ -194,8 +195,11 @@ class HomeFragment : Fragment() {
                             } else {
                                 it.type = PostsAdapter.WITHOUT_IMAGE
                             }
+
                             postsList.add(it)
                         }
+                        (activity as HomeScreen).findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
+                            View.VISIBLE
                         postsList.sortByDescending { it.time }
                         adapter.update(postsList)
                     }

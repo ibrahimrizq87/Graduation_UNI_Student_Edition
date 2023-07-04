@@ -54,7 +54,7 @@
                 android:background="@drawable/custom_button"
                 android:text="@string/ok"
                 android:textColor="@color/white_100"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_14"
                 android:textStyle="bold" />
         </LinearLayout>
 
