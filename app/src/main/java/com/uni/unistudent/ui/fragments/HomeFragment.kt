@@ -12,12 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-<<<<<<< HEAD
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
-=======
+
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
->>>>>>> 53a7fe1120fcefa00beb1a623bbe4c7d2ef99997
 import com.uni.unistudent.R
 import com.uni.unistudent.adapters.PostsAdapter
 import com.uni.unistudent.classes.Courses
