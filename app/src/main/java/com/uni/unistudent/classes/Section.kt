@@ -9,9 +9,10 @@ data class Section (
     val lapID:String="",
     val assistantName:String="",
     val section : String="",
+    val dep : String="",
     val day:String="",
     val time:String="",
     val endTime:String="",
-    val isRunning:Boolean=false
+    val hasRunning:Boolean=false
 
 )

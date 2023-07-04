@@ -59,7 +59,7 @@ class ScheduleAdapter(
             holder.from_lec.text = getTime12h(currentItem.time)
             holder.to_lec.text = getTime12h(currentItem.endTime)
 
-            if (currentItem.isRunning) {
+            if (currentItem.hasRunning) {
 
                 holder.attend_lec.alpha = 1f
                 holder.isRunning_lec.text = context.getString(R.string.running)
@@ -80,7 +80,7 @@ class ScheduleAdapter(
             holder.to_sec.text = getTime12h(currentItem.endTime)
             holder.amPm_sec_sec.text = getTypeTime(currentItem.time)
 
-            if (currentItem.isRunning) {
+            if (currentItem.hasRunning) {
                 holder.attend_sec.alpha =1f
                 holder.isRunning_sec.text = context.getString(R.string.running)
                 holder.isRunning_img.setImageResource(R.drawable.ic_running)

@@ -12,7 +12,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<<<<<<< HEAD
 import com.google.android.material.bottomnavigation.BottomNavigationView
+=======
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+>>>>>>> 53a7fe1120fcefa00beb1a623bbe4c7d2ef99997
 import com.uni.unistudent.R
 import com.uni.unistudent.adapters.PostsAdapter
 import com.uni.unistudent.classes.Courses
@@ -22,6 +27,7 @@ import com.uni.unistudent.data.Resource
 import com.uni.unistudent.data.di.PostType
 import com.uni.unistudent.ui.HomeScreen
 import com.uni.unistudent.viewModel.AuthViewModel
+import com.uni.unistudent.viewModel.FireStorageViewModel
 import com.uni.unistudent.viewModel.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -29,11 +35,12 @@ import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    // there is a problem here the list of posts and with the
-// modification of data as https://stackoverflow.com/questions/72760708/kotlin-stateflow-not-emitting-updates-to-its-collectors
+    private val storageViewModel: FireStorageViewModel by viewModels()
+
     private val viewModel: FirebaseViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     lateinit var progress: ProgressBar
+    lateinit var mStorageRef: StorageReference
     private lateinit var currentUser: UserStudent
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     lateinit var coursesList: MutableList<Courses>
@@ -43,7 +50,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+mStorageRef = FirebaseStorage.getInstance().reference
 // update user data --------------------------------------------------------------------------------
         try {
             authViewModel.getSessionStudent { user ->
@@ -145,10 +152,8 @@ class HomeFragment : Fragment() {
                     is Resource.Success -> {
 
                         state.result.forEach {
-                            // Log.e("MNB",it.courseCode)
                             coursesList.add(it)
                         }
-                        //viewModel.getPostsCourse(coursesList)
                         viewModel.getPosts(
                             coursesList,
                             currentUser.section,
@@ -188,22 +193,22 @@ class HomeFragment : Fragment() {
                     is Resource.Success -> {
                         postsList.clear()
                         state.result.forEach {
-
-
-                            if (it.imageUrl != null) {
-                                it.type = PostsAdapter.WITH_IMAGE
-                            } else {
-                                it.type = PostsAdapter.WITHOUT_IMAGE
+                            if(it.type == PostsAdapter.WITH_IMAGE){
+                                downloadImage(it.postID,it)
+                                //observeImage(it)
+                            }else{
+                                postsList.add(it)
                             }
 
+
                             postsList.add(it)
+
                         }
                         (activity as HomeScreen).findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
                             View.VISIBLE
                         postsList.sortByDescending { it.time }
                         adapter.update(postsList)
                     }
-
                     is Resource.Failure -> {
                         progress.visibility = View.GONE
                         Toast.makeText(context, state.exception.toString(), Toast.LENGTH_LONG)
@@ -215,6 +220,48 @@ class HomeFragment : Fragment() {
             }
         }
     }
+    private fun observeImage(post: Posts) {
+        lifecycleScope.launchWhenCreated {
+            storageViewModel.getPostUri.collectLatest { uri ->
+                when (uri) {
+                    is Resource.Loading -> {
+                    }
+
+                    is Resource.Success -> {
+
+                        post.imageUrl=uri.result
+                        if (postsList.indexOf(post) == -1){
+                            postsList.add(post)
+                            adapter.update(postsList)
+                        }
+
+
+                    }
+
+
+                    is Resource.Failure -> {
+                        Toast.makeText(context, uri.exception.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    else -> {
+                    }
+                }
+            }
+        }
+    }
+fun downloadImage(id:String,post: Posts){
+    val downloadUriTask=mStorageRef.child("posts/$id.png").downloadUrl
+    downloadUriTask.addOnSuccessListener {
+        post.imageUrl=it
+        postsList.add(post)
+        adapter.update(postsList)
+    }.addOnFailureListener {
+        Toast.makeText(context, it.toString(), Toast.LENGTH_LONG)
+            .show()
+    }
+}
+
 }
 
 

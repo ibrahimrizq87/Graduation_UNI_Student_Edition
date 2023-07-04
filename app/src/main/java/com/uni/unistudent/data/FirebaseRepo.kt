@@ -92,8 +92,16 @@ interface FirebaseRepo {
     suspend fun getCourseByAssistantCode( assistantCode:String,result: (Resource<List<Courses>>) -> Unit)
     suspend fun  getCourseByProfessorCode( professorCode:String,result: (Resource<List<Courses>>) -> Unit)
     suspend fun getCourse( grade: String,result: (Resource<List<Courses>>) -> Unit)
-     suspend fun updateSectionAttendance(attendance: Attendance, sectionId: String, result: (Resource<String>) -> Unit)
-     suspend fun updateLectureAttendance(attendance: Attendance, lectureId: String, result: (Resource<String>) -> Unit)
+    suspend fun updateSectionAttendance(
+        attendance: Attendance,
+        section: Section,
+        result: (Resource<String>) -> Unit
+    )
+        suspend fun updateLectureAttendance(
+        attendance: Attendance,
+        lecture: Lecture,
+        result: (Resource<String>) -> Unit
+    )
 
 
 }

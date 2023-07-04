@@ -4,14 +4,7 @@ package com.uni.unistudent.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.uni.unistudent.classes.Assistant
-import com.uni.unistudent.classes.Comment
-import com.uni.unistudent.classes.Courses
-import com.uni.unistudent.classes.Lecture
-import com.uni.unistudent.classes.Permission
-import com.uni.unistudent.classes.Posts
-import com.uni.unistudent.classes.Professor
-import com.uni.unistudent.classes.Section
+import com.uni.unistudent.classes.*
 import com.uni.unistudent.data.FirebaseRepo
 import com.uni.unistudent.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -272,4 +265,23 @@ class FirebaseViewModel @Inject constructor(
         repository.getAssistant(courses) {
             _getAssistant.value=it
         }}
-     }
+
+
+
+    private val _addAttendance = MutableStateFlow<Resource<String>?>(null)
+    val addAttendance = _addAttendance.asStateFlow()
+
+    fun addSectionAttendance(section:Section,attendance: Attendance) = viewModelScope.launch {
+        _addAttendance.value = Resource.Loading
+        repository.updateSectionAttendance(attendance,section) {
+            _addAttendance.value = it
+        }
+    }
+    fun addLectureAttendance(lecture:Lecture,attendance: Attendance) = viewModelScope.launch {
+        _addAttendance.value = Resource.Loading
+        repository.updateLectureAttendance(attendance,lecture) {
+            _addAttendance.value = it
+        }
+    }
+
+}
